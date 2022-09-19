@@ -1,0 +1,39 @@
+{% extends "__base.html" %}
+
+{% block title %} E-mail Confirmação {% endblock %}
+
+{% block body %}
+   {% include "__navbar.html" %}
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <a href="{{ url_for('home') }}">
+                       <img src="{{ url_for('static', filename='img/motando_logo-402x150.png') }}" class="img-fluid" alt="Motando" style="width: 300px;">
+                    </a>
+                </div>      
+            </div>   
+        </div>                
+    </section>
+    <br><br>
+    <section>
+        <div class="container">           
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-10">                        
+                    <div class="shadow rounded bg-white border p-3">
+                        <p class="text-center h2 pt-2 pb-2">
+                            Um e-mail foi enviado para você finalizar o seu cadastro!                            
+                        </p>
+                    </div>
+                </div>
+                <div class="col-1"></div>
+            </div>              
+        </div>
+    </section>
+    <br><br><br><br>
+{% endblock %}
+
+{% block footer %}
+   {% include "__footer.html" %}
+{% endblock %}

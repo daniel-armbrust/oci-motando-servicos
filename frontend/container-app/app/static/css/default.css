@@ -1,0 +1,336 @@
+/*
+ *
+ * default.css
+ * 
+ */
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {    
+    background-color: #F7F7F7;      
+    padding-top: 100px;
+}
+
+nav {
+    background-color: #E0E0E0; 
+    border-bottom: 1px solid #6B6B6B;
+}
+
+.navbar-light .navbar-brand {
+    color: #FFFFFF;
+}
+
+.navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show>.nav-link {
+    color: #363435;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: black;
+}
+
+.navbar-light .navbar-nav .nav-link:focus, .navbar-light .navbar-nav .nav-link:hover {
+    color: #E96220 !important;
+}
+
+.navbar .navbar-nav .nav-link {
+    color: #000000;
+    
+}
+.navbar .navbar-nav .nav-link:hover{
+    color: #808080;
+}
+
+@media only screen and (min-width: 960px) {
+    .dropdown-hover:hover .dropdown-hover-menu {
+      display: block;
+      margin-top: 0;
+    }
+}
+
+@media only screen and (min-width: 960px) {
+    .dropdown-hover:hover .dropdown-toggle::after {
+      border-bottom: 0.3em solid;
+      border-top: 0;
+    }
+}
+
+.dropdown-hover.show .dropdown-toggle::after {
+    border-bottom: 0.3em solid;
+    border-top: 0;
+}
+
+.form-busca {
+    height: 100%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: #4E27B8;
+    min-height: 40px;
+    color: white;
+}
+
+.form-encontre-sua-moto {
+    background-color: white;
+    padding: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;            
+}
+
+#id_form_desktop_bike_search select {
+   background: none !important;
+   border: 0;
+   border-bottom-color: currentcolor;
+   border-bottom-style: none;
+   border-bottom-width: 0px;
+   -webkit-box-shadow: none !important;
+   box-shadow: none !important;
+   border-bottom: 1px solid #a4a4a4;
+   border-radius: 0;
+   font-size: 20px;
+   color: #626262;
+   padding-left: 0px;
+   margin-bottom: 15px;
+   background-color: transparent;
+   font-size: 11pt;
+   -webkit-appearance: none;
+}
+
+#id_form_desktop_bike_search input[type="text"] {
+    background: none !important;
+    border: 0;
+    border-bottom-color: currentcolor;
+    border-bottom-style: none;
+    border-bottom-width: 0px;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+    border-bottom: 1px solid #a4a4a4;
+    border-radius: 0;
+    font-size: 20px;
+    color: #626262;
+    padding-left: 0px;
+    margin-bottom: 15px;
+    background-color: transparent;
+    font-size: 11pt;
+    -webkit-appearance: none;    
+}
+
+.my-text-purple { color: #4E27B8; }
+.my-background-purple { background-color: #4E27B8; }
+.purple-border-left { border-left: 1px solid #4E27B8; background-color: white; }
+.purple-border-right { border-right: 1px solid #4E27B8; background-color: white; }
+.purple-border-top { border-top: 1px solid #4E27B8; background-color: white; }
+.purple-border-bottom { border-bottom: 1px solid #4E27B8; background-color: white; }
+
+.my-btn-outline {
+    background: transparent;    
+    border: 0;
+    border-bottom: 1px solid;
+    border-radius: 0;   
+}
+
+.my-btn-outline:disabled {
+    background-color: white;    
+}
+
+.motando-carousel-box { 
+    background-color: white; 
+    border-top: 1px solid gray; 
+    border-bottom: 1px solid gray;     
+    min-height: 380px;    
+}
+
+#id_owl_carousel_noticias .item img {
+   max-height: 210px;
+   max-width: 330px;   
+   padding: 1rem;
+}
+
+.owl_carousel-flex-container {
+    display: flex;
+    flex-wrap: nowrap;    
+}
+  
+.owl_carousel-flex-container > div {
+    background-color: white;
+    width: 340px;    
+    margin: 10px;
+    text-align: center;
+    line-height: 75px;
+    font-size: 30px;
+}
+
+#id_footer_motando_anuncio_container {
+     background-color: #4E27B8; 
+     color: white;   
+}
+ 
+#id_footer_newsletter_container {
+    background-color: #1b1b1b; 
+    color: #626262;
+}
+
+#login-wrap {
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: flex;
+    -ms-flex-align: center;
+    -ms-flex-pack: center;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #F7F7F7;  
+}
+  
+.form-signin {
+      width: 100%;
+      max-width: 430px;
+      padding: 15px;
+      margin: 0 auto;
+}
+  
+.form-signin .checkbox {
+      font-weight: 400;
+}
+  
+.form-signin .form-control {
+      position: relative;
+      box-sizing: border-box;
+      height: auto;
+      padding: 10px;
+      font-size: 16px;
+}
+  
+.form-signin .form-control:focus {
+      z-index: 2;
+}
+  
+.form-signin input[type="email"] {
+      margin-bottom: -1px;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+}
+  
+.form-signin input[type="password"] {
+      margin-bottom: 10px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+}
+  
+.form-signin button {      
+      border: none;
+      border-radius: 4px;
+}
+
+.dropdown-menu-scroll {
+     max-height: 280px; 
+     overflow-y: auto; 
+     min-width: 100% !important; 
+     background-attachment: local, local, scroll, scroll; 
+}
+
+.dropdown-item-scroll { 
+    white-space: normal; 
+}
+
+.footer-bottom {
+    position: absolute;
+    width: 100%;
+    min-height: 320px;
+    bottom: 0px;
+    left: 0;
+}
+
+.text-underline-hover {
+    text-decoration: none;
+}
+
+.text-underline-hover:hover {
+    text-decoration: underline;
+}
+
+.vertical-scrollable> .row {
+    position: absolute;
+    top: 120px;
+    bottom: 100px;
+    left: 180px;
+    width: 50%;
+    overflow-y: scroll; 
+  }
+
+/**************** navbar ****************/
+.navbar-default {
+    background-color: #4E27B8;     
+    border-bottom: 2px solid #E96220;
+}
+
+/* Title */
+.navbar-default .navbar-brand {
+    color: #777;
+}
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+    background-color: #E96220;
+    color: #5E5E5E;
+}
+/* Link */
+.navbar-default .navbar-nav > li > a {
+    color: white;
+}
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+    background-color: #E96220; 
+    color: white;
+}
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus {
+    color: #555;
+    background-color: #E7E7E7;
+}
+.navbar-default .navbar-nav > .open > a,
+.navbar-default .navbar-nav > .open > a:hover,
+.navbar-default .navbar-nav > .open > a:focus {
+    color: #555;
+    background-color: #D5D5D5;
+}
+/* Caret */
+.navbar-default .navbar-nav > .dropdown > a .caret {
+    border-top-color: #777;
+    border-bottom-color: #777;
+}
+.navbar-default .navbar-nav > .dropdown > a:hover .caret,
+.navbar-default .navbar-nav > .dropdown > a:focus .caret {
+    border-top-color: #333;
+    border-bottom-color: #333;
+}
+.navbar-default .navbar-nav > .open > a .caret,
+.navbar-default .navbar-nav > .open > a:hover .caret,
+.navbar-default .navbar-nav > .open > a:focus .caret {
+    border-top-color: #555;
+    border-bottom-color: #555;
+}
+/* Mobile version */
+.navbar-default .navbar-toggle {
+    border-color: #DDD;
+}
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+    background-color: #DDD;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #CCC;
+}
+@media (max-width: 767px) {
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+        color: #777;
+    }
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
+    .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+          color: #333;
+    }
+}

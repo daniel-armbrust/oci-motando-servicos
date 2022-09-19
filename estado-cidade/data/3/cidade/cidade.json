@@ -1,0 +1,9 @@
+{
+    "status": "success", 
+    "data": [
+        {"id": 1, "cidade": "Vila Velha"},
+        {"id": 2, "cidade": "Itapemirim"},
+        {"id": 3, "cidade": "Alegre"}
+    ], 
+    "code": 200
+}

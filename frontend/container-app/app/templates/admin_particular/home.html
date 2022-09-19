@@ -1,0 +1,373 @@
+{% extends "/admin_particular/__base.html" %}
+
+{% block title %} Usuário Particular {% endblock %}
+
+{% block body %}
+   {{ super() }}     
+   <section>
+       <div class="container">     
+            <div class="row">
+               <div class="col-3">
+                     <br>
+                     <div class="shadow rounded bg-white border p-3">
+                           <div class="row">
+                              <div class="col d-flex justify-content-center">
+                                    <img src="{{ url_for('static', filename='img/pessoa.png') }}" alt="Pessoa" 
+                                       class="img-fluid img-thumbnail" style="max-width: 50%;">                           
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col d-flex justify-content-center">
+                                    <h1 class="h5 fw-bold text-center"> {{ profile['data'][0]['nome'] }} </h1>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col d-flex justify-content-center">
+                                    <p class="text-center"> Cadastrado desde Março de 2004  </p>                                
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col">
+                                    <hr>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col m-2">    
+                                    <a class="text-decoration-none" href="">
+                                       <i class="fas fa-plus-circle"></i> Novo anúncio                                       
+                                    </a>                           
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col m-2">
+                                    <a class="text-decoration-none" href="">
+                                       <i class="fab fa-leanpub"></i> Meus anúncios
+                                    </a>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col m-2">
+                                    <a class="text-decoration-none" href="">
+                                       <i class="fas fa-comments"></i> Chat de propostas
+                                    </a>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col m-2">
+                                    <a class="text-decoration-none" href="">
+                                       <i class="fas fa-user-cog"></i> Minha conta
+                                    </a>
+                              </div>
+                           </div>
+                           <div class="row">
+                              <div class="col m-2">
+                                    <a class="text-decoration-none" href="">
+                                       <i class="fas fa-star"></i> Favoritos
+                                    </a>
+                              </div>
+                           </div>
+                           <div class="row pt-3">
+                              <div class="col m-2">
+                                    <a class="text-decoration-none" href="">
+                                       <i class="fas fa-sign-out-alt"></i> Sair
+                                    </a>
+                              </div>
+                           </div>
+                        <br>                        
+                        <br>      
+                        <br> 
+                        <br>                        
+                        <br>                              
+                     </div>
+               </div> <!-- left menu --> 
+               <div class="col-9">
+                     <br>
+                     <div class="shadow rounded bg-white border p-3">
+                        <div class="row">
+                           <div class="col">
+                                 <h2 class="h4"> Dados do Usuário </h2>                                 
+                           </div>
+                        </div>  
+                        <form id="id_form_usuario_particular" name="form_usuario_particular" autocomplete="off" method="post">                            
+                              <div class="row pt-2 p-2">
+                                 <div class="col-5">           
+                                       <label for="id_nome" class="form-label my-text-purple">Nome <span class="text-danger">*</span></label>
+                                       <input type="text" name="nome" id="id_nome" value="{{ profile['data'][0]['nome'] }}"
+                                             class="form-control my-btn-outline" style="box-shadow: none; background-color: white;" disabled="disabled">         
+                                 </div>
+                                 <div class="col-5">           
+                                       <label for="id_cpf" class="form-label my-text-purple">CPF</label>
+                                       <input type="text" name="cpf" id="id_cpf" value="{{ profile['data'][0]['cpf'] }}"
+                                             class="form-control my-btn-outline" style="box-shadow: none; background-color: white;">         
+                                       <div class="invalid-feedback">
+                                          É necessário informar um CPF válido.
+                                       </div> 
+                                 </div>
+                              </div>
+                              <div class="row pt-2 p-2">
+                                 <div class="col-5">           
+                                       <label for="id_email" class="form-label my-text-purple">E-mail <span class="text-danger">*</span></label>
+                                       <input type="email" name="email" id="id_email" value="{{ profile['data'][0]['email'] }}"
+                                             class="form-control my-btn-outline"  style="box-shadow: none; background-color: white;" disabled="disabled">         
+                                 </div>
+                                 <div class="col-6">           
+                                       <br>
+                                       <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                       <label class="form-check-label" for="flexCheckDefault">
+                                          &nbsp; Desejo receber ofertas de produtos do MOTANDO.com.br
+                                       </label>
+                                 </div>
+                              </div>
+                              <br> 
+                              <div class="row pt-4">
+                                 <div class="col">
+                                       <h2 class="h4"> Dados Complementares </h2>                                 
+                                 </div>                            
+                              </div>  
+                              <div class="row pt-2 p-2">                            
+                                 <div class="col">    
+                                       <p class="form-label my-text-purple">Sexo <span class="text-danger">*</span> </p>
+                                       <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="sexo" id="id_sexo_masculino" value="masculino">
+                                          <label class="form-check-label" for="id_sexo_masculino">Masculino</label>
+                                       </div>
+                                       <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="sexo" id="id_sexo_feminino" value="feminino">
+                                          <label class="form-check-label" for="id_sexo_feminino">Feminino</label>
+                                       </div>
+                                 </div>                          
+                                 <div class="col">
+                                       <label for="id_data_nascimento" class="form-label my-text-purple">Data de Nascimento <span class="text-danger">*</span></label>
+                                       <input type="text" name="data_nascimento" id="id_data_nascimento" value=""
+                                             class="form-control my-btn-outline" style="box-shadow: none; background-color: white;">    
+                                       <div class="invalid-feedback">
+                                          É necessário informar uma Data de Nascimento válida.
+                                       </div>      
+                                 </div>
+                              </div>                                               
+                              <div class="row pt-4 p-2">   
+                                 <div class="col">                                
+                                       <p class="form-label my-text-purple">Possui Motocicleta?</p>
+                                       <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="possui_moto" id="id_possui_moto_sim" value="1">
+                                          <label class="form-check-label" for="id_possui_moto_sim">Sim</label>
+                                       </div>
+                                       <div class="form-check form-check-inline">
+                                          <input class="form-check-input" type="radio" name="possui_moto" id="id_possui_moto_nao" value="0">
+                                          <label class="form-check-label" for="id_possui_moto_nao">Não</label>
+                                       </div>                               
+                                 </div>                         
+                                 <div class="col">    
+                                       <label for="id_marca_desejada" class="form-label my-text-purple">Marca Desejada</label>
+                                       <select class="form-select my-btn-outline" name="marca_desejada" id="id_marca_desejada" style="box-shadow: none;">                                    
+                                       </select>                    
+                                 </div>
+                                 <div class="col">    
+                                       <label for="id_modelo_desejado" class="form-label my-text-purple">Modelo Desejado</label>
+                                       <select class="form-select my-btn-outline" name="modelo_desejado" id="id_modelo_desejado" style="box-shadow: none;">                                   
+                                       </select>                    
+                                 </div>
+                                 <div class="col">    
+                                       <label for="id_modelo_desejado_ano" class="form-label my-text-purple">Ano</label>
+                                       <select class="form-select my-btn-outline" name="modelo_desejado_ano" id="id_modelo_desejado_ano" style="box-shadow: none;">                                    
+                                       </select>                    
+                                 </div>
+                              </div>                       
+                              <div class="row pt-4">
+                                 <div class="col">
+                                       <h2 class="h4"> Localização </h2>                                 
+                                 </div>                            
+                              </div> 
+                              <div class="row pt-2 p-2">
+                                 <div class="col">
+                                       <label for="id_cep" class="form-label my-text-purple">CEP <span class="text-danger">*</span></label>
+                                       <input type="text" name="cep" id="id_cep" value="{{ profile['data'][0]['cep'] }}"
+                                             class="form-control my-btn-outline" style="box-shadow: none;">
+                                       <div class="invalid-feedback">
+                                          É necessário informar um CEP válido.
+                                       </div> 
+                                 </div>
+                                 <div class="col">
+                                       <label for="id_select_brasil_estado" class="form-label my-text-purple">Estado <span class="text-danger">*</span></label>
+                                       <select class="form-select my-btn-outline" name="brasil_estado" id="id_select_brasil_estado" style="box-shadow: none;">                                     
+                                       </select>                     
+                                 </div>
+                                 <div class="col">
+                                       <label for="id_cidade" class="form-label my-text-purple">Cidade <span class="text-danger">*</span></label>
+                                       <select class="form-select my-btn-outline" name="brasil_cidade" id="id_select_brasil_cidade" style="box-shadow: none;">                                   
+                                       </select>                                               
+                                 </div>
+                              </div>
+                              <div class="row pt-2 p-2">
+                                 <div class="col">
+                                       <label for="id_endereco" class="form-label my-text-purple">Endereço <span class="text-danger">*</span></label>
+                                       <input type="text" name="endereco" id="id_endereco" value="{{ profile['data'][0]['endereco'] }}"
+                                             class="form-control my-btn-outline" style="box-shadow: none;">
+                                       <div class="invalid-feedback">
+                                          É necessário informar um Endereço válido.
+                                       </div> 
+                                 </div>                            
+                              </div>
+                              <div class="row pt-2 p-2">
+                                 <div class="col-4">
+                                       <label for="id_bairro" class="form-label my-text-purple">Bairro <span class="text-danger">*</span></label>
+                                       <input type="text" name="bairro" id="id_bairro" value="{{ profile['data'][0]['bairro'] }}"
+                                             class="form-control my-btn-outline" style="box-shadow: none;">
+                                       <div class="invalid-feedback">
+                                          É necessário informar um Bairro válido.
+                                       </div> 
+                                 </div>
+                                 <div class="col-8">
+                                       <label for="id_endereco_complemento" class="form-label my-text-purple">Complemento </label>
+                                       <input type="text" name="complemento" id="id_complemento" value="{{ profile['data'][0]['complemento'] }}"
+                                             class="form-control my-btn-outline" style="box-shadow: none;">
+                                       <div class="invalid-feedback">
+                                          É necessário informar um Complemento válido.
+                                       </div> 
+                                 </div>                          
+                              </div>
+                              <div class="row pt-4">
+                                 <div class="col">
+                                       <h2 class="h4"> Telefones para Contato </h2>                                 
+                                 </div>                            
+                              </div> 
+                              <div class="row pt-2 p-2">
+                                 {% for tel_dict in profile['data'][0]['telefone'] %}
+                                    {% for tel_item, tel_value in tel_dict.items() %}
+                                       
+                                       {% if tel_item == 'telefone' %}                        
+                                          <div class="col">
+                                             <label for="id_telefone" class="form-label my-text-purple">DDD + Telefone <span class="text-danger">*</span></label>
+                                             <input type="text" name="telefone_{{ loop.index }}" id="id_telefone_{{ loop.index }}" value="{{ tel_value }}"
+                                                      class="form-control my-btn-outline" onkeypress="$(this).mask('(00) 00000-00009')" style="box-shadow: none;"> 
+                                             <div class="invalid-feedback">
+                                                   É necessário informar um Telefone válido.
+                                             </div>  
+                                          </div>
+                                       {% endif %}
+
+                                       {% if tel_item == 'whatsapp' %}       
+                                             <div class="col pt-4">
+                                                   <div class="form-check">
+                                                      <input name="auth_whatsapp_{{ loop.index }}" id="id_auth_whatsapp_{{ loop.index }}"
+                                                            class="form-check-input form-check-inline" 
+                                                               {% if tel_value == "True" %} checked {% endif %}
+                                                            type="checkbox">
+                                                      <label class="form-check-label" for="id_auth_whatsapp_{{ loop.index }}">
+                                                         Autoriza WhatsApp
+                                                      </label>
+                                                   </div>
+                                             </div>        
+                                       {% endif %}             
+                                       
+                                       {% if tel_item == 'anuncio' %}       
+                                             <div class="col pt-4">
+                                                   <div class="form-check">
+                                                      <input name="auth_anuncio_{{ loop.index }}" id="id_auth_anuncio_{{ loop.index }}"
+                                                            class="form-check-input form-check-inline" 
+                                                               {% if tel_value == "True" %} checked {% endif %}
+                                                            type="checkbox">
+                                                      <label class="form-check-label" for="id_auth_anuncio_{{ loop.index }}">
+                                                         Disponível no Anúncio 
+                                                      </label>
+                                                   </div>
+                                             </div>        
+                                       {% endif %}
+                                       
+                                       {% if tel_item == 'sms' %}       
+                                             <div class="col pt-4">
+                                                   <div class="form-check">
+                                                      <input name="auth_sms_{{ loop.index }}" id="id_auth_sms_{{ loop.index }}"
+                                                            class="form-check-input form-check-inline" 
+                                                               {% if tel_value == "True" %} checked {% endif %}
+                                                            type="checkbox">
+                                                      <label class="form-check-label" for="id_auth_sms_{{ loop.index }}">
+                                                         Disponível para SMS
+                                                      </label>
+                                                   </div>
+                                             </div>        
+                                       {% endif %}    
+
+                                    {% endfor %}
+                                 {% endfor %}                          
+                              </div>
+                              <div class="row pt-4">
+                                 <div class="col">
+                                       <h2 class="h4"> Alterar Senha </h2>                                 
+                                 </div>                            
+                              </div> 
+                              <div class="row pt-2 p-2">
+                                 <div class="col">
+                                       <label for="id_senha_atual" class="form-label my-text-purple">Senha atual <span class="text-danger">*</span> </label>
+                                       <input type="password" class="form-control my-btn-outline" name="senha" id="id_senha" style="box-shadow: none;"> 
+                                 </div>
+                                 <div class="col">
+                                       <label for="id_senha_nova" class="form-label my-text-purple">Nova Senha <span class="text-danger">*</span> </label>
+                                       <input type="password" class="form-control my-btn-outline" name="senha_nova" id="id_senha_nova" style="box-shadow: none;"> 
+                                 </div>
+                                 <div class="col">
+                                       <label for="id_confirm_senha_nova" class="form-label my-text-purple">Confirmação da Nova Senha <span class="text-danger">*</span> </label>
+                                       <input type="password" class="form-control my-btn-outline" name="confirm_senha_nova" id="id_confirm_senha_nova" style="box-shadow: none;"> 
+                                 </div>
+                              </div>
+                              <div class="row pt-4">
+                                 <div class="col-3">
+                                       <div class="d-grid gap-2 mx-auto">                                     
+                                          <button type="button" class="btn btn-success fw-bold btn-lg p-2">
+                                                Salvar
+                                          </button>
+                                       </div>          
+                                 </div>                            
+                              </div>
+                        </form> 
+                     </div>
+               </div> <!-- right panel -->                
+            </div>
+       </div>
+   </section>
+   <br><br> 
+{% endblock %}
+
+{% block footer %}
+   {% include "__footer.html" %}     
+{% endblock %}
+
+{% block body_scripts %}
+   <script type="text/javascript" src="{{ url_for('static', filename='vendor/jquery.mask.min.js') }}"></script>    
+   <script type="text/javascript" src="{{ url_for('static', filename='js/ajax-functions.js') }}"></script>
+   <script type="text/javascript">
+       $(document).ready(function() {
+           getBrasilEstados().done(function() {               
+               const brasilEstadoSelect = document.getElementById('id_select_brasil_estado');
+               const brasilEstadoLen = brasilEstadoSelect.options.length;    
+               let brasilEstadoId = 0;     
+
+               for (let i = 0 ; i < brasilEstadoLen ; i++) {
+                     let brasilEstadoText = brasilEstadoSelect.options[i].text;
+
+                     if (brasilEstadoText === "{{ profile['data'][0]['estado'] }} ({{ profile['data'][0]['estado_sigla'] }})") {
+                        brasilEstadoId = brasilEstadoSelect.options[i].value;
+                        brasilEstadoSelect.options[i].selected = true;                     
+                        break;
+                     }
+               }
+
+               getBrasilCidade(brasilEstadoId).done(function() {
+                    const brasilCidadeSelect = document.getElementById('id_select_brasil_cidade');
+                    const brasilCidadeLen = brasilCidadeSelect.options.length;    
+                    let brasilCidadeId = 0;   
+                    
+                    for (let i = 0 ; i < brasilCidadeLen ; i++) {
+                        let brasilCidadeText = brasilCidadeSelect.options[i].text;
+
+                        if (brasilCidadeText === "{{ profile['data'][0]['cidade']") {
+                           brasilCidadeId = brasilCidadeSelect.options[i].value;
+                           brasilCidadeSelect.options[i].selected = true;
+                           break;
+                        }
+                    }                    
+               });
+           }); 
+       });
+   </script>
+{% endblock %}

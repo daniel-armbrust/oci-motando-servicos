@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: motando-estado-cidade-svc
+spec:
+  selector:
+    api: estado-cidade    
+    rel: beta
+    ver: "20220304"
+    env: prod  
+  ports:
+    - port: 5000
+      targetPort: est-cid-port
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: motando-estado-ing
+  annotations:
+    kubernetes.io/ingress.class: "nginx"    
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:  
+  rules:
+  - http:
+      paths:
+        - path: /brasil/estado
+          pathType: Prefix
+          backend:
+            service:
+              name: motando-estado-cidade-svc
+              port:
+                number: 5000        
+        - path: /brasil/estado/[0-9]{3}
+          pathType: Prefix
+          backend:
+            service:
+              name: motando-estado-cidade-svc
+              port:
+                number: 5000     
+        - path: /brasil/estado/[0-9]{3}/cidade
+          pathType: Prefix
+          backend:
+            service:
+              name: motando-estado-cidade-svc
+              port:
+                number: 5000   
+        - path: /brasil/estado/[0-9]{3}/cidade/[0-9]{3}
+          pathType: Prefix
+          backend:
+            service:
+              name: motando-estado-cidade-svc
+              port:
+                number: 5000       

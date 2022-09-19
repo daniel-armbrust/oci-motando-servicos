@@ -1,0 +1,52 @@
+{% extends "__base.html" %}
+
+{% block title %} Particular ou Lojista {% endblock %}
+
+{% block body %}
+   {% include "__navbar.html" %}   
+
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 d-flex justify-content-center">
+                    <a href="{{ url_for('home') }}">
+                        <img src="{{ url_for('static', filename='img/motando_logo-402x150.png') }}" class="img-fluid" alt="Motando" style="width: 300px;">
+                    </a>
+                </div>         
+            </div>
+            <div class="row pt-4">
+                <div class="col">
+                    <p class="text-center text-uppercase fs-3 fw-bold"> Venda agora sua moto </p>
+                </div>
+            </div>
+            <div class="row pt-2">                
+                <div class="d-grid gap-2 col-3 mx-auto">                    
+                    <a class="fw-bold btn btn-primary btn-lg p-2" href="{{ url_for('form_particular') }}" role="button">
+                        Particular (GRÁTIS)
+                    </a>                    
+                </div>                
+            </div>
+            <div class="row pt-4">                
+                <div class="d-grid gap-2 col-3 mx-auto">                    
+                    <a class="fw-bold btn btn-primary btn-lg p-2" href="{{ url_for('form_lojista') }}" role="button">
+                        Lojista
+                    </a>                    
+                </div>                
+            </div>
+        </div>
+    </section>
+
+    <br>
+    <br>
+  
+{% endblock %}
+
+{% block footer %}
+   {% include "__footer.html" %}
+{% endblock %}
+
+{% block body_scripts %}
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/owlcarousel/owl.carousel.min.js') }}"></script>    
+    <script type="text/javascript" src="{{ url_for('static', filename='js/ajax-functions.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/home.js') }}"></script>   
+{% endblock %}

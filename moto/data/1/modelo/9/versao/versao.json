@@ -1,0 +1,8 @@
+{
+    "status": "success", 
+    "data": [
+        {"id": 1, "versao": "F 800 GS", "imagem": ""},
+        {"id": 2, "versao": "F 800 GS Adventure", "imagem": ""}
+    ], 
+    "code": 200
+}

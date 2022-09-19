@@ -1,0 +1,9 @@
+{
+    "status": "success", 
+    "data": [
+        {"id": 1, "cidade": "Belo Horizonte"},
+        {"id": 2, "cidade": "Uberlândia"},
+        {"id": 3, "cidade": "Ipatinga"}
+    ], 
+    "code": 200
+}

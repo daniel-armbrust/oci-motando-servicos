@@ -1,0 +1,9 @@
+{
+    "status": "success", 
+    "data": [
+        {"id": 1, "cidade": "Sorocaba"}, 
+        {"id": 2, "cidade": "Piedade"}, 
+        {"id": 3, "cidade": "Ibiúna"}
+    ], 
+    "code": 200
+}

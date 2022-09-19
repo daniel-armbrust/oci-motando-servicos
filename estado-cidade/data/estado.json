@@ -1,0 +1,9 @@
+{
+    "status": "success", 
+    "data": [
+        {"id": 1, "estado": "São Paulo", "sigla": "SP"}, 
+        {"id": 2, "estado": "Minas Gerais", "sigla": "MG"}, 
+        {"id": 3, "estado": "Espírito Santo", "sigla": "ES"}
+    ], 
+    "code": 200
+}

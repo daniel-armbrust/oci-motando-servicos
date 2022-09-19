@@ -1,0 +1,26 @@
+{
+    "status": "success", 
+    "data": [
+        {"id": 1, "modelo": "C 600 Sport", "imagem": ""},
+        {"id": 2, "modelo": "C 650 GT", "imagem": ""},
+        {"id": 3, "modelo": "C1", "imagem": ""},
+        {"id": 4, "modelo": "F 650", "imagem": ""},
+        {"id": 5, "modelo": "F 650 CS", "imagem": ""},
+        {"id": 6, "modelo": "F 650 GS", "imagem": ""},
+        {"id": 7, "modelo": "F 700 GS", "imagem": ""},
+        {"id": 8, "modelo": "F 750 GS", "imagem": ""},
+        {"id": 9, "modelo": "F 800 GS", "imagem": ""},
+        {"id": 10, "modelo": "F 800 R", "imagem": ""},
+        {"id": 11, "modelo": "F 800 S", "imagem": ""},
+        {"id": 12, "modelo": "F 850 GS", "imagem": ""},
+        {"id": 13, "modelo": "G 310 GS", "imagem": ""},
+        {"id": 14, "modelo": "G 310 R", "imagem": ""},
+        {"id": 15, "modelo": "G 450 X", "imagem": ""},
+        {"id": 16, "modelo": "G 650 GS", "imagem": ""},
+        {"id": 17, "modelo": "G 650 X", "imagem": ""},
+        {"id": 18, "modelo": "K 1", "imagem": ""},
+        {"id": 19, "modelo": "K 100", "imagem": ""},
+        {"id": 20, "modelo": "S 1000 XR", "imagem": ""}
+    ], 
+    "code": 200
+}

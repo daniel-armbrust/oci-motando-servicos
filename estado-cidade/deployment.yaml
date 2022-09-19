@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: motando-estado-cidade
+  labels:
+    api: estado-cidade    
+    rel: beta
+    ver: "20220304"
+    env: prod       
+spec:
+  containers:
+  - name: est-cid-crt
+    image: gru.ocir.io/idreywyoj0pu/motando-api-estado_cidade:latest
+    ports:
+      - containerPort: 5000
+        name: est-cid-port
+    env:
+        - name: MOTANDO_BUCKET_NAME
+          value: "motando_estado_cidade"
+    envFrom:
+        - prefix: MOTANDO_
+          configMapRef:
+              name: motando-config
+  imagePullSecrets:
+       - name: motando-secret

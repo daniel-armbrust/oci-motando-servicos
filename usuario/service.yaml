@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: motando-usuario-svc
+spec:
+  selector:
+    api: usuario    
+    rel: beta
+    ver: "20220304"
+    env: prod        
+  ports:
+    - port: 5000
+      targetPort: usuario-port
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: usuario-ing
+  annotations:
+    kubernetes.io/ingress.class: "nginx"    
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:  
+  rules:
+  - http:
+      paths:
+        - path: /usuario/particular
+          pathType: Prefix
+          backend:
+            service:
+              name: motando-usuario-svc
+              port:
+                number: 5000

@@ -1,0 +1,411 @@
+{% extends "__base.html" %}
+{% block title %} Home {% endblock %}
+{% block head %}
+   {{ super() }}   
+   <link rel="stylesheet" href="{{ url_for('static', filename='vendor/owlcarousel/owl.carousel.min.css') }}">
+   <link rel="stylesheet" href="{{ url_for('static', filename='vendor/owlcarousel/owl.theme.default.min.css') }}">
+{% endblock %}
+{% block body %}
+   {{ super() }} 
+   <section id="id_section_bike_search">
+        <div class="container">
+
+                <div class="row">
+                    <div class="col-3 d-flex justify-content-start">
+                        <a href="{{ url_for('home') }}">
+                            <img src="{{ url_for('static', filename='img/motando_logo-402x150.png') }}" class="img-fluid" alt="Motando">
+                        </a>
+                    </div>         
+                    <div class="col-9 d-flex justify-content-end">
+                    <img src="{{ url_for('static', filename='img/banner-2.jpg') }}" class="img-fluid" alt="Banner 2">
+                    </div>
+                </div>    
+
+                <br>
+
+                <form class="form-encontre-sua-moto " id="id_form_desktop_bike_search">
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center" style="color: white; border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: #4E27B8;">
+                            <h2 class="h5 fw-bold p-2" style="color: white; border-top-left-radius: 5px; border-top-right-radius: 5px; background-color: #4E27B8;">Encontre sua moto</h2>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 pt-2 purple-border-left">
+                            <label for="id_select_moto_marca" class="small text-primary">Marca:</label>
+                            <select class="form-control" id="id_select_moto_marca" name="moto_marca" disabled>
+                                <option value="" id="id_option_moto_marca_empty" selected="selected">Selecione a Marca</option>                          
+                            </select>
+                        </div>
+                        <div class="col-3 pt-2">
+                            <label for="id_select_moto_modelo" class="small text-primary">Modelo:</label>
+                            <select class="form-control" id="id_select_moto_modelo" name="moto_modelo" disabled>
+                                <option id="id_option_moto_modelo_empty" selected="selected" value="">Selecione o Modelo</option>
+                            </select>
+                        </div>
+                        <div class="col-3 pt-2">
+                            <label for="id_select_brasil_estado" class="small text-primary">Estado:</label>
+                            <select class="form-control" id="id_select_brasil_estado" name="brasil_estado" disabled>
+                                <option id="id_option_brasil_estado_empty" selected="selected" value="">Selecione o Estado</option>
+                            </select>
+                        </div>
+                        <div class="col-3 pt-2 purple-border-right">
+                            <label for="id_select_brasil_cidade" class="small text-primary">Cidade:</label>
+                            <select class="form-control" id="id_select_brasil_cidade" name="brasil_cidade" disabled>
+                                <option id="id_option_brasil_cidade_empty" selected="selected" value="">Selecione a Cidade</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 pt-2 purple-border-left">
+                            <label for="id_select_moto_modelo_versao" class="small text-primary">Versão:</label>
+                            <select class="form-control" id="id_select_moto_modelo_versao" name="moto_versao" disabled>
+                                <option id="id_option_moto_modelo_versao_empty" selected="selected" value="">Selecione a Versão</option>
+                            </select>
+                        </div>
+                        <div class="col-1 pt-2">
+                            <label for="id_input_ano_de" class="small text-primary"> Ano: </label>
+                            <input type="text" class="form-control" id="id_input_ano_de" name="ano_de" placeholder="de">
+                        </div>
+                        <div class="col-1 pt-2">
+                            <label for="id_input_ano_ate" class="small text-primary"> &nbsp; </label>
+                            <input type="text" class="form-control" id="id_input_ano_ate" name="ano_ate" placeholder="até">
+                        </div>
+                        <div class="col-2 pt-2">
+                            <label for="id_input_preco_de" class="small text-primary"> Preço: </label>
+                            <input type="text" class="form-control" id="id_input_preco_de" name="preco_de" placeholder="de">
+                        </div>
+                        <div class="col-2 pt-2 purple-border-right">
+                            <label for="id_form_preco_ate" class="small text-primary"> &nbsp; </label>
+                            <input type="text" class="form-control" id="id_form_preco_ate" name="preco_ate" placeholder="até">
+                        </div>
+                    </div>  
+                    <div class="row">                   
+                        <div class="col-2 pt-4 purple-border-left">                        
+                            <div class="custom-control custom-checkbox ml-3">
+                                <input type="checkbox" class="custom-control-input" id="id_checkbox_moto_nova" name="moto_nova">
+                                <label class="custom-control-label" for="id_checkbox_moto_nova">&nbsp; Novas</label>
+                            </div>
+                            <div class="custom-control custom-checkbox ml-3">
+                                <input type="checkbox" class="custom-control-input" id="id_checkbox_moto_usada" name="moto_usada">
+                                <label class="custom-control-label" for="id_checkbox_moto_usada">&nbsp; Usadas</label>
+                            </div>
+                        </div>
+                        <div class="col-4 pt-4">
+                            <div class="custom-control custom-checkbox form-check form-check-inline">
+                                <input type="checkbox" class="custom-control-input" id="id_checkbox_lojas" name="moto_loja">
+                                <label class="custom-control-label" for="id_checkbox_lojas">&nbsp; Somente anúncios de lojas</label>
+                            </div>                                              
+                            <div class="custom-control custom-checkbox form-check form-check-inline">
+                                <input type="checkbox" class="custom-control-input" id="id_checkbox_particular" name="moto_particular">
+                                <label class="custom-control-label" for="id_checkbox_particular">&nbsp; Somente anúncios de particular</label>
+                            </div>                           
+                        </div>  
+                        <div class="col d-flex justify-content-center pt-4 purple-border-right">
+                            <button type="submit" class="btn btn-success btn-block btn-lg"> 
+                                <i class="fas fa-search"></i>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Buscar moto&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            </button>
+                        </div>               
+                    </div>
+                    <div class="row">                       
+                        <div class="col-2 pt-2 purple-border-left">
+                            <a href="#" class="text-decoration-none">
+                                <i class="fas fa-trash-alt"></i>
+                                &nbsp;Limpar filtros
+                            </a>
+                        </div>
+                        <div class="col-4 pt-2"></div>              
+                        <div class="col d-flex justify-content-center pt-2 purple-border-right">
+                            <a href="#" class="h5 fw-bold">
+                                Busca Avançada
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row" style="background-color: white; ">
+                        <div class="col-12 d-flex justify-content-center pb-3" style="border-right: 1px solid #4E27B8; border-left: 1px solid #4E27B8; border-bottom: 1px solid #4E27B8; color: white; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">                            
+                        </div>
+                    </div>           
+                </form>                           
+        </div>
+    </section>
+
+    <section id="id_section_top_ofertas">
+        <div class="container">
+            <div class="row pt-4">
+                <div class="col">
+                    <img src="{{ url_for('static', filename='img/star_icon-150x143.png') }}" class="img-fluid float-start" alt="TOP OFERTAS" width="34">                
+                    <h3 class="h4 fw-bold text-uppercase text-info"> &nbsp;TOP OFERTAS </h3>
+                </div>
+            </div>
+            <div class="row pt-4">
+                <div class="col-12">
+                    <div id="id_owl_carousel_top_ofertas" class="owl-carousel owl-theme text-center">
+                        <div class="motando-carousel-box p-2">
+                            <a class="text-decoration-none" href="#">
+                                <div class="item">
+                                    <p class="text-uppercase fw-bold pt-3"> Duas Rodas Officer </p>                                    
+                                    <img src="{{ url_for('static', filename='img/moto-foto-1.jpg') }}" class="img-fluid rounded">                        
+                                    <p class="text-uppercase fw-bold pt-4"> Honda PCX 150 </p>
+                                    <h4 class="h5 text-capitalize text-secondary"><del> De: R$10.846,77 </del></h4>
+                                    <h4 class="h4 text-capitalize text-primary"> Por: <b>R$9.122,00 </b></h4>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="motando-carousel-box p-2">
+                            <a class="text-decoration-none" href="#">
+                                <div class="item">
+                                    <p class="text-uppercase fw-bold pt-3"> WR Motos </p>
+                                    <img src="{{ url_for('static', filename='img/moto-foto-2.jpg') }}" class="img-fluid rounded">                        
+                                    <p class="text-uppercase fw-bold pt-4"> BMW GS 1200 </p>
+                                    <h4 class="h5 text-capitalize text-secondary"><del> De: R$22.775,58 </del></h4>
+                                    <h4 class="h4 text-capitalize text-primary"> Por: <b>R$21.772,10 </b></h4>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="motando-carousel-box p-2">
+                            <a class="text-decoration-none" href="#">
+                                <div class="item">
+                                    <p class="text-uppercase fw-bold pt-3"> Sapico Motos </p>
+                                    <img src="{{ url_for('static', filename='img/moto-foto-3.jpg') }}" class="img-fluid rounded">
+                                    <p class="text-uppercase fw-bold pt-4"> BMW 1000 RR </p>
+                                    <h4 class="h5 text-capitalize text-secondary"><del> De: R$77.998,84 </del></h4>
+                                    <h4 class="h4 text-capitalize text-primary"> Por: <b>R$65.878,00 </b></h4>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="motando-carousel-box p-2">
+                            <a class="text-decoration-none" href="#">
+                                <div class="item">
+                                    <p class="text-uppercase fw-bold pt-3"> WWW Motos </p>
+                                    <img src="{{ url_for('static', filename='img/moto-foto-4.jpg') }}" class="img-fluid rounded">
+                                    <p class="text-uppercase fw-bold pt-4"> Triumph Boneville </p>
+                                    <h4 class="h5 text-capitalize text-secondary"><del> De: R$55.987,84 </del></h4>
+                                    <h4 class="h4 text-capitalize text-primary"> Por: <b>R$44.555,10 </b></h4>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="motando-carousel-box p-2">
+                            <a class="text-decoration-none" href="#">
+                                <div class="item">
+                                    <p class="text-uppercase fw-bold pt-3"> Meu Pau Motos </p>
+                                    <img src="{{ url_for('static', filename='img/moto-foto-5.jpg') }}" class="img-fluid rounded">
+                                    <p class="text-uppercase fw-bold pt-4"> BMW GS 600 </p>    
+                                    <h4 class="h5 text-capitalize text-secondary"><del> De: R$21.987,84 </del></h4>
+                                    <h4 class="h4 text-capitalize text-primary"> Por: <b>R$20.555,10 </b></h4>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="motando-carousel-box p-2">
+                            <a class="text-decoration-none" href="#">
+                                <div class="item">
+                                    <p class="text-uppercase fw-bold pt-3"> Let`s Go Motos </p>
+                                    <img src="{{ url_for('static', filename='img/moto-foto-6.jpg') }}" class="img-fluid rounded">
+                                    <p class="text-uppercase fw-bold pt-4"> Honda CG 125 </p>
+                                    <h4 class="h5 text-capitalize text-secondary"><del> De: R$3.517,84 </del></h4>
+                                    <h4 class="h4 text-capitalize text-primary"> Por: <b>R$3.100,10 </b></h4>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="motando-carousel-box p-2">
+                            <a class="text-decoration-none" href="#">
+                                <div class="item">
+                                    <p class="text-uppercase fw-bold pt-3"> WR Motos </p>
+                                    <img src="{{ url_for('static', filename='img/moto-foto-7.jpg') }}" class="img-fluid rounded">
+                                    <p class="text-uppercase fw-bold pt-4"> Honda CG 125 </p>         
+                                    <h4 class="h5 text-capitalize text-secondary"><del> De: R$3.517,84 </del></h4>
+                                    <h4 class="h4 text-capitalize text-primary"> Por: <b>R$3.100,10 </b></h4>               
+                                </div>
+                            </a> 
+                        </div>
+                        <div class="motando-carousel-box p-2">
+                            <a class="text-decoration-none" href="#">
+                                <div class="item">
+                                    <p class="text-uppercase fw-bold pt-3"> WR Motos </p>
+                                    <img src="{{ url_for('static', filename='img/moto-foto-8.jpg') }}" class="img-fluid rounded">
+                                    <p class="text-uppercase fw-bold pt-4"> Honda NX 150 </p>   
+                                    <h4 class="h5 text-capitalize text-secondary"><del> De: R$1.747,84 </del></h4>
+                                    <h4 class="h4 text-capitalize text-primary"> Por: <b>R$1.100,10 </b></h4>                     
+                                </div>
+                            </a>
+                        </div>
+                        <div class="motando-carousel-box p-2">
+                            <a class="text-decoration-none" href="#">
+                                <div class="item">
+                                    <p class="text-uppercase fw-bold pt-3"> WR Motos </p>
+                                    <img src="{{ url_for('static', filename='img/moto-foto-9.jpg') }}" class="img-fluid rounded">
+                                    <p class="text-uppercase fw-bold pt-4"> Honda Hornet 600 </p>            
+                                    <h4 class="h5 text-capitalize text-secondary"><del> De: R$24.680,00 </del></h4>
+                                    <h4 class="h4 text-capitalize text-primary"> Por: <b>R$22.500,00 </b></h4>                 
+                                </div>
+                            </a>
+                        </div>
+                        <div class="motando-carousel-box p-2">
+                            <a class="text-decoration-none" href="#">
+                                <div class="item">
+                                    <p class="text-uppercase fw-bold pt-3"> Target Race </p>
+                                    <img src="{{ url_for('static', filename='img/moto-foto-10.jpg') }}" class="img-fluid rounded"> 
+                                    <p class="text-uppercase fw-bold pt-4"> Honda 1000 </p>               
+                                    <h4 class="h5 text-capitalize text-secondary"><del> De: R$55.980,00 </del></h4>
+                                    <h4 class="h4 text-capitalize text-primary"> Por: <b>R$51.000,00 </b></h4>              
+                                </div>
+                            </a>
+                        </div>
+                        <div class="motando-carousel-box p-2">
+                            <a class="text-decoration-none" href="#">
+                                <div class="item">
+                                    <p class="text-uppercase fw-bold pt-3"> Brutales </p>
+                                    <img src="{{ url_for('static', filename='img/moto-foto-11.jpg') }}" class="img-fluid rounded">
+                                    <p class="text-uppercase fw-bold pt-4"> Yamaha Fazer 150 </p>            
+                                    <h4 class="h5 text-capitalize text-secondary"><del> De: R$6.000,00 </del></h4>
+                                    <h4 class="h4 text-capitalize text-primary"> Por: <b>R$5.000,00 </b></h4>                 
+                                </div>
+                            </a>
+                        </div>
+                        <div class="motando-carousel-box p-2">
+                            <a class="text-decoration-none" href="#">
+                                <div class="item">
+                                    <p class="text-uppercase fw-bold pt-3"> Los Hermanos </p>
+                                    <img src="{{ url_for('static', filename='img/moto-foto-12.jpg') }}" class="img-fluid rounded">
+                                    <p class="text-uppercase fw-bold pt-4"> Yamaha MT-09 </p>               
+                                    <h4 class="h5 text-capitalize text-secondary"><del> De: R$38.480,00 </del></h4>
+                                    <h4 class="h4 text-capitalize text-primary"> Por: <b>R$37.280,00 </b></h4>              
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>  
+
+    <section id="id_section_noticias">
+        <div class="container">
+            <div class="row pt-4">
+                <div class="col">
+                    <img src="{{ url_for('static', filename='img/star_icon-150x143.png') }}" class="img-fluid float-start" alt="Notícias" width="34">     
+                    <h3 class="h4 fw-bold text-uppercase text-info"> &nbsp;Notícias </h3>                                    
+                </div>
+            </div>
+            <div class="row pt-4">
+                <div class="col-8">                    
+                    <div id="id_owl_carousel_noticias" class="owl-carousel owl-theme">
+                        <div class="item">
+                            <div class="owl_carousel-flex-container">
+                                <div>
+                                    <a class="text-decoration-none" href="#">
+                                        <img src="{{ url_for('static', filename='img/noticia-1.jpg') }}" class="img-fluid rounded" 
+                                            alt="Yamaha XSR 155, retrô de baixa cilidranda, é revisada nas Filipinas">                                                        
+                                        <h4 class="h6 text-capitalize text-center pt-2 pb-2"> 
+                                        Yamaha XSR 155, retrô de baixa cilidranda, é revisada nas Filipinas 
+                                        </h4>
+                                    </a>
+                                </div>
+
+                                <div>
+                                    <a class="text-decoration-none" href="#">
+                                        <img src="{{ url_for('static', filename='img/noticia-2.jpg') }}" class="img-fluid rounded" 
+                                            alt="Langen Motorcycles revela moto 250cc com motor dois tempos">                                                        
+                                        <h4 class="h6 text-capitalize text-center pt-2 pb-2"> 
+                                            Langen Motorcycles revela moto 250cc com motor dois tempos 
+                                        </h4>  
+                                    </a>
+                                </div>                           
+                                
+                            </div>
+                            <div class="owl_carousel-flex-container">
+                                <div>
+                                    <a class="text-decoration-none" href="#">
+                                        <img src="{{ url_for('static', filename='img/noticia-3.jpg') }}" class="img-fluid rounded" 
+                                            alt="Yamaha Tracer 900 GT é customizada a pedido de cantor italiano">                                                        
+                                        <h4 class="h6 text-capitalize text-center pt-2 pb-2"> 
+                                            Yamaha Tracer 900 GT é customizada a pedido de cantor italiano 
+                                        </h4> 
+                                    </a>
+                                </div>
+
+                                <div>
+                                    <a class="text-decoration-none" href="#">
+                                        <img src="{{ url_for('static', filename='img/noticia-4.jpg') }}" class="img-fluid rounded" 
+                                            alt="Honda CB 400X ganha novas cores no Japão">                                                        
+                                        <h4 class="h6 text-capitalize text-center pt-2  pb-2"> 
+                                            Honda CB 400X ganha novas cores no Japão 
+                                        </h4>    
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div> <!-- owl-carousel: item -->
+
+                        <div class="item">
+                            <div class="owl_carousel-flex-container">
+
+                                <div>
+                                    <a class="text-decoration-none" href="#">
+                                        <img src="{{ url_for('static', filename='img/noticia-5.jpg') }}" class="img-fluid rounded" 
+                                            alt="Honda anuncia Pol Espargaró por dois anos e coloca Alex Márquez na LCR">                                                        
+                                        <h4 class="h6 text-capitalize text-center pt-2 pb-2"> 
+                                            Honda anuncia Pol Espargaró por dois anos e coloca Alex Márquez na LCR
+                                        </h4>
+                                    </a>
+                                </div>
+
+                                <div>
+                                    <a class="text-decoration-none" href="#">
+                                        <img src="{{ url_for('static', filename='img/noticia-6.jpg') }}" class="img-fluid rounded" 
+                                            alt="MXF Motors apresenta Ferinha 49cc Extreme 2021">                                                        
+                                        <h4 class="h6 text-capitalize text-center pt-2 pb-2"> 
+                                            MXF Motors apresenta Ferinha 49cc Extreme 2021
+                                        </h4>  
+                                    </a>
+                                </div>     
+
+                            </div>
+
+                            <div class="owl_carousel-flex-container">
+
+                                <div>
+                                    <a class="text-decoration-none" href="#">
+                                        <img src="{{ url_for('static', filename='img/noticia-7.jpg') }}" class="img-fluid rounded" 
+                                            alt="SRT Petronas estende contrato de Morbidelli por mais dois anos">                                                        
+                                        <h4 class="h6 text-capitalize text-center pt-2 pb-2"> 
+                                            SRT Petronas estende contrato de Morbidelli por mais dois anos
+                                        </h4>
+                                    </a>
+                                </div>
+
+                                <div>
+                                    <a class="text-decoration-none" href="#">
+                                        <img src="{{ url_for('static', filename='img/noticia-8.jpg') }}" class="img-fluid rounded" 
+                                            alt="Dia Mundial do Rock: quando música e motos se encontram">                                                        
+                                        <h4 class="h6 text-capitalize text-center pt-2 pb-2"> 
+                                            Dia Mundial do Rock: quando música e motos se encontram 
+                                        </h4>  
+                                    </a>
+                                </div>     
+
+                            </div>
+
+                        </div> <!-- owl-carousel: item -->
+
+                    </div>
+
+                </div>
+                <div class="col-4 d-flex justify-content-center">
+                    <a class="text-decoration-none" href="#">
+                    <img src="{{ url_for('static', filename='img/banner-1.jpg') }}" class="img-fluid rounded" alt="Vender Moto" style="min-height: 500px;">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <br>
+{% endblock %}
+{% block footer %}
+   {% include "__footer.html" %}
+{% endblock %}
+{% block body_scripts %}
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/owlcarousel/owl.carousel.min.js') }}"></script>    
+    <script type="text/javascript" src="{{ url_for('static', filename='js/ajax-functions.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/home.js') }}"></script>   
+{% endblock %}

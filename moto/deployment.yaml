@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: motando-moto
+  labels:
+    api: moto    
+    rel: beta
+    ver: "20220304"
+    env: prod    
+spec:
+  containers:
+  - name: moto-crt
+    image: gru.ocir.io/idreywyoj0pu/motando-api-moto:latest
+    ports:
+      - containerPort: 5000
+        name: moto-port
+    env:
+        - name: MOTANDO_BUCKET_NAME
+          value: motando_moto
+    envFrom:
+        - prefix: MOTANDO_
+          configMapRef:
+              name: motando-config
+  imagePullSecrets:
+       - name: motando-secret

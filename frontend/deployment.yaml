@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: motando-frontend
+  labels:    
+    app: motando-frontend
+    rel: beta
+    ver: "1.0"
+spec:
+  containers:
+  - name: motando-nginx-ctr
+    image: gru.ocir.io/idreywyoj0pu/motando-nginx:latest
+    ports:
+      - containerPort: 80
+        name: nginx-port 
+  - name: motando-frontend-ctr
+    image: gru.ocir.io/idreywyoj0pu/motando-frontend:latest    
+    ports:
+      - containerPort: 5000
+        name: frontend-port    
+    env:
+        - name: MOTANDO_AUTH_COOKIE_NAME
+          value: XxMotandoXxAuth
+        - name: MOTANDO_NOSQL_SESSION_TABLE_NAME
+          value: motando_sessao  
+    envFrom:
+        - prefix: MOTANDO_
+          configMapRef:
+              name: motando-config
+  imagePullSecrets:
+       - name: motando-secret

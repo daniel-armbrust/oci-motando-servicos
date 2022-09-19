@@ -1,0 +1,20 @@
+{
+    "status": "success",
+    "data": [
+        {"id": 1, "marca": "BMW", "marca_popular": true, "imagem": ""},
+        {"id": 2, "marca": "Dafra", "marca_popular": true, "imagem": ""},
+        {"id": 3, "marca": "Ducati", "marca_popular": true, "imagem": ""},
+        {"id": 4, "marca": "Harley-Davidson", "marca_popular": true, "imagem": ""},
+        {"id": 5, "marca": "Honda", "marca_popular": true, "imagem": ""},
+        {"id": 6, "marca": "Indian", "marca_popular": true, "imagem": ""},
+        {"id": 7, "marca": "Kawasaki", "marca_popular": true, "imagem": ""},
+        {"id": 8, "marca": "KTM", "marca_popular": true, "imagem": ""},
+        {"id": 9, "marca": "Royal Enfield", "marca_popular": true, "imagem": ""},
+        {"id": 10, "marca": "Suzuki", "marca_popular": true, "imagem": ""},
+        {"id": 11, "marca": "Triumph", "marca_popular": true, "imagem": ""},
+        {"id": 12, "marca": "Yamaha", "marca_popular": true, "imagem": ""},
+        {"id": 13, "marca": "Gloov", "marca_popular": false, "imagem": ""},
+        {"id": 14, "marca": "Bimota", "marca_popular": false, "imagem": ""}
+    ],
+    "code": 200
+}

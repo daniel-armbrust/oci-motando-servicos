@@ -1,0 +1,241 @@
+{   
+  "routes": [     
+      {
+        "path": "/brasil/estado",
+        "methods": ["GET"],
+        "backend": {
+            "type": "HTTP_BACKEND",
+            "url": "http://api.ocibook.local/brasil/estado",
+            "isSslVerifyDisabled": true,
+            "connectTimeoutInSeconds": 60,            
+            "readTimeoutInSeconds": 10,
+            "sendTimeoutInSeconds": 10
+        },
+        "requestPolicies": {
+          "cors": {
+             "allowedOrigins": ["https://motando.ocibook.com.br"],
+             "allowedMethods": ["GET"]
+          }
+        }
+      },
+      {
+        "path": "/brasil/estado/{estado_id}",
+        "methods": ["GET"],
+        "backend": {
+            "type": "HTTP_BACKEND",
+            "url": "http://api.ocibook.local/brasil/estado/${request.path[estado_id]}",
+            "isSslVerifyDisabled": true,
+            "connectTimeoutInSeconds": 60,            
+            "readTimeoutInSeconds": 10,
+            "sendTimeoutInSeconds": 10
+        },
+        "requestPolicies": {
+          "cors": {
+             "allowedOrigins": ["https://motando.ocibook.com.br"],
+             "allowedMethods": ["GET"]
+          }
+        }
+      },
+      {
+        "path": "/brasil/estado/{estado_id}/cidade",
+        "methods": ["GET"],
+        "backend": {
+            "type": "HTTP_BACKEND",
+            "url": "http://api.ocibook.local/brasil/estado/${request.path[estado_id]}/cidade",
+            "isSslVerifyDisabled": true,
+            "connectTimeoutInSeconds": 60,            
+            "readTimeoutInSeconds": 10,
+            "sendTimeoutInSeconds": 10
+        },
+        "requestPolicies": {
+          "cors": {
+             "allowedOrigins": ["https://motando.ocibook.com.br"],
+             "allowedMethods": ["GET"]
+          }
+        }
+      },
+      {
+        "path": "/brasil/estado/{estado_id}/cidade/{cidade_id}",
+        "methods": ["GET"],
+        "backend": {
+             "type": "HTTP_BACKEND",
+             "url": "http://api.ocibook.local/brasil/estado/${request.path[estado_id]}/cidade/${request.path[cidade_id]}",
+             "isSslVerifyDisabled": true,
+             "connectTimeoutInSeconds": 60,            
+             "readTimeoutInSeconds": 10,
+             "sendTimeoutInSeconds": 10
+        },
+        "requestPolicies": {
+          "cors": {
+             "allowedOrigins": ["https://motando.ocibook.com.br"],
+             "allowedMethods": ["GET"]
+          }
+        }
+      },
+      {
+        "path": "/moto/marca",
+        "methods": ["GET"],
+        "backend": {
+             "type": "HTTP_BACKEND",
+             "url": "http://api.ocibook.local/moto/marca",
+             "isSslVerifyDisabled": true,
+             "connectTimeoutInSeconds": 60,            
+             "readTimeoutInSeconds": 10,
+             "sendTimeoutInSeconds": 10
+        },
+        "requestPolicies": {
+          "cors": {
+             "allowedOrigins": ["https://motando.ocibook.com.br"],
+             "allowedMethods": ["GET"]
+          }
+        }
+      },
+      {
+         "path": "/moto/marca/{marca_id}",
+         "methods": ["GET"],
+         "backend": {
+              "type": "HTTP_BACKEND",
+              "url": "http://api.ocibook.local/moto/marca/${request.path[marca_id]}",
+              "isSslVerifyDisabled": true,
+              "connectTimeoutInSeconds": 60,            
+              "readTimeoutInSeconds": 10,
+              "sendTimeoutInSeconds": 10
+         },
+         "requestPolicies": {
+           "cors": {
+              "allowedOrigins": ["https://motando.ocibook.com.br"],
+              "allowedMethods": ["GET"]
+           }
+         }
+      },
+      {
+         "path": "/moto/marca/{marca_id}/modelo",
+         "methods": ["GET"],
+         "backend": {
+              "type": "HTTP_BACKEND",
+              "url": "http://api.ocibook.local/moto/marca/${request.path[marca_id]}/modelo",
+              "isSslVerifyDisabled": true,
+              "connectTimeoutInSeconds": 60,            
+              "readTimeoutInSeconds": 10,
+              "sendTimeoutInSeconds": 10
+         },
+         "requestPolicies": {
+           "cors": {
+              "allowedOrigins": ["https://motando.ocibook.com.br"],
+              "allowedMethods": ["GET"]
+           }
+         }
+      },
+      {
+         "path": "/moto/marca/{marca_id}/modelo/{modelo_id}",
+         "methods": ["GET"],
+         "backend": {
+              "type": "HTTP_BACKEND",
+              "url": "http://api.ocibook.local/moto/marca/${request.path[marca_id]}/modelo/${request.path[modelo_id]}",
+              "isSslVerifyDisabled": true,
+              "connectTimeoutInSeconds": 60,            
+              "readTimeoutInSeconds": 10,
+              "sendTimeoutInSeconds": 10
+         },
+         "requestPolicies": {
+           "cors": {
+              "allowedOrigins": ["https://motando.ocibook.com.br"],
+              "allowedMethods": ["GET"]
+           }
+         }
+      },
+      {
+         "path": "/moto/marca/{marca_id}/modelo/{modelo_id}/versao",
+         "methods": ["GET"],
+         "backend": {
+              "type": "HTTP_BACKEND",
+              "url": "http://api.ocibook.local/moto/marca/${request.path[marca_id]}/modelo/${request.path[modelo_id]}/versao",
+              "isSslVerifyDisabled": true,
+              "connectTimeoutInSeconds": 60,            
+              "readTimeoutInSeconds": 10,
+              "sendTimeoutInSeconds": 10
+         },
+         "requestPolicies": {
+           "cors": {
+              "allowedOrigins": ["https://motando.ocibook.com.br"],
+              "allowedMethods": ["GET"]
+           }
+         }
+      },
+      {
+         "path": "/moto/marca/{marca_id}/modelo/{modelo_id}/versao/{versao_id}",
+         "methods": ["GET"],
+         "backend": {
+              "type": "HTTP_BACKEND",
+              "url": "http://api.ocibook.local/moto/marca/${request.path[marca_id]}/modelo/${request.path[modelo_id]}/versao/${request.path[versao_id]}",
+              "isSslVerifyDisabled": true,
+              "connectTimeoutInSeconds": 60,            
+              "readTimeoutInSeconds": 10,
+              "sendTimeoutInSeconds": 10
+         },
+         "requestPolicies": {
+           "cors": {
+              "allowedOrigins": ["https://motando.ocibook.com.br"],
+              "allowedMethods": ["GET"]
+           }
+         }
+      },
+      {
+        "path": "/usuario/particular",
+        "methods": ["POST"],
+        "backend": {
+             "type": "HTTP_BACKEND",
+             "url": "http://api.ocibook.local/usuario/particular",
+             "isSslVerifyDisabled": true,
+             "connectTimeoutInSeconds": 60,            
+             "readTimeoutInSeconds": 10,
+             "sendTimeoutInSeconds": 10
+        },
+        "requestPolicies": {
+          "cors": {
+             "allowedOrigins": ["https://motando.ocibook.com.br"],
+             "allowedMethods": ["POST"],
+             "allowedHeaders": ["content-type", "X-CSRF-Token"]
+          }
+        }
+      },
+      {
+        "path": "/login",
+        "methods": ["POST"],
+        "backend": {
+             "type": "HTTP_BACKEND",
+             "url": "http://api.ocibook.local/login",
+             "isSslVerifyDisabled": true,
+             "connectTimeoutInSeconds": 60,            
+             "readTimeoutInSeconds": 10,
+             "sendTimeoutInSeconds": 10
+        },
+        "requestPolicies": {
+          "cors": {
+             "allowedOrigins": ["https://motando.ocibook.com.br"],
+             "allowedMethods": ["POST"],
+             "allowedHeaders": ["content-type", "X-CSRF-Token"]
+          }
+        }
+      },
+      {
+        "path": "/logout",
+        "methods": ["POST"],
+        "backend": {
+             "type": "HTTP_BACKEND",
+             "url": "http://api.ocibook.local/logout",
+             "isSslVerifyDisabled": true,
+             "connectTimeoutInSeconds": 60,            
+             "readTimeoutInSeconds": 10,
+             "sendTimeoutInSeconds": 10
+        },
+        "requestPolicies": {
+          "cors": {
+             "allowedOrigins": ["https://motando.ocibook.com.br"],
+             "allowedMethods": ["POST"],
+             "allowedHeaders": ["content-type", "X-CSRF-Token"]
+          }
+        }
+      }
+  ]
+}
