@@ -8,7 +8,7 @@ from flask import Flask, flash as flask_flash, render_template
 from flask import request, make_response, url_for, redirect, session
 from flask_wtf.csrf import CSRFProtect, CSRFError
 
-from modules.motando_forms import LoginForm
+from modules.motando_forms import LoginForm, CadastroUsuarioParticularForm
 from modules.motando_authcookie import MotandoAuthCookie
 from modules.motando_usuario import UsuarioParticular
 from modules import motando_utils
@@ -104,13 +104,41 @@ def logout():
 
 
 @app.route('/novo/particular-lojista', methods=['GET'])
-def usuario_particular_logista():
+def usuario_particular_logista():    
     return render_template('usuario_particular_logista.html')
 
 
-@app.route('/form/particular', methods=['GET'])
+@app.route('/form/particular', methods=['GET', 'POST'])
 def form_particular():
-    return render_template('form_particular.html')
+    """Formulário para cadastro de um Novo Usuário Particular.
+    
+    """
+    form = CadastroUsuarioParticularForm()
+
+    if request.method == 'POST':
+        brasil_estado_id = form.data.get('brasil_estado')
+        brasil_cidade_id = form.data.get('brasil_cidade')
+
+        form.brasil_estado.choices = [(brasil_estado_id, brasil_estado_id,)]
+        form.brasil_cidade.choices = [(brasil_cidade_id, brasil_cidade_id,)]
+
+        if form.validate_on_submit():            
+            usuario_particular = UsuarioParticular()
+            resp = usuario_particular.add(form.data)
+
+            resp_code = resp.get('code')
+
+            if resp_code == 201:
+                return redirect(url_for('confirm'))      
+            elif resp_code == 409:
+                flask_flash(u'Erro ao realizar o novo cadastro. O e-mail informado já existe.', 'error')
+            else:
+                flask_flash(u'Erro ao realizar o novo cadastro. Por favor, tente novamente mais tarde.', 'error')
+            
+        else:
+            flask_flash(u'Erro ao cadastrar novos dados. Por favor, corrigir os dados do formuládio.', 'error')
+
+    return render_template('form_particular.html', form=form)
 
 
 @app.route('/form/lojista', methods=['GET'])

@@ -57,12 +57,7 @@ async def new_usuario_particular(data: UsuarioParticularModel) -> dict:
     
     """
     usuario_particular = UsuarioParticular()
-    added = usuario_particular.add(data)
-
-    if added:
-        resp = {'status': 'success', 'message': 'Novo usuário criado com sucesso.', 'code': 201}
-    else:
-        resp = {'status': 'error', 'message': 'Erro interno do servidor.', 'code': 500}
+    resp = usuario_particular.add(data)
 
     return JSONResponse(content=resp, status_code=resp.get('code'))
 

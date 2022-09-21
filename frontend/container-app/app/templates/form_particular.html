@@ -16,7 +16,7 @@
     </section>
     <br>
     <section>
-        <div class="container">           
+        <div class="container">                       
             <div class="row">
                 <div class="col">
                     <p class="text-center fw-bold fs-5"> 
@@ -25,120 +25,146 @@
                     </p>
                 </div>
             </div>
+            {% include "__flash_messages.html" %}
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-6">                        
                         <div class="shadow rounded bg-white border p-3">
-                        <form id="id_form" name="cadastro_particular" autocomplete="off" method="post" onsubmit="return submitCadastroParticular();">                            
-                            <input id="id_csrf_token" name="csrf_token" type="hidden" value="{{ csrf_token }}">
-                            <div class="row pt-2 p-2">
-                                <div class="col">
-                                    <label for="id_select_brasil_estado" class="form-label my-text-purple">Estado:</label>
-                                    <select class="form-control my-btn-outline" id="id_select_brasil_estado" 
-                                            name="brasil_estado" style="box-shadow: none;">
-                                        <option id="id_option_brasil_estado_empty" selected="selected" value="">Selecione o Estado</option>
-                                    </select> 
-                                    <div class="invalid-feedback">
-                                        É necessário selecionar um Estado.
-                                    </div>                                
-                                </div>
-                            </div>
-                            <div class="row pt-2 p-2">
-                                <div class="col">
-                                    <label for="id_select_brasil_cidade" class="form-label my-text-purple">Cidade:</label>
-                                    <select class="form-control my-btn-outline" id="id_select_brasil_cidade" 
-                                            name="brasil_cidade" style="box-shadow: none;">
-                                        <option id="id_option_brasil_cidade_empty" selected="selected" value="">Selecione a Cidade</option>
-                                    </select>    
-                                    <div class="invalid-feedback">
-                                        É necessário selecionar uma Cidade.
-                                    </div>                           
-                                </div>
-                            </div>
-                            <div class="row pt-2 p-2">
-                                <div class="col">                                   
-                                    <label for="id_input_nome" class="form-label my-text-purple">Nome:</label>
-                                    <input type="text" class="form-control my-btn-outline" id="id_input_nome" 
-                                        name="nome" style="box-shadow: none;">                                                                           
-                                    <div class="invalid-feedback">
-                                        É necessário informar o seu Nome completo.
-                                    </div>    
-                                </div>
-                            </div>                           
-                            <div class="row pt-2 p-2">
-                                <div class="col">                                   
-                                    <label for="id_input_email" class="form-label my-text-purple">E-mail:</label>
-                                    <input type="email" class="form-control my-btn-outline" id="id_input_email" 
-                                        name="email" style="box-shadow: none;">                                                                           
-                                    <div class="invalid-feedback">
-                                        É necessário informar um E-mail válido.
-                                    </div> 
-                                </div>
-                            </div>
-                            <div class="row pt-2 p-2">
-                                <div class="col">                                   
-                                    <label for="id_input_email_confirm" class="form-label my-text-purple">Confirme seu E-mail:</label>
-                                    <input type="email" class="form-control my-btn-outline" id="id_input_email_confirm" 
-                                        name="email_confirm" style="box-shadow: none;">                                                                           
-                                    <div class="invalid-feedback">
-                                        É necessário confirmar seu E-mail.
-                                    </div> 
-                                </div>
-                            </div>
-                            <div class="row pt-2 p-2">
-                                <div class="col">                                   
-                                    <label for="id_input_telefone" class="form-label my-text-purple">DDD + Telefone:</label>
-                                    <input type="text" class="form-control my-btn-outline" 
-                                        id="id_input_telefone" name="telefone" 
-                                        onkeypress="$(this).mask('(00) 00000-00009')"
-                                        style="box-shadow: none;">                                                                           
-                                    <div class="invalid-feedback">
-                                        É necessário informar um Telefone para contato válido.
-                                    </div> 
-                                </div>
-                            </div>
-                            <div class="row pt-2 p-2">
-                                <div class="col">                                   
-                                    <label for="id_input_senha" class="form-label my-text-purple">Senha:</label>
-                                    <input type="password" class="form-control my-btn-outline" 
-                                        id="id_input_senha" name="senha" style="box-shadow: none;">                                                                           
-                                    <div class="invalid-feedback">
-                                        É necessário informar uma Senha de no mínimo 8 caracteres.
-                                    </div> 
-                                </div>
-                            </div>
-                            <div class="row pt-2 p-2">
-                                <div class="col">                                   
-                                    <label for="id_input_senha_confirm" class="form-label my-text-purple">Confirme sua Senha:</label>
-                                    <input type="password" class="form-control my-btn-outline" 
-                                        id="id_input_senha_confirm" name="senha_confirm" style="box-shadow: none;">                                                                           
-                                    <div class="invalid-feedback">
-                                        É necessário confirmar sua Senha.
+                            <form id="id_cadastro_particular_form" name="cadastro_particular_form" autocomplete="off" method="post" action="{{ url_for('form_particular') }}">                            
+                                {{ form.csrf_token }} 
+                                <div class="row pt-2 p-2">
+                                    <div class="col">                                   
+                                        <label for="id_select_brasil_estado" class="form-label my-text-purple">Estado:</label>
+                                        {{ form.brasil_estado(class_="form-control my-btn-outline", id="id_select_brasil_estado", style_="box-shadow: none;") }}     
+                                        {% for brasil_estado_error in form.brasil_estado.errors %}                                
+                                            <div class="text-danger"> &nbsp;&bull; {{ brasil_estado_error }} </div>
+                                        {% endfor %}
+                                        <div class="invalid-feedback">
+                                            É necessário selecionar um Estado.
+                                        </div>                                
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row pt-4 p-2">
-                                <div class="col">                                   
-                                    <div class="d-grid gap-2 mx-auto"> 
-                                    <br>                   
-                                    <button type="submit" class="btn btn-success fw-bold btn-lg p-2">
-                                        Enviar
-                                    </button>
-                                    </div>                                                                               
+                                <div class="row pt-2 p-2">
+                                    <div class="col">
+                                        <label for="id_select_brasil_cidade" class="form-label my-text-purple">Cidade:</label>
+                                        {{ form.brasil_cidade(class_="form-control my-btn-outline", id="id_select_brasil_cidade", style_="box-shadow: none;") }}  
+                                        {% for brasil_cidade_error in form.brasil_cidade.errors %}                                
+                                            <div class="text-danger"> &nbsp;&bull; {{ brasil_cidade_error }} </div>
+                                        {% endfor %}                                   
+                                        <div class="invalid-feedback">
+                                            É necessário selecionar uma Cidade.
+                                        </div>                           
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row pt-3 p-2">
-                                <div class="col">                                   
-                                    <p class="text-center text-secondary"> 
-                                        Já possui cadastro? <a href="{{ url_for('login') }}" class="link-secondary text-underline-hover"> Faça o Login </a>
-                                    </p>                                                                  
+                                <div class="row pt-2 p-2">
+                                    <div class="col">                                   
+                                        <label for="id_input_nome" class="form-label my-text-purple">Nome:</label>
+                                        {{ form.nome(class_="form-control my-btn-outline", id="id_input_nome", style_="box-shadow: none;") }} 
+                                        {% for nome_error in form.nome.errors %}                                
+                                            <div class="text-danger"> &nbsp;&bull; {{ nome_error }} </div>
+                                        {% endfor %}                                                                                                                    
+                                        <div class="invalid-feedback">
+                                            É necessário informar o seu Nome completo.
+                                        </div>    
+                                    </div>
+                                </div>                           
+                                <div class="row pt-2 p-2">
+                                    <div class="col">                                   
+                                        <label for="id_input_email" class="form-label my-text-purple">E-mail:</label>
+                                        {{ form.email(class_="form-control my-btn-outline", id="id_input_email", style_="box-shadow: none;") }} 
+                                        {% for email_error in form.email.errors %}                                
+                                            <div class="text-danger"> &nbsp;&bull; {{ email_error }} </div>
+                                        {% endfor %}                                                                                                
+                                        <div class="invalid-feedback">
+                                            É necessário informar um E-mail válido.
+                                        </div> 
+                                    </div>
                                 </div>
-                            </div>
-                        </form>  
+                                <div class="row pt-2 p-2">
+                                    <div class="col">                                   
+                                        <label for="id_input_email_confirm" class="form-label my-text-purple">Confirme seu E-mail:</label>
+                                        {{ form.email_confirm(class_="form-control my-btn-outline", id="id_input_email_confirm", style_="box-shadow: none;") }}
+                                        {% for email_confirm_error in form.email_confirm.errors %}                                
+                                            <div class="text-danger"> &nbsp;&bull; {{ email_confirm_error }} </div>
+                                        {% endfor %}       
+                                        <div class="invalid-feedback">
+                                            É necessário confirmar seu E-mail.
+                                        </div> 
+                                    </div>
+                                </div>
+                                <div class="row pt-2 p-2">
+                                    <div class="col">                                   
+                                        <label for="id_input_telefone" class="form-label my-text-purple">DDD + Telefone:</label>
+                                        {{ form.telefone(class_="form-control my-btn-outline", id="id_input_telefone", style_="box-shadow: none;", onkeypress_="$(this).mask('(00) 00000-00009')") }}
+                                        {% for telefone_error in form.telefone.errors %}                                
+                                            <div class="text-danger"> &nbsp;&bull; {{ telefone_error }} </div>
+                                        {% endfor %}                                                     
+                                        <div class="invalid-feedback">
+                                            É necessário informar um Telefone para contato válido.
+                                        </div> 
+                                    </div>
+                                </div>
+                                <div class="row pt-2 p-2">
+                                    <div class="col">                                   
+                                        <label for="id_input_senha" class="form-label my-text-purple">Senha:</label>
+                                        {{ form.senha(class_="form-control my-btn-outline", id="id_input_senha", style_="box-shadow: none;") }}
+                                        {% for senha_error in form.senha.errors %}                                
+                                            <div class="text-danger"> &nbsp;&bull; {{ senha_error }} </div>
+                                        {% endfor %}                                                                       
+                                        <div class="invalid-feedback">
+                                            É necessário informar uma Senha de no mínimo 8 caracteres.
+                                        </div> 
+                                    </div>
+                                </div>
+                                <div class="row pt-2 p-2">
+                                    <div class="col">                                   
+                                        <label for="id_input_senha_confirm" class="form-label my-text-purple">Confirme sua Senha:</label>
+                                        {{ form.senha_confirm(class_="form-control my-btn-outline", id="id_input_senha_confirm", style_="box-shadow: none;") }}
+                                        {% for senha_confirm_error in form.senha_confirm.errors %}                                
+                                            <div class="text-danger"> &nbsp;&bull; {{ senha_confirm_error }} </div>
+                                        {% endfor %}                                                                                          
+                                        <div class="invalid-feedback">
+                                            É necessário confirmar sua Senha.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row pt-4 p-2">
+                                    <div class="col">                                   
+                                        <div class="d-grid gap-2 mx-auto"> 
+                                        <br>      
+                                        {{ form.submit(class_="btn btn-success fw-bold btn-lg p-2", id="id_submit") }}                                                
+                                        </div>                                                                               
+                                    </div>
+                                </div>
+                                <div class="row pt-3 p-2">
+                                    <div class="col">                                   
+                                        <p class="text-center text-secondary"> 
+                                            Já possui cadastro? <a href="{{ url_for('login') }}" class="link-secondary text-underline-hover"> Faça o Login </a>
+                                        </p>                                                                  
+                                    </div>
+                                </div>
+                            </form>  
                         </div>
                 </div>
                 <div class="col-3"></div>
-            </div>              
+            </div> 
+            <div class="modal fade" id="id_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" 
+                 aria-labelledby="id_static_backdrop_label" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="id_static_backdrop_label">Mensagem</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                       <p class="fw-bold" id="id_modal_message"></p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>              
+                    </div>
+                  </div>
+                </div>
+            </div>             
         </div>
     </section>
     <br>
@@ -153,5 +179,5 @@
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/jquery.mask.min.js') }}"></script>    
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/jquery.blockUI.min.js') }}"></script>    
     <script type="text/javascript" src="{{ url_for('static', filename='js/ajax-functions.js') }}"></script>        
-    <script type="text/javascript" src="{{ url_for('static', filename='js/cadastro.js') }}"></script>        
+    <script type="text/javascript" src="{{ url_for('static', filename='js/cadastro-particular.js') }}"></script>        
 {% endblock %}

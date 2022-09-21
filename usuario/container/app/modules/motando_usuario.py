@@ -16,11 +16,30 @@ NOSQL_TABLE_NAME = os.environ.get('MOTANDO_NOSQL_TABLE_NAME')
 
 
 class UsuarioParticular():
-    def add(self, data: UsuarioParticularModel) -> bool:
+    def __email_exists(self, email: str = None) -> bool:
+        """Verifica se o e-mail informado já foi cadastrado.        
+        
+        """
+        global NOSQL_TABLE_NAME
+
+        query = f'SELECT email FROM {NOSQL_TABLE_NAME} WHERE email = "{email}" LIMIT 1'
+
+        nosql = NoSQL()
+        result = nosql.query(query)
+
+        if len(result) > 0:
+            return True
+        else:
+            return False
+
+    def add(self, data: UsuarioParticularModel) -> dict:
         """Adiciona um novo usuário particular. 
         
         """
         global NOSQL_TABLE_NAME
+
+        if self.__email_exists(data.email):
+            return {'status': 'fail', 'message': 'O e-mail para cadastro já existe.', 'code': 409}
 
         estado_id = data.brasil_estado
         cidade_id = data.brasil_cidade
@@ -32,7 +51,7 @@ class UsuarioParticular():
         cidade_data = motando_utils.get_cidade(estado_id, cidade_id)
 
         if not estado_data or not cidade_data:
-            return False
+            return {'status': 'error', 'message': 'Erro interno do servidor.', 'code': 500}
         
         estado = estado_data[0]['estado']
         estado_sigla = estado_data[0]['sigla']
@@ -52,7 +71,10 @@ class UsuarioParticular():
         nosql = NoSQL()
         added = nosql.add(data=new_usuario.dict(), table_name=NOSQL_TABLE_NAME)
 
-        return added
+        if added:
+            return {'status': 'success', 'message': 'Usuário criado com sucesso.', 'code': 201}
+        else:
+            return {'status': 'error', 'message': 'Erro interno do servidor.', 'code': 500}
     
     def get_profile(self, email: str = None) -> dict:
         """Retorna dados do perfil do usuário.

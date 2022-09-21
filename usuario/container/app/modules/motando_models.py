@@ -20,7 +20,7 @@ NOSQL_TABLE_NAME = os.environ.get('MOTANDO_NOSQL_TABLE_NAME')
 class UsuarioParticularModel(BaseModel):
     """Classe para novo cadastro de um Usuário Particular.
     
-    """    
+    """
     brasil_estado: int
     brasil_cidade: int
     nome: str
@@ -28,13 +28,7 @@ class UsuarioParticularModel(BaseModel):
     email_confirm: EmailStr
     telefone: str = Field(..., exclude=True)
     senha: str = Field(..., exclude=True)
-    senha_confirm: str
-
-    @validator('email')
-    def email_check_exists(cls, value):
-        # TODO
-        nosql = NoSQL()
-        return value
+    senha_confirm: str    
 
     @validator('nome')
     def nome_validator(cls, value):

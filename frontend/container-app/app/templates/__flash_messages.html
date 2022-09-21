@@ -4,13 +4,13 @@
         <div class="row align-items-center text-center pt-4">                                                                      
             <div class="col-12">
                {% if category == 'success' %}
-                  <div class="alert alert-success" role="alert"> {{ message }} </div>
+                  <div class="alert alert-success h4" role="alert"> {{ message }} </div>
                {% elif category == 'warning' %}
-                  <div class="alert alert-warning" role="alert"> {{ message }} </div>
+                  <div class="alert alert-warning h4" role="alert"> {{ message }} </div>
                {% elif category == 'error' %}       
-                  <div class="alert alert-danger" role="alert"> {{ message }} </div>
+                  <div class="alert alert-danger h4" role="alert"> {{ message }} </div>
                {% else %}       
-                  <div class="alert alert-info" role="alert"> {{ message }} </div>
+                  <div class="alert alert-info h4" role="alert"> {{ message }} </div>
                {% endif %}   
             </div>                                            
         </div> 

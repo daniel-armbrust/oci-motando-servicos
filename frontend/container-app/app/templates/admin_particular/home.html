@@ -232,63 +232,48 @@
                                  </div>                            
                               </div> 
                               <div class="row pt-2 p-2">
-                                 {% for tel_dict in profile['data'][0]['telefone'] %}
-                                    {% for tel_item, tel_value in tel_dict.items() %}
-                                       
-                                       {% if tel_item == 'telefone' %}                        
-                                          <div class="col">
+                                 {% for tel_dict in profile['data'][0]['telefone'] %}                                    
+                                       <div class="col">
                                              <label for="id_telefone" class="form-label my-text-purple">DDD + Telefone <span class="text-danger">*</span></label>
-                                             <input type="text" name="telefone_{{ loop.index }}" id="id_telefone_{{ loop.index }}" value="{{ tel_value }}"
+                                             <input type="text" name="telefone_{{ loop.index }}" id="id_telefone_{{ loop.index }}" value="{{ tel_dict.telefone }}"
                                                       class="form-control my-btn-outline" onkeypress="$(this).mask('(00) 00000-00009')" style="box-shadow: none;"> 
                                              <div class="invalid-feedback">
                                                    É necessário informar um Telefone válido.
                                              </div>  
-                                          </div>
-                                       {% endif %}
-
-                                       {% if tel_item == 'whatsapp' %}       
-                                             <div class="col pt-4">
-                                                   <div class="form-check">
-                                                      <input name="auth_whatsapp_{{ loop.index }}" id="id_auth_whatsapp_{{ loop.index }}"
-                                                            class="form-check-input form-check-inline" 
-                                                               {% if tel_value == "True" %} checked {% endif %}
-                                                            type="checkbox">
-                                                      <label class="form-check-label" for="id_auth_whatsapp_{{ loop.index }}">
-                                                         Autoriza WhatsApp
-                                                      </label>
-                                                   </div>
-                                             </div>        
-                                       {% endif %}             
-                                       
-                                       {% if tel_item == 'anuncio' %}       
-                                             <div class="col pt-4">
-                                                   <div class="form-check">
-                                                      <input name="auth_anuncio_{{ loop.index }}" id="id_auth_anuncio_{{ loop.index }}"
-                                                            class="form-check-input form-check-inline" 
-                                                               {% if tel_value == "True" %} checked {% endif %}
-                                                            type="checkbox">
-                                                      <label class="form-check-label" for="id_auth_anuncio_{{ loop.index }}">
-                                                         Disponível no Anúncio 
-                                                      </label>
-                                                   </div>
-                                             </div>        
-                                       {% endif %}
-                                       
-                                       {% if tel_item == 'sms' %}       
-                                             <div class="col pt-4">
-                                                   <div class="form-check">
-                                                      <input name="auth_sms_{{ loop.index }}" id="id_auth_sms_{{ loop.index }}"
-                                                            class="form-check-input form-check-inline" 
-                                                               {% if tel_value == "True" %} checked {% endif %}
-                                                            type="checkbox">
-                                                      <label class="form-check-label" for="id_auth_sms_{{ loop.index }}">
-                                                         Disponível para SMS
-                                                      </label>
-                                                   </div>
-                                             </div>        
-                                       {% endif %}    
-
-                                    {% endfor %}
+                                       </div>                                       
+                                       <div class="col pt-4">
+                                              <div class="form-check">
+                                                  <input name="auth_whatsapp_{{ loop.index }}" id="id_auth_whatsapp_{{ loop.index }}"
+                                                         class="form-check-input form-check-inline" 
+                                                               {% if tel_dict.whatsapp == "True" %} checked {% endif %}
+                                                         type="checkbox">
+                                                  <label class="form-check-label" for="id_auth_whatsapp_{{ loop.index }}">
+                                                       Autoriza WhatsApp
+                                                  </label>
+                                              </div>
+                                        </div>        
+                                        <div class="col pt-4">
+                                              <div class="form-check">
+                                                  <input name="auth_anuncio_{{ loop.index }}" id="id_auth_anuncio_{{ loop.index }}"
+                                                          class="form-check-input form-check-inline" 
+                                                               {% if tel_dict.anuncio == "True" %} checked {% endif %}
+                                                          type="checkbox">
+                                                  <label class="form-check-label" for="id_auth_anuncio_{{ loop.index }}">
+                                                      Disponível no Anúncio 
+                                                  </label>
+                                              </div>
+                                        </div>                                               
+                                        <div class="col pt-4">
+                                              <div class="form-check">
+                                                  <input name="auth_sms_{{ loop.index }}" id="id_auth_sms_{{ loop.index }}"
+                                                         class="form-check-input form-check-inline" 
+                                                               {% if tel_dict.sms == "True" %} checked {% endif %}
+                                                         type="checkbox">
+                                                  <label class="form-check-label" for="id_auth_sms_{{ loop.index }}">
+                                                          Disponível para SMS
+                                                  </label>
+                                              </div>
+                                        </div>        
                                  {% endfor %}                          
                               </div>
                               <div class="row pt-4">
@@ -360,7 +345,7 @@
                     for (let i = 0 ; i < brasilCidadeLen ; i++) {
                         let brasilCidadeText = brasilCidadeSelect.options[i].text;
 
-                        if (brasilCidadeText === "{{ profile['data'][0]['cidade']") {
+                        if (brasilCidadeText === "{{ profile['data'][0]['cidade'] }}") {
                            brasilCidadeId = brasilCidadeSelect.options[i].value;
                            brasilCidadeSelect.options[i].selected = true;
                            break;
