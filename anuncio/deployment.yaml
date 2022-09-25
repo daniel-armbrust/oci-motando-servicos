@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: motando-anuncio
+  labels:
+    api: anuncio    
+    rel: beta
+    ver: "20220304"
+    env: prod    
+spec:
+  containers:
+  - name: anuncio-crt
+    image: gru.ocir.io/idreywyoj0pu/motando-api-anuncio:latest
+    ports:
+      - containerPort: 5000
+        name: anuncio-port
+    env:
+        - name: MOTANDO_BUCKET_NAME
+          value: motando_anuncio
+        - name: MOTANDO_TMP_BUCKET_NAME
+          value: motando_anuncio_tmp
+        - name: MOTANDO_NOSQL_TABLE_NAME
+          value: motando_anuncio
+    envFrom:
+        - prefix: MOTANDO_
+          configMapRef:
+              name: motando-config
+  imagePullSecrets:
+       - name: motando-secret

@@ -11,22 +11,12 @@
         <meta name="robots" content="noindex,nofollow">
         <title>{% block title %}{% endblock %} | Motando</title>
     {% endblock %}        
+    {% block head_items %}
+    {% endblock %}
 </head>
 <body> 
     {% block body %}
-        {% include "/admin_particular/__navbar.html" %}   
-        <section>
-            <div class="container">     
-                <div class="row">               
-                    <div class="col-3 d-flex justify-content-center">
-                        <a href="{{ url_for('home') }}">
-                           <img src="{{ url_for('static', filename='img/motando_logo-402x150.png') }}" class="img-fluid" alt="Motando" 
-                                style="width: 220px;">
-                        </a>
-                    </div>         
-                </div>
-            </div>
-        </section>
+        {% include "/admin_particular/__navbar.html" %}           
     {% endblock %}  
     {% block footer %}       
     {% endblock %}

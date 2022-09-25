@@ -8,9 +8,10 @@ from flask import Flask, flash as flask_flash, render_template
 from flask import request, make_response, url_for, redirect, session
 from flask_wtf.csrf import CSRFProtect, CSRFError
 
-from modules.motando_forms import LoginForm, CadastroUsuarioParticularForm
+from modules.motando_forms import LoginForm, CadastroUsuarioParticularForm, AnuncioForm
 from modules.motando_authcookie import MotandoAuthCookie
-from modules.motando_usuario import UsuarioParticular
+from modules.motando_usuario import MotandoUsuarioParticular
+from modules.motando_anuncio import MotandoAnuncio
 from modules import motando_utils
 
 #
@@ -123,14 +124,14 @@ def form_particular():
         form.brasil_cidade.choices = [(brasil_cidade_id, brasil_cidade_id,)]
 
         if form.validate_on_submit():            
-            usuario_particular = UsuarioParticular()
+            usuario_particular = MotandoUsuarioParticular()
             resp = usuario_particular.add(form.data)
 
-            resp_code = resp.get('code')
+            status = resp.get('status')
 
-            if resp_code == 201:
+            if status == 'success':
                 return redirect(url_for('confirm'))      
-            elif resp_code == 409:
+            elif status == 'fail':
                 flask_flash(u'Erro ao realizar o novo cadastro. O e-mail informado já existe.', 'error')
             else:
                 flask_flash(u'Erro ao realizar o novo cadastro. Por favor, tente novamente mais tarde.', 'error')
@@ -146,12 +147,12 @@ def form_lojista():
     return render_template('form_lojista.html')
 
 
-@app.route('/usuario/particular/confirmacao')
+@app.route('/usuario/particular/confirmacao', methods=['GET'])
 def confirm():
     return render_template('email_confirmacao.html')
 
 
-@app.route('/admin/usuario/particular')
+@app.route('/admin/usuario/particular', methods=['GET'])
 @motando_utils.ensure_logged_in
 def admin_particular():
     global AUTH_COOKIE_NAME
@@ -161,13 +162,71 @@ def admin_particular():
     auth_cookie = MotandoAuthCookie()    
     jwt_token = auth_cookie.get_jwt(cookie_value)
 
-    usuario_particular = UsuarioParticular()    
+    usuario_particular = MotandoUsuarioParticular()    
     profile = usuario_particular.get_profile(jwt_token)
 
-    if profile.get('code') == 200:
+    if profile.get('status') == 'success':
         return render_template('admin_particular/home.html', profile=profile)
     else:
         return render_template('404.html')
+
+
+@app.route('/admin/usuario/particular/anuncio', methods=['GET', 'POST'])
+@motando_utils.ensure_logged_in
+def form_anuncio():    
+    form = AnuncioForm()
+
+    if request.method == 'POST':
+        moto_marca_id = form.data.get('moto_marca')
+        moto_modelo_id = form.data.get('moto_modelo')
+
+        form.moto_marca.choices = [(moto_marca_id, moto_marca_id,)]
+        form.moto_modelo.choices = [(moto_modelo_id, moto_modelo_id,)]
+
+        if form.validate_on_submit():
+            flask_flash(u'Novo anúncio cadastrado com sucesso.', 'success')
+
+            return render_template('admin_particular/meus_anuncios.html')
+        else:
+            flask_flash(u'Erro ao cadastrar novo anúncio. Por favor, corrigir os dados do formuládio.', 'error')
+
+    return render_template('admin_particular/form_anuncio.html', form=form)
+
+
+@app.route('/admin/usuario/particular/anuncio/imagem', methods=['POST', 'DELETE'])
+@motando_utils.ensure_logged_in
+@csrf.exempt
+def anuncio_img_upload():    
+    if request.method == 'POST':
+        allowed_mimetype = ('image/jpeg', 'image/png', 'image/webp',)
+        max_img_size = 5242880
+
+        img = request.files.get('files[]')
+
+        if img.mimetype in allowed_mimetype:
+            img_data = img.read()
+            img_data_bytes = len(img_data)
+
+            if img_data_bytes > 0 and img_data_bytes <= max_img_size:
+                cookie_value = request.cookies.get(AUTH_COOKIE_NAME, '')    
+                
+                auth_cookie = MotandoAuthCookie()    
+                jwt_token = auth_cookie.get_jwt(cookie_value)
+                
+                motando_anuncio = MotandoAnuncio()
+                motando_anuncio.jwt_token = jwt_token
+
+                resp = motando_anuncio.add_img(filename=img.filename, data=img_data)
+
+                return img.filename, resp.get('code')
+
+    elif request.method == 'DELETE':
+        filename = request.form.get('filename', '')
+
+        if filename:
+            return f'DELETED: {filename}', 200
+    
+    return 'Bad Request', 400
 
 
 @app.errorhandler(CSRFError)

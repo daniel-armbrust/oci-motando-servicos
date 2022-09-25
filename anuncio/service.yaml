@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: motando-anuncio-svc
+spec:
+  selector:
+    api: anuncio    
+    rel: beta
+    ver: "20220304"
+    env: prod        
+  ports:
+    - port: 5000
+      targetPort: anuncio-port
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: anuncio-ing
+  annotations:
+    kubernetes.io/ingress.class: "nginx"    
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:  
+  rules:
+  - http:
+      paths:
+        - path: /anuncio
+          pathType: Prefix
+          backend:
+            service:
+              name: motando-anuncio-svc
+              port:
+                number: 5000

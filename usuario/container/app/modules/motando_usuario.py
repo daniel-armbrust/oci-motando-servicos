@@ -3,7 +3,6 @@
 #
 
 import os
-import datetime
 
 from .motando_models import UsuarioParticularModel, UsuarioParticularModelDb
 from .motando_nosql import NoSQL

@@ -9,8 +9,6 @@ from datetime import datetime
 
 from pydantic import BaseModel, EmailStr, root_validator, validator, Field
 
-from .motando_nosql import NoSQL
-
 #
 # Globals
 #

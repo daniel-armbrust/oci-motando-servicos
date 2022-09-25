@@ -6,80 +6,18 @@
    {{ super() }}     
    <section>
        <div class="container">     
+            <div class="row">               
+                  <div class="col-3 d-flex justify-content-center">
+                      <a href="{{ url_for('home') }}">
+                      <img src="{{ url_for('static', filename='img/motando_logo-402x150.png') }}" class="img-fluid" alt="Motando" 
+                              style="width: 220px;">
+                      </a>
+                  </div>         
+            </div>
             <div class="row">
                <div class="col-3">
-                     <br>
-                     <div class="shadow rounded bg-white border p-3">
-                           <div class="row">
-                              <div class="col d-flex justify-content-center">
-                                    <img src="{{ url_for('static', filename='img/pessoa.png') }}" alt="Pessoa" 
-                                       class="img-fluid img-thumbnail" style="max-width: 50%;">                           
-                              </div>
-                           </div>
-                           <div class="row">
-                              <div class="col d-flex justify-content-center">
-                                    <h1 class="h5 fw-bold text-center"> {{ profile['data'][0]['nome'] }} </h1>
-                              </div>
-                           </div>
-                           <div class="row">
-                              <div class="col d-flex justify-content-center">
-                                    <p class="text-center"> Cadastrado desde Março de 2004  </p>                                
-                              </div>
-                           </div>
-                           <div class="row">
-                              <div class="col">
-                                    <hr>
-                              </div>
-                           </div>
-                           <div class="row">
-                              <div class="col m-2">    
-                                    <a class="text-decoration-none" href="">
-                                       <i class="fas fa-plus-circle"></i> Novo anúncio                                       
-                                    </a>                           
-                              </div>
-                           </div>
-                           <div class="row">
-                              <div class="col m-2">
-                                    <a class="text-decoration-none" href="">
-                                       <i class="fab fa-leanpub"></i> Meus anúncios
-                                    </a>
-                              </div>
-                           </div>
-                           <div class="row">
-                              <div class="col m-2">
-                                    <a class="text-decoration-none" href="">
-                                       <i class="fas fa-comments"></i> Chat de propostas
-                                    </a>
-                              </div>
-                           </div>
-                           <div class="row">
-                              <div class="col m-2">
-                                    <a class="text-decoration-none" href="">
-                                       <i class="fas fa-user-cog"></i> Minha conta
-                                    </a>
-                              </div>
-                           </div>
-                           <div class="row">
-                              <div class="col m-2">
-                                    <a class="text-decoration-none" href="">
-                                       <i class="fas fa-star"></i> Favoritos
-                                    </a>
-                              </div>
-                           </div>
-                           <div class="row pt-3">
-                              <div class="col m-2">
-                                    <a class="text-decoration-none" href="">
-                                       <i class="fas fa-sign-out-alt"></i> Sair
-                                    </a>
-                              </div>
-                           </div>
-                        <br>                        
-                        <br>      
-                        <br> 
-                        <br>                        
-                        <br>                              
-                     </div>
-               </div> <!-- left menu --> 
+                    {% include "/admin_particular/__left_menu.html" %}  
+               </div> 
                <div class="col-9">
                      <br>
                      <div class="shadow rounded bg-white border p-3">

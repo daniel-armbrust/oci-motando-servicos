@@ -2,13 +2,12 @@
 # main.py
 #
 
-from fastapi import FastAPI, APIRouter, Depends, HTTPException, status
+from fastapi import FastAPI, APIRouter, Depends, HTTPException, status, UploadFile
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer
 
-from modules.motando_models import UsuarioParticularModel
-from modules.motando_usuario import UsuarioParticular
 from modules.motando_authjwt import MotandoAuthJwt
+from modules.motando_anuncio import MotandoAnuncio
 
 #
 # FastAPI initialization
@@ -38,24 +37,27 @@ async def authenticate(token: str = Depends(oauth2_schema)) -> str:
     return email
 
 
-@router.get('/usuario/particular')
-async def usuario_particular(email: str = Depends(authenticate)):
-    """Obtém dados do Usuário Particular.
-
-    """
-    usuario_particular = UsuarioParticular()
-    resp = usuario_particular.get_profile(email)
-
-    return JSONResponse(content=resp, status_code=resp.get('code'))
-
-
-@router.post('/usuario/particular')
-async def new_usuario_particular(data: UsuarioParticularModel) -> dict:
-    """Cria um novo Usuário Particular.
+@router.post('/anuncio/imagem')
+async def anuncio_imagem(file: UploadFile, email: str = Depends(authenticate)) -> dict:
+    """Salva uma nova imagem.
     
     """
-    usuario_particular = UsuarioParticular()
-    resp = usuario_particular.add(data)
+    allowed_mimetype = ('image/jpeg', 'image/png', 'image/webp',)
+    max_img_size = 5242880
+
+    if file.content_type in allowed_mimetype:
+        img_data = await file.read()
+        img_data_bytes = len(img_data)
+
+        if img_data_bytes > 0 and img_data_bytes <= max_img_size:
+           motando_anuncio = MotandoAnuncio()
+           motando_anuncio.email = email
+
+           resp = motando_anuncio.add_img_tmp(filename=file.filename, data=img_data)   
+
+           return JSONResponse(content=resp, status_code=resp.get('code'))
+
+    resp = {'status': 'fail', 'message': 'Tipo/Tamanho da imagem não suportado.', 'code': 415}
 
     return JSONResponse(content=resp, status_code=resp.get('code'))
 

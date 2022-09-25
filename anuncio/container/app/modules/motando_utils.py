@@ -5,24 +5,19 @@
 import os
 import requests
 
-from passlib.context import CryptContext
-
 #
 # Globals
 #
 API_HOSTNAME = os.environ.get('MOTANDO_API_HOSTNAME')
 
 
-def get_estado(estado_id=None):
-    """Retorna as propriedades de um Estado em particular.
-
-    Args:
-        estado_id: Identificador numérico de um Estado.
+def get_moto_marca(marca_id: int = None) -> dict:
+    """Retorna as propriedades referente a Marca de uma motocicleta.
 
     """
     global API_HOSTNAME
 
-    url = f'http://{API_HOSTNAME}/brasil/estado/{estado_id}'
+    url = f'http://{API_HOSTNAME}/moto/marca/{marca_id}'
 
     resp = None
 
@@ -43,17 +38,13 @@ def get_estado(estado_id=None):
         return None
 
 
-def get_cidade(estado_id=None, cidade_id=None):
-    """Retorna as propriedades de um Estado em particular.
-
-    Args:
-        estado_id: Identificador numérico de um Estado.
-        cidade_id: Identificador numérico de uma Cidade.
+def get_moto_modelo(marca_id: int = None, modelo_id: int = None) -> dict:
+    """Retorna as propriedades referente ao Modelo de uma motocicleta.
 
     """
     global API_HOSTNAME
 
-    url = f'http://{API_HOSTNAME}/brasil/estado/{estado_id}/cidade/{cidade_id}'
+    url = f'http://{API_HOSTNAME}/moto/marca/{marca_id}/modelo/{modelo_id}'
 
     resp = None
 
@@ -74,12 +65,15 @@ def get_cidade(estado_id=None, cidade_id=None):
         return None
 
 
-def create_hash(password: str):
-    """Retorna um HASH da string informada como parâmetro.
-    
+def return_img_mimetype(img_filename: str = None) -> str:
+    """Return image MIME TYPE.
+
     """
-    pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-
-    hash = pwd_context.hash(password)
-
-    return hash
+    if img_filename.endswith('.jpg') or img_filename.endswith('.jpeg'):
+        return 'image/jpeg'
+    elif img_filename.endswith('.png'):
+        return 'image/png'
+    elif img_filename.endswith('.webp'):
+        return 'image/webp'
+    else:
+        return None

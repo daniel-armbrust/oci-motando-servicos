@@ -26,7 +26,7 @@ $(document).ready(function() {
         }
     });      
 
-    $("#id_cadastro_particular_form").submit(function(e) {         
+    $("#id_cadastro_particular_form").submit(function() {         
         submitCadastroParticular();                  
     });
 });

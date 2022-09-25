@@ -10,8 +10,9 @@ deployment_dir[1]="frontend/"
 deployment_dir[2]="estado-cidade/"
 deployment_dir[3]="moto/"
 deployment_dir[4]="usuario/"
-deployment_dir[5]="auth/"
-deployment_dir[6]="api-gateway/20220304/"
+deployment_dir[5]="anuncio/"
+deployment_dir[6]="auth/"
+deployment_dir[7]="api-gateway/20220304/"
 
 case $1 in 
    -fp|--fp|--full-deploy)

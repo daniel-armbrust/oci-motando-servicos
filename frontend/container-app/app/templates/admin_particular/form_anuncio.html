@@ -1,0 +1,309 @@
+{% extends "admin_particular/__base.html" %}
+
+{% block title %} Cadastro Anúncio {% endblock %}
+
+{% block head_items %}
+    <link href="{{ url_for('static', filename='vendor/jquery.filer/css/jquery.filer.css') }}" type="text/css" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='vendor/jquery.filer/css/themes/jquery.filer-dragdropbox-theme.css') }}" type="text/css" rel="stylesheet" />    
+    <script src="{{ url_for('static', filename='vendor/tinymce/tinymce.min.js') }}"></script>
+    <script type="text/javascript">       
+         tinymce.init({
+             selector: '#id_descricao_anuncio',
+             statusbar: false,
+             menubar: false,
+             plugins: 'lists',          
+             toolbar: 'undo redo | bold italic | numlist bullist | alignleft aligncenter alignright alignjustify',
+             lists_indent_on_tab: false
+         });        
+    </script>    
+{% endblock %}
+
+{% block body %}
+   {{ super() }}       
+   <section>
+        <div class="container">   
+            <div class="row">               
+                <div class="col-12 d-flex justify-content-center">
+                    <a href="{{ url_for('home') }}">
+                    <img src="{{ url_for('static', filename='img/motando_logo-402x150.png') }}" class="img-fluid" alt="Motando" 
+                            style="width: 220px;">
+                    </a>
+                </div>         
+            </div>
+            <br>
+            {% include "__flash_messages.html" %}      
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-6">
+                    <h1 class="fs-2 text-center text-primary fw-bold"> Detalhes do Anúncio </h1>                       
+                    <p class="p-2 m-2"> 
+                        Confira os seus dados e insira as informações da moto para deixar seu anúncio mais completo. 
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-6">                        
+                      <div class="shadow rounded bg-white border p-3">                            
+                            <form name="cadastro_anuncio_form" id="id_cadastro_anuncio_form" autocomplete="off" method="post" action="{{ url_for('form_anuncio') }}">
+                                {{ form.csrf_token }}
+                                {{ form.upload_img_lista(id="id_upload_img_lista") }}                                     
+                                <div class="row pt-2 p-2">
+                                    <div class="col">
+                                        <label for="id_select_moto_marca" class="form-label my-text-purple">{{ form.moto_marca.label.text }}&nbsp;<span class="text-danger">*</span></label>
+                                        {{ form.moto_marca(id="id_select_moto_marca", style_="box-shadow: none;", class_="form-select my-btn-outline") }}                                                                        
+                                        {% for moto_marca_error in form.moto_marca.errors %}                                
+                                            <div class="text-danger"> &nbsp;&bull; {{ moto_marca_error }} </div>
+                                        {% endfor %}
+                                        <div class="invalid-feedback">
+                                            É necessário selecionar uma Marca.
+                                        </div>                  
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row pt-2 p-2">
+                                    <div class="col">
+                                        <label for="id_select_moto_modelo" class="form-label my-text-purple">{{ form.moto_modelo.label.text }} &nbsp;<span class="text-danger">*</span></label>
+                                        {{ form.moto_modelo(id="id_select_moto_modelo", style_="box-shadow: none;", class_="form-select my-btn-outline") }}
+                                        {% for moto_modelo_error in form.moto_modelo.errors %}                                
+                                            <div class="text-danger"> &nbsp;&bull; {{ moto_modelo_error }} </div>
+                                        {% endfor %}
+                                        <div class="invalid-feedback">
+                                            É necessário selecionar um Modelo.
+                                        </div>             
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row pt-2 p-2">
+                                    <div class="col">
+                                        <label for="id_ano_fabricacao" class="form-label my-text-purple">{{ form.ano_fabricacao.label.text }} &nbsp;<span class="text-danger">*</span></label>
+                                        {{ form.ano_fabricacao(id="id_ano_fabricacao", style_="box-shadow: none;", class_="form-control my-btn-outline", placeholder_="Ano/Fabricação com 4 dígitos") }}
+                                        {% for ano_fabricacao_error in form.ano_fabricacao.errors %}                                
+                                            <div class="text-danger"> &nbsp;&bull; {{ ano_fabricacao_error }} </div>
+                                        {% endfor %}
+                                        <div class="invalid-feedback">
+                                            É necessário selecionar um Modelo.
+                                        </div>    
+                                    </div>
+                                    <br>
+                                    <div class="col">
+                                        <label for="id_ano_modelo" class="form-label my-text-purple">{{ form.ano_modelo.label.text }} &nbsp; <span class="text-danger">*</span></label>
+                                        {{ form.ano_modelo(id="id_ano_modelo", style_="box-shadow: none;", class_="form-control my-btn-outline", placeholder_="Ano/Modelo com 4 dígitos") }}
+                                        {% for ano_modelo_error in form.ano_modelo.errors %}                                
+                                            <div class="text-danger"> &nbsp;&bull; {{ ano_modelo_error }} </div>
+                                        {% endfor %}
+                                        <div class="invalid-feedback">
+                                            É necessário selecionar um Modelo.
+                                        </div>    
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row pt-2 p-2">
+                                    <div class="col">
+                                        <label for="id_placa" class="form-label my-text-purple">{{ form.placa.label.text }} &nbsp; <span class="text-danger">*</span></label>
+                                        {{ form.placa(id="id_placa", style_="box-shadow: none;", class_="form-control my-btn-outline") }}                                    
+                                        {% for placa_error in form.placa.errors %}                                
+                                            <div class="text-danger"> &nbsp;&bull; {{ placa_error }} </div>
+                                        {% endfor %}
+                                        <div class="invalid-feedback">
+                                            É necessário selecionar um Modelo.
+                                        </div>    
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row pt-2 p-2 d-flex align-items-center">
+                                    <div class="col d-flex justify-content-center">
+                                        <div class="form-check form-check-inline">                                        
+                                            {{ form.zero_km(id="id_zero_km", class_="form-check-input") }} &nbsp;
+                                            <label class="form-check-label" for="id_zero_km">{{ form.zero_km.label.text }} &nbsp; <span class="text-danger">*</span></label>
+                                         </div>                                   
+                                    </div>
+                                    <div class="col">
+                                        <label for="id_km" class="form-label my-text-purple">{{ form.km.label.text }} &nbsp; <span class="text-danger">*</span></label>
+                                        {{ form.km(id="id_km", style_="box-shadow: none;", class_="form-control my-btn-outline") }}
+                                        <div class="invalid-feedback">
+                                            É necessário informar o KM.
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row pt-2 p-2">
+                                    <div class="col">
+                                        <label for="id_cor" class="form-label my-text-purple">{{ form.cor.label.text }} &nbsp; <span class="text-danger">*</span></label>                                        
+                                        {{ form.cor(id="id_cor", style_="box-shadow: none;", class_="form-select my-btn-outline") }}                                        
+                                        {% for cor_error in form.cor.errors %}                                
+                                            <div class="text-danger"> &nbsp;&bull; {{ cor_error }} </div>
+                                        {% endfor %}
+                                        <div class="invalid-feedback">
+                                            É necessário selecionar uma Cor.
+                                        </div>    
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row pt-2 p-2">
+                                    <div class="col">
+                                        <label for="id_preco" class="form-label my-text-purple">{{ form.preco.label.text }} &nbsp; <span class="text-danger">*</span></label>
+                                        {{ form.preco(id="id_preco", style_="box-shadow: none;", class_="form-select my-btn-outline", step_="any") }}
+                                        {% for preco_error in form.preco.errors %}                                
+                                            <div class="text-danger"> &nbsp;&bull; {{ preco_error }} </div>
+                                        {% endfor %}
+                                        <div class="invalid-feedback">
+                                            É necessário especificar o Preço.
+                                        </div>  
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row pt-2 p-2">
+                                    <div class="col">
+                                        <label for="id_frase_vendedora" class="form-label my-text-purple">{{ form.frase_vendedora.label.text }}</label>
+                                        {{ form.frase_vendedora(id="id_frase_vendedora", style_="box-shadow: none;", class_="form-control my-btn-outline") }}                                                                            
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row pt-4 p-2">
+                                    <div class="col">
+                                        <label for="id_descricao_anuncio" class="form-label fs-5 text-left text-primary fw-bold ms-2"> Descrição do Anúncio </label>                                    
+                                        <p class="fst-italic ms-2"><span class="text-danger">*</span> &nbsp;  Não inserir dados pessoais, e-mail ou telefone neste campo.</p>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="mb-3">     
+                                            {{ form.descricao(id="id_descricao_anuncio", rows_="10", style_="box-shadow: none; background-color: white; resize: none;") }}                                                                                                                   
+                                        </div>
+                                        {% for descricao_error in form.descricao.errors %}                                
+                                            <div class="text-danger"> &nbsp;&bull; {{ descricao_error }} </div>
+                                        {% endfor %}
+                                        <div class="invalid-feedback">
+                                            É necessário selecionar um Modelo.
+                                        </div>    
+                                    </div>
+                                </div>
+                                <div class="row pt-4 p-2">
+                                    <div class="col">                                        
+                                        <input type="file" name="files[]" id="filer_input" multiple="multiple">                                        
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row pt-2">
+                                    <div class="col">
+                                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="flush-headingOne">
+                                                    <button class="accordion-button collapsed fs-5 text-left text-primary fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                                        Opcionais
+                                                    </button>
+                                                </h2>
+                                                <div id="flush-collapseOne" class="accordion-collapse collapse show" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                                    <div class="accordion-body">                                                        
+                                                          <div class="form-check form-check-inline">
+                                                                {{ form.opcional_alarme(id="id_opcional_alarme", class_="form-check-input") }}                                                                     
+                                                                <label class="form-check-label" for="id_opcional_alarme"> {{ form.opcional_alarme.label.text }} </label>
+                                                          </div>
+                                                          <div class="form-check form-check-inline">
+                                                                {{ form.opcional_bau(id="id_opcional_bau", class_="form-check-input") }}
+                                                                <label class="form-check-label" for="id_opcional_bau"> {{ form.opcional_bau.label.text }} </label>
+                                                          </div>                                                        
+                                                          <div class="form-check form-check-inline">
+                                                                {{ form.opcional_computador(id="id_opcional_computador", class_="form-check-input") }}                                                                
+                                                                <label class="form-check-label" for="id_opcional_computador"> {{ form.opcional_computador.label.text }} </label>
+                                                          </div>      
+                                                          <div class="form-check form-check-inline">
+                                                                {{ form.opcional_gps(id="id_opcional_gps", class_="form-check-input") }}
+                                                                <label class="form-check-label" for="id_opcional_gps"> {{ form.opcional_gps.label.text }} </label>
+                                                          </div>                                                    
+                                                    </div>
+                                                </div>
+                                            </div>                                       
+                                        </div>                                                       
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="row pt-2">
+                                    <div class="col">
+                                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header" id="flush-headingTwo">
+                                                    <button class="accordion-button collapsed fs-5 text-left text-primary fw-bold" type="button" 
+                                                            data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" 
+                                                            aria-controls="flush-collapseTwo">
+                                                        Outros Detalhes
+                                                    </button>
+                                                </h2>
+                                                <div id="flush-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExampleTwo">
+                                                    <div class="accordion-body">                                                        
+                                                            <div class="form-check form-check-inline">                                                                
+                                                                {{ form.aceita_contraoferta(id="id_aceita_contraoferta", class_="form-check-input") }}
+                                                                <label class="form-check-label" for="id_aceita_contraoferta"> {{ form.aceita_contraoferta.label.text }} </label>
+                                                            </div>
+                                                            <div class="form-check form-check-inline">                                                                
+                                                                {{ form.aceita_troca(id="id_aceita_troca", class_="form-check-input") }}
+                                                                <label class="form-check-label" for="id_aceita_troca"> {{ form.aceita_troca.label.text }} </label>
+                                                            </div>                                                        
+                                                            <div class="form-check form-check-inline">                                                                
+                                                                {{ form.doc_ok(id="id_doc_ok", class_="form-check-input") }}
+                                                                <label class="form-check-label" for="id_doc_ok"> {{ form.doc_ok.label.text }} </label>
+                                                            </div>   
+                                                            <br>   <br>   
+                                                            <div class="form-check form-check-inline">                                                                
+                                                                {{ form.sinistro(id="id_sinistro", class_="form-check-input") }}
+                                                                <label class="form-check-label" for="id_outros_sinistro"> {{ form.sinistro.label.text }} </label>
+                                                            </div>  
+                                                            <div class="form-check form-check-inline">                                                                
+                                                                {{ form.trilha_pista(id="id_trilha_pista", class_="form-check-input") }}
+                                                                <label class="form-check-label" for="id_trilha_pista"> {{ form.trilha_pista.label.text }} </label>
+                                                            </div>   
+                                                            <hr>
+                                                            <br>
+                                                            <label for="id_freios" class="form-label my-text-purple">{{ form.freios.label.text }}</label>
+                                                            {{ form.freios(id="id_freios", style_="box-shadow: none;", class_="form-select my-btn-outline") }}                                                            
+                                                            <br><br>
+                                                            <label for="id_tipo_partida" class="form-label my-text-purple">{{ form.tipo_partida.label.text }}</label>
+                                                            {{ form.tipo_partida(id="id_tipo_partida", style_="box-shadow: none;", class_="form-select my-btn-outline") }}
+                                                            <br><br>
+                                                            <label for="id_refrigeracao" class="form-label my-text-purple">{{ form.refrigeracao.label.text }}</label>
+                                                            {{ form.refrigeracao(id="id_refrigeracao", style_="box-shadow: none;", class_="form-select my-btn-outline") }}                                                        
+                                                            <br><br>
+                                                            <label for="id_estilo" class="form-label my-text-purple">{{ form.estilo.label.text }}</label>
+                                                            {{ form.estilo(id="id_estilo", style_="box-shadow: none;", class_="form-select my-btn-outline") }}                                                        
+                                                            <br><br>
+                                                            <label for="id_origem" class="form-label my-text-purple">{{ form.origem.label.text }}</label>
+                                                            {{ form.origem(id="id_origem", style_="box-shadow: none;", class_="form-select my-btn-outline") }}                                                       
+                                                    </div>
+                                                </div>
+                                            </div>                                       
+                                        </div>                                                       
+                                    </div>
+                                </div>     
+                                <br>                       
+                                <div class="row pt-4">
+                                    <div class="col">
+                                        <div class="d-grid gap-2">
+                                            {{ form.submit(id="id_submit", class_="btn btn-success fw-bold p-3 fs-5") }}                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                            </form>  
+                      </div>
+                </div>
+                <div class="col-3"></div>
+            </div>              
+        </div>
+   </section>
+   <br>
+   <br>
+{% endblock %}
+
+{% block footer %}
+     {% include "__footer.html" %}     
+{% endblock %}
+   
+{% block body_scripts %}
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/jquery.filer/js/jquery.filer.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='vendor/jquery.blockUI.min.js') }}"></script>    
+    <script type="text/javascript" src="{{ url_for('static', filename='js/ajax-functions.js') }}"></script>
+    <script type="text/javascript"> const imgUploadUrl = "{{ url_for('anuncio_img_upload') }}"; </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/anuncio.js') }}"></script>
+{% endblock %}

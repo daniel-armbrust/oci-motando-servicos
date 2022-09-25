@@ -3,7 +3,9 @@
 #
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField,  SubmitField, validators, SelectField
+from wtforms import validators
+from wtforms import StringField, SelectField, IntegerField, BooleanField, HiddenField
+from wtforms import PasswordField, DecimalField, TextAreaField, SubmitField
 
 
 class LoginForm(FlaskForm):
@@ -18,9 +20,6 @@ class LoginForm(FlaskForm):
     ])
 
     submit = SubmitField(u'Enviar')
-
-    def validate_email(self, field):
-      pass
 
 
 class CadastroUsuarioParticularForm(FlaskForm):
@@ -63,3 +62,158 @@ class CadastroUsuarioParticularForm(FlaskForm):
     ])
 
     submit = SubmitField(u'Enviar')
+
+
+class AnuncioForm(FlaskForm):
+    cor_choices = [
+        ('', 'Selecione a Cor',), 
+        ('azul', 'Azul',), ('verde', 'Verde',), ('vermelho', 'Vermelho',),
+        ('preto', 'Preto',), ('laranja', 'Laranja',), ('amarelo', 'Amarelo',),
+        ('roxo', 'Roxo',), ('branco', 'Branco',), ('marrom', 'Marrom',), 
+        ('prata', 'Prata',), ('outro', 'Outro',),
+    ]
+
+    freios_choices = [
+        ('', 'Selecione os Freios',), 
+        ('disco', 'Disco',), ('combinado', 'Combinado',), ('abs', 'ABS',),
+        ('tambor', 'Tambor',), 
+    ]
+
+    partida_choices = [
+        ('', 'Selecione o Tipo da Partida',),
+        ('pedal', 'Pedal',), ('eletrica', 'Elétrica',), ('ambos', 'Ambos',),
+        ('outro', 'Outro',),
+    ]
+
+    refrigeracao_choices = [
+        ('', 'Selecione o Tipo de Refrigeração',),
+        ('liquida', 'Líquida',), ('ar', 'Ar',),
+    ]
+
+    estilo_choices = [
+        ('', 'Selecione o Estilo da Motocicleta',),
+        ('naked', 'Naked',), ('sport', 'Sport',), ('bigtrail', 'Big Trail',),
+        ('caferacer', 'Café Racer',), ('custom', 'Custom',), ('classica', 'Clássica',),
+        ('eletrica', 'Elétrica',), ('minimoto', 'Minimoto',), ('offroad', 'Off-Road',),
+        ('scooter', 'Scooter',), ('street', 'Street',), ('supermotard', 'SuperMotard',),
+        ('triciclo', 'Triciclo',), ('touring', 'Touring',), ('quadriciclo', 'Quadriciclo',),
+        ('scrambler', 'Scrambler',), ('ciclomotor', 'Ciclomotor',), ('cub', 'Cub',),
+        ('outro', 'Outro',),
+    ]
+
+    origem_choices = [
+        ('', 'Selecione a Origem da Motocicleta',),
+        ('nacional', 'Nacional',), ('importada', 'Importada',),
+    ]
+
+    moto_marca = SelectField('Marca', [
+        validators.DataRequired()
+    ], coerce=int)
+
+    moto_modelo = SelectField('Modelo', [
+        validators.DataRequired()
+    ], coerce=int)
+
+    ano_fabricacao = StringField('Ano de Fabricação', [
+        validators.Length(min=4, max=4, message='Ano/Fabricação inválido.'),
+        validators.DataRequired()        
+    ])
+
+    ano_modelo = StringField('Ano do Modelo', [
+        validators.Length(min=4, max=4, message='Ano/Modelo inválido.'),
+        validators.DataRequired()        
+    ])
+
+    placa = StringField('Placa', [
+        validators.Length(min=4, max=10, message='Número de Placa inválido.'),
+        validators.DataRequired()        
+    ])
+
+    km = IntegerField('KM', [        
+        validators.optional()
+    ])
+
+    zero_km = BooleanField('Zero KM', [
+        validators.optional()
+    ], default=False)
+
+    cor = SelectField('Cor Predominante', [
+        validators.DataRequired(message='É necessário informa uma Cor.')
+    ], choices=cor_choices, default='null')
+
+    preco = DecimalField('Preço', [
+        validators.DataRequired(),
+        validators.NumberRange(min=1, message=u'Preço inválido.'),
+    ], places=8)
+
+    frase_vendedora = StringField('Frase Vendedora', [  
+        validators.length(max=500),
+        validators.optional()
+    ])
+
+    descricao = TextAreaField('Descrição do Anúncio', [
+        validators.length(max=2000),
+        validators.optional()
+    ])
+
+    opcional_alarme = BooleanField('Alarme', [
+        validators.optional()
+    ], default=False)
+
+    opcional_bau = BooleanField('Baú / Malas', [
+        validators.optional()
+    ], default=False)
+
+    opcional_computador = BooleanField('Computador de Bordo', [
+        validators.optional()
+    ], default=False)
+
+    opcional_gps = BooleanField('GPS', [
+        validators.optional()
+    ], default=False)
+
+    aceita_contraoferta = BooleanField('Aceita contra oferta', [
+        validators.optional()
+    ], default=False)
+
+    aceita_troca = BooleanField('Aceita troca', [
+        validators.optional()
+    ], default=False)
+
+    doc_ok = BooleanField('Documentação em dia', [
+        validators.optional()
+    ], default=False)
+
+    sinistro = BooleanField('Possui Sinistro', [
+        validators.optional()
+    ], default=False)
+
+    trilha_pista = BooleanField('Moto preparada para trilha ou pista', [
+        validators.optional()
+    ], default=False)
+
+    freios = SelectField('Freios', [
+        validators.optional()
+    ], choices=freios_choices)
+
+    tipo_partida = SelectField('Tipo de partida', [
+        validators.optional()
+    ], choices=partida_choices)
+
+    refrigeracao = SelectField('Refrigeração do Motor', [
+        validators.optional()
+    ], choices=refrigeracao_choices)
+
+    estilo = SelectField('Estilo', [
+        validators.optional()
+    ], choices=estilo_choices)
+
+    origem = SelectField('Origem', [
+        validators.optional()
+    ], choices=origem_choices)
+
+    upload_img_lista = HiddenField([
+        validators.DataRequired()
+    ])
+    
+    submit = SubmitField(u'Concluír Anúncio')

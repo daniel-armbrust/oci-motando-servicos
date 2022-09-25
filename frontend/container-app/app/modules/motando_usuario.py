@@ -14,7 +14,7 @@ import requests
 API_HOSTNAME = os.environ.get('MOTANDO_API_HOSTNAME')
 
 
-class UsuarioParticular():
+class MotandoUsuarioParticular():
     def __init__(self):
         global API_HOSTNAME
 
