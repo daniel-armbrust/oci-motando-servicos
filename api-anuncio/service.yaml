@@ -31,3 +31,10 @@ spec:
               name: motando-anuncio-svc
               port:
                 number: 5000
+        - path: /anuncio/imagem
+          pathType: Prefix
+          backend:
+            service:
+              name: motando-anuncio-svc
+              port:
+                number: 5000

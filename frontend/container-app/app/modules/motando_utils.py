@@ -68,6 +68,24 @@ def get_csrf_secretkey() -> str:
         raise RuntimeError('Falha ao obter o SECRET_KEY.')
 
 
+def get_img_mimetype(img_content: str = None) -> str:
+    """Return the Mime Type from the image content.
+       
+       https://github.com/python/cpython/blob/3.9/Lib/imghdr.py#L48
+    """
+    if img_content:    
+        file_header = img_content[0:32]
+
+        if file_header[6:10] in (b'JFIF', b'Exif'):
+            return 'image/jpeg'
+        elif file_header.startswith(b'\211PNG\r\n\032\n'):
+            return 'image/png'
+        elif file_header[:6] in (b'GIF87a', b'GIF89a'):
+            return 'image/gif'
+      
+    return ''
+
+
 def ensure_logged_in(fn):  
     @wraps(fn)
     def wrapper(*args, **kwargs):

@@ -24,7 +24,7 @@ AUTH_COOKIE_NAME = os.environ.get('MOTANDO_AUTH_COOKIE_NAME')
 #
 app = Flask(__name__)
 app.config['SECRET_KEY'] = motando_utils.get_csrf_secretkey()
-    
+
 
 # Session
 app.config['SESSION_COOKIE_NAME'] = 'XxMotandoXxSession'
@@ -56,7 +56,7 @@ def login():
                       
            jwt = motando_utils.auth_service(email=email, senha=senha)
            
-           if jwt.get('code') == 200:
+           if jwt.get('status') == 'success':
                jwt_token = jwt['data']['access_token']
 
                auth_cookie = MotandoAuthCookie()
@@ -123,7 +123,7 @@ def form_particular():
         form.brasil_estado.choices = [(brasil_estado_id, brasil_estado_id,)]
         form.brasil_cidade.choices = [(brasil_cidade_id, brasil_cidade_id,)]
 
-        if form.validate_on_submit():            
+        if form.validate_on_submit():                        
             usuario_particular = MotandoUsuarioParticular()
             resp = usuario_particular.add(form.data)
 
@@ -174,6 +174,8 @@ def admin_particular():
 @app.route('/admin/usuario/particular/anuncio', methods=['GET', 'POST'])
 @motando_utils.ensure_logged_in
 def form_anuncio():    
+    global AUTH_COOKIE_NAME
+
     form = AnuncioForm()
 
     if request.method == 'POST':
@@ -184,9 +186,24 @@ def form_anuncio():
         form.moto_modelo.choices = [(moto_modelo_id, moto_modelo_id,)]
 
         if form.validate_on_submit():
-            flask_flash(u'Novo anúncio cadastrado com sucesso.', 'success')
+            cookie_value = request.cookies.get(AUTH_COOKIE_NAME, '')    
+                
+            auth_cookie = MotandoAuthCookie()    
+            jwt_token = auth_cookie.get_jwt(cookie_value)
+            
+            motando_anuncio = MotandoAnuncio()
+            motando_anuncio.jwt_token = jwt_token
 
-            return render_template('admin_particular/meus_anuncios.html')
+            resp = motando_anuncio.add(form.data)            
+
+            if resp.get('status') == 'success':
+                flask_flash(u'Novo anúncio cadastrado com sucesso.', 'success')
+
+                return render_template('admin_particular/meus_anuncios.html')
+                
+            else: 
+                flask_flash(u'Erro ao cadastrar novo anúncio.', 'error')
+            
         else:
             flask_flash(u'Erro ao cadastrar novo anúncio. Por favor, corrigir os dados do formuládio.', 'error')
 
@@ -218,7 +235,10 @@ def anuncio_img_upload():
 
                 resp = motando_anuncio.add_img(filename=img.filename, data=img_data)
 
-                return img.filename, resp.get('code')
+                if resp.get('status') == 'success':
+                    return img.filename, resp.get('code')
+                else:
+                    return resp
 
     elif request.method == 'DELETE':
         filename = request.form.get('filename', '')

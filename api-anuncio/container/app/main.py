@@ -6,8 +6,9 @@ from fastapi import FastAPI, APIRouter, Depends, HTTPException, status, UploadFi
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer
 
-from modules.motando_authjwt import MotandoAuthJwt
-from modules.motando_anuncio import MotandoAnuncio
+from modules.motando_authjwt import AuthJwt
+from modules.motando_models import AnuncioModel
+from modules.motando_anuncio import Anuncio
 
 #
 # FastAPI initialization
@@ -29,12 +30,25 @@ async def authenticate(token: str = Depends(oauth2_schema)) -> str:
             detail='Acesso negado.'
         )
 
-    motando_authjwt = MotandoAuthJwt()    
-    token_payload = motando_authjwt.verify_token(token)
+    authjwt = AuthJwt()    
+    token_payload = authjwt.verify_token(token)
 
     email = token_payload.get('email')
 
     return email
+
+
+@router.post('/anuncio')
+async def anuncio(data: AnuncioModel, email: str = Depends(authenticate)) -> dict:
+    """Adiciona um novo Anúncio.
+
+    """
+    anuncio = Anuncio()
+    anuncio.email = email
+
+    resp = anuncio.add(data)
+    
+    return JSONResponse(content=resp, status_code=resp.get('code'))    
 
 
 @router.post('/anuncio/imagem')
@@ -50,10 +64,10 @@ async def anuncio_imagem(file: UploadFile, email: str = Depends(authenticate)) -
         img_data_bytes = len(img_data)
 
         if img_data_bytes > 0 and img_data_bytes <= max_img_size:
-           motando_anuncio = MotandoAnuncio()
-           motando_anuncio.email = email
+           anuncio = Anuncio()
+           anuncio.email = email
 
-           resp = motando_anuncio.add_img_tmp(filename=file.filename, data=img_data)   
+           resp = anuncio.add_img_tmp(filename=file.filename, data=img_data)   
 
            return JSONResponse(content=resp, status_code=resp.get('code'))
 

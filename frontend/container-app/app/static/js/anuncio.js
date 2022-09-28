@@ -127,7 +127,7 @@ $(document).ready(function() {
             beforeSend: function(){},
                 success: function(data, itemEl, listEl, boxEl, newInputEl, inputEl, id) {                    
                     filesUploaded.push(data);                
-                    $('#id_upload_img_lista').val(JSON.stringify(filesUploaded));
+                    $('#id_img_lista').val(JSON.stringify(filesUploaded));
             },
             error: function(el){
                 let parent = el.find('.jFiler-jProgressBar').parent();

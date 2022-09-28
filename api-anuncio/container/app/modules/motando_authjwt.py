@@ -16,7 +16,7 @@ from jose import jwt, JWTError
 JWT_SECRETKEY_ID = os.environ.get('MOTANDO_CSRF_SECRETKEY_ID')
 
 
-class MotandoAuthJwt():
+class AuthJwt():
     def __init__(self):
         signer = oci.auth.signers.InstancePrincipalsSecurityTokenSigner()
 

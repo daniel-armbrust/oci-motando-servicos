@@ -3,6 +3,11 @@
 #
 
 import os
+import random
+import string
+from datetime import datetime
+
+
 import requests
 
 #
@@ -77,3 +82,14 @@ def return_img_mimetype(img_filename: str = None) -> str:
         return 'image/webp'
     else:
         return None
+
+
+def return_random_string():
+    random_str_length = 20
+
+    ts = datetime.now().strftime('%s')
+
+    letters_and_digits = string.ascii_letters + string.digits
+    result_str = ''.join((random.choice(letters_and_digits) for i in range(random_str_length))) + ts
+
+    return result_str

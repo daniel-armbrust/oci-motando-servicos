@@ -47,7 +47,7 @@
                       <div class="shadow rounded bg-white border p-3">                            
                             <form name="cadastro_anuncio_form" id="id_cadastro_anuncio_form" autocomplete="off" method="post" action="{{ url_for('form_anuncio') }}">
                                 {{ form.csrf_token }}
-                                {{ form.upload_img_lista(id="id_upload_img_lista") }}                                     
+                                {{ form.img_lista(id="id_img_lista") }}                                     
                                 <div class="row pt-2 p-2">
                                     <div class="col">
                                         <label for="id_select_moto_marca" class="form-label my-text-purple">{{ form.moto_marca.label.text }}&nbsp;<span class="text-danger">*</span></label>

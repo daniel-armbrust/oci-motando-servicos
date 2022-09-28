@@ -66,7 +66,7 @@ class CadastroUsuarioParticularForm(FlaskForm):
 
 class AnuncioForm(FlaskForm):
     cor_choices = [
-        ('', 'Selecione a Cor',), 
+        ('Não especificado', 'Selecione a Cor',), 
         ('azul', 'Azul',), ('verde', 'Verde',), ('vermelho', 'Vermelho',),
         ('preto', 'Preto',), ('laranja', 'Laranja',), ('amarelo', 'Amarelo',),
         ('roxo', 'Roxo',), ('branco', 'Branco',), ('marrom', 'Marrom',), 
@@ -74,24 +74,24 @@ class AnuncioForm(FlaskForm):
     ]
 
     freios_choices = [
-        ('', 'Selecione os Freios',), 
+        ('Não especificado', 'Selecione os Freios',), 
         ('disco', 'Disco',), ('combinado', 'Combinado',), ('abs', 'ABS',),
         ('tambor', 'Tambor',), 
     ]
 
     partida_choices = [
-        ('', 'Selecione o Tipo da Partida',),
+        ('Não especificado', 'Selecione o Tipo da Partida',),
         ('pedal', 'Pedal',), ('eletrica', 'Elétrica',), ('ambos', 'Ambos',),
         ('outro', 'Outro',),
     ]
 
     refrigeracao_choices = [
-        ('', 'Selecione o Tipo de Refrigeração',),
+        ('Não especificado', 'Selecione o Tipo de Refrigeração',),
         ('liquida', 'Líquida',), ('ar', 'Ar',),
     ]
 
     estilo_choices = [
-        ('', 'Selecione o Estilo da Motocicleta',),
+        ('Não especificado', 'Selecione o Estilo da Motocicleta',),
         ('naked', 'Naked',), ('sport', 'Sport',), ('bigtrail', 'Big Trail',),
         ('caferacer', 'Café Racer',), ('custom', 'Custom',), ('classica', 'Clássica',),
         ('eletrica', 'Elétrica',), ('minimoto', 'Minimoto',), ('offroad', 'Off-Road',),
@@ -102,7 +102,7 @@ class AnuncioForm(FlaskForm):
     ]
 
     origem_choices = [
-        ('', 'Selecione a Origem da Motocicleta',),
+        ('Não especificado', 'Selecione a Origem da Motocicleta',),
         ('nacional', 'Nacional',), ('importada', 'Importada',),
     ]
 
@@ -139,7 +139,7 @@ class AnuncioForm(FlaskForm):
 
     cor = SelectField('Cor Predominante', [
         validators.DataRequired(message='É necessário informa uma Cor.')
-    ], choices=cor_choices, default='null')
+    ], choices=cor_choices, default='Não especificado')
 
     preco = DecimalField('Preço', [
         validators.DataRequired(),
@@ -194,26 +194,28 @@ class AnuncioForm(FlaskForm):
 
     freios = SelectField('Freios', [
         validators.optional()
-    ], choices=freios_choices)
+    ], choices=freios_choices, default='Não especificado')
 
     tipo_partida = SelectField('Tipo de partida', [
         validators.optional()
-    ], choices=partida_choices)
+    ], choices=partida_choices, default='Não especificado')
 
     refrigeracao = SelectField('Refrigeração do Motor', [
         validators.optional()
-    ], choices=refrigeracao_choices)
+    ], choices=refrigeracao_choices, default='Não especificado')
 
     estilo = SelectField('Estilo', [
         validators.optional()
-    ], choices=estilo_choices)
+    ], choices=estilo_choices, default='Não especificado')
 
     origem = SelectField('Origem', [
         validators.optional()
-    ], choices=origem_choices)
+    ], choices=origem_choices, default='Não especificado')
 
-    upload_img_lista = HiddenField([
+    img_lista = HiddenField([
         validators.DataRequired()
     ])
+
+    # TODO: validações zero_km, km, ano_fabricacao <= ano_modelo.
     
     submit = SubmitField(u'Concluír Anúncio')

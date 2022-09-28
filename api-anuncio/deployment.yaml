@@ -19,6 +19,8 @@ spec:
           value: motando_anuncio
         - name: MOTANDO_TMP_BUCKET_NAME
           value: motando_anuncio_tmp
+        - name: MOTANDO_IMGTMP_BUCKET_NAME
+          value: motando_anuncio_imgtmp
         - name: MOTANDO_NOSQL_TABLE_NAME
           value: motando_anuncio
     envFrom:
