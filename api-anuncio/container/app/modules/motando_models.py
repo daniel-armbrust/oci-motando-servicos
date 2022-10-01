@@ -4,7 +4,7 @@
 
 from datetime import datetime
 
-from typing import Optional, List
+from typing import Optional, List, Union
 from pydantic import BaseModel, Field, constr, EmailStr
 
 
@@ -33,17 +33,22 @@ class AnuncioBase(BaseModel):
     tipo_partida: str = 'Não especificado'
     refrigeracao: str = 'Não especificado'
     estilo: str = 'Não especificado'
-    origem: str = 'Não especificado'
+    origem: str = 'Não especificado'        
     img_lista: List[str]
 
 
 class AnuncioModel(AnuncioBase):
-    pass
+    pass  
 
 
 class AnuncioModelDb(AnuncioBase):
     __ts_now = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
 
-    email: EmailStr       
+    email: EmailStr  
+    moto_marca: Union[str, int]    
+    moto_modelo: Union[str, int]   
+    img_lista: List[dict] 
+    publicado: bool = False  
+    vendido: bool = False  
     data_cadastro: str = __ts_now
     data_modificacao: str = __ts_now

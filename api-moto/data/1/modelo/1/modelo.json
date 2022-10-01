@@ -2,5 +2,6 @@
     "status": "success", 
     "data": [
         {"id": 1, "modelo": "C 600 Sport", "imagem": ""}
-    ]
+    ],
+    "code": 200
 }

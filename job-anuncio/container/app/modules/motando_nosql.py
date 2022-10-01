@@ -65,7 +65,7 @@ class NoSQL():
 
       """
       query_request = QueryRequest()
-      query_request.set_statement(query)
+      query_request.set_statement(query)     
   
       nosql_result = []      
 

@@ -2,73 +2,6 @@
 # modules/motando_utils.py
 #
 
-import os
-import random
-import string
-from datetime import datetime
-
-
-import requests
-
-#
-# Globals
-#
-API_HOSTNAME = os.environ.get('MOTANDO_API_HOSTNAME')
-
-
-def get_moto_marca(marca_id: int = None) -> dict:
-    """Retorna as propriedades referente a Marca de uma motocicleta.
-
-    """
-    global API_HOSTNAME
-
-    url = f'http://{API_HOSTNAME}/moto/marca/{marca_id}'
-
-    resp = None
-
-    try:
-        resp = requests.get(url, timeout=10)
-    except Exception as e:
-        # TODO: Registrar em Log o insucesso.
-        return None
-    else:
-        resp.close()
-
-    if resp.status_code == 200:
-        json = resp.json()
-
-        return json['data']
-
-    else:
-        return None
-
-
-def get_moto_modelo(marca_id: int = None, modelo_id: int = None) -> dict:
-    """Retorna as propriedades referente ao Modelo de uma motocicleta.
-
-    """
-    global API_HOSTNAME
-
-    url = f'http://{API_HOSTNAME}/moto/marca/{marca_id}/modelo/{modelo_id}'
-
-    resp = None
-
-    try:
-        resp = requests.get(url, timeout=10)
-    except Exception as e:
-        # TODO: Registrar em Log o insucesso.
-        return None
-    else:
-        resp.close()
-
-    if resp.status_code == 200:
-        json = resp.json()
-
-        return json['data']
-
-    else:
-        return None
-
 
 def return_img_mimetype(img_filename: str = None) -> str:
     """Return image MIME TYPE.
@@ -82,14 +15,3 @@ def return_img_mimetype(img_filename: str = None) -> str:
         return 'image/webp'
     else:
         return None
-
-
-def return_random_string():
-    random_str_length = 20
-
-    ts = datetime.now().strftime('%s')
-
-    letters_and_digits = string.ascii_letters + string.digits
-    result_str = ''.join((random.choice(letters_and_digits) for i in range(random_str_length))) + ts
-
-    return result_str

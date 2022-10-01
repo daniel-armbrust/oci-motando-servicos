@@ -2,5 +2,6 @@
     "status": "success", 
     "data": [      
         {"id": 9, "modelo": "F 800 GS", "imagem": ""}
-    ]
+    ],
+    "code": 200
 }

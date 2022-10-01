@@ -3,7 +3,8 @@
 #
 
 import os
-import json
+#import secrets
+#from datetime import datetime
 
 import oci
 
@@ -14,10 +15,7 @@ from . import motando_utils
 #
 # Globals
 #
-NOSQL_TABLE_NAME = os.environ.get('MOTANDO_NOSQL_TABLE_NAME')
 BUCKET_IMGTMP_NAME = os.environ.get('MOTANDO_IMGTMP_BUCKET_NAME')
-BUCKET_TMP_NAME = os.environ.get('MOTANDO_TMP_BUCKET_NAME')
-BUCKET_NAME = os.environ.get('MOTANDO_BUCKET_NAME')
 
 
 class Anuncio():
@@ -26,42 +24,45 @@ class Anuncio():
         
         region = signer.region
 
-        self._client = oci.object_storage.ObjectStorageClient(config={'region': region}, signer=signer)
-        self._objstg_ns = self._client.get_namespace().data
-    
+        self._objstg_client = oci.object_storage.ObjectStorageClient(config={'region': region}, signer=signer)
+        self._objstg_ns = self._objstg_client.get_namespace().data
+        
     @property
     def email(self) -> str:
         return self._email
     
     @email.setter
     def email(self, email: str = None):
-        self._email = email
-        
+        self._email = email        
 
     def add(self, data: AnuncioModel) -> dict:
         """Adiciona um novo anúncio.
 
-        """
-        global BUCKET_TMP_NAME
-              
-        anuncio = AnuncioModelDb(**data.dict(), email=self._email)
-        anuncio_json = json.dumps(anuncio.dict())
+        """     
+        anuncio_dict = data.dict()   
 
-        randstr = motando_utils.return_random_string()
-        filename = f'{randstr}.json'
+        img_lista = anuncio_dict.pop('img_lista')
 
-        try:
-            resp = self._client.put_object(namespace_name=self._objstg_ns, bucket_name=BUCKET_TMP_NAME,
-                object_name=filename, put_object_body=anuncio_json, content_type='application/json')
-        except oci.exceptions.ServiceError:
-            return {'status': 'error', 'message': 'Erro interno do servidor.', 'code': 500}
+        new_img_lista = []
+
+        # Cria uma nova lista de imagens para processamento futuro.
+        for img in img_lista:
+            img_props = {'url' : '', 'tmp_img': img, 'work_request_id': '', 'status': ''}
+            new_img_lista.append(img_props)            
+
+        # Prepara novo anúncio para ser adicionado e publicado futuramente.
+        anuncio_dict.update({'email': self._email})        
+        anuncio_dict.update({'img_lista': new_img_lista})  
+
+        anuncio = AnuncioModelDb.parse_obj(anuncio_dict)
         
-        if resp.status == 200:
-            msg = {'status': 'success', 'message': 'Anuncio aceito. Aguarde a sua criação.', 'code': 202}
+        nosql = NoSQL()
+        added = nosql.add(anuncio.dict())       
+
+        if added:
+            return {'status': 'success', 'message': 'Anuncio aceito. Aguarde a sua criação.', 'code': 202}
         else:
-            msg = {'status': 'error', 'message': 'Erro interno do servidor.', 'code': 500}
-        
-        return msg
+            return {'status': 'error', 'message': 'Erro interno do servidor.', 'code': 500}               
 
     def add_img_tmp(self, filename: str = None, data: str = None) -> dict:
         """Salva temporariamente uma imagem em um BUCKET de uso temporário.
@@ -69,12 +70,15 @@ class Anuncio():
         """
         global BUCKET_IMGTMP_NAME
 
+        #randstr = secrets.token_hex(10) + datetime.now().strftime('%s')
+        
         img_filename = f'{self._email}/{filename}'
+        #img_filename = '%s/%s%s' % (self._email, randstr, os.path.splitext(filename)[1])
 
         mimetype = motando_utils.return_img_mimetype(img_filename)
 
         try:
-            resp = self._client.put_object(namespace_name=self._objstg_ns, bucket_name=BUCKET_IMGTMP_NAME, 
+            resp = self._objstg_client.put_object(namespace_name=self._objstg_ns, bucket_name=BUCKET_IMGTMP_NAME, 
                 object_name=img_filename, put_object_body=data, content_type=mimetype)
         except oci.exceptions.ServiceError:
             return {'status': 'error', 'message': 'Erro interno do servidor.', 'code': 500}

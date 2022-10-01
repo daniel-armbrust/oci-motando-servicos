@@ -13,6 +13,7 @@ deployment_dir[4]="api-usuario/"
 deployment_dir[5]="api-anuncio/"
 deployment_dir[6]="api-auth/"
 deployment_dir[7]="api-gateway/20220304/"
+deployment_dir[8]="job-anuncio/"
 
 case $1 in 
    -fp|--fp|--full-deploy)

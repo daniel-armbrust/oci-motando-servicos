@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: job-motando-anuncio
+spec:
+  schedule: "*/2 * * * *"  
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: job-motando-anuncio
+        spec:    
+          restartPolicy: Never      
+          containers:
+          - name: job-anuncio-crt
+            image: gru.ocir.io/idreywyoj0pu/motando-job-anuncio:latest
+            env:
+                - name: MOTANDO_NOSQL_TABLE_NAME
+                  value: motando_anuncio
+                - name: MOTANDO_ANUNCIO_BUCKET_NAME
+                  value: motando_anuncio           
+                - name: MOTANDO_IMGTMP_BUCKET_NAME
+                  value: motando_anuncio_imgtmp       
+                - name: MAX_PARALLEL_ANUNCIO
+                  value: "3"
+            envFrom:
+                - prefix: MOTANDO_
+                  configMapRef:
+                      name: motando-config
+          imagePullSecrets:
+              - name: motando-secret

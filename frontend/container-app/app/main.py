@@ -199,6 +199,8 @@ def form_anuncio():
             if resp.get('status') == 'success':
                 flask_flash(u'Novo anúncio cadastrado com sucesso.', 'success')
 
+                # TODO: redirect
+
                 return render_template('admin_particular/meus_anuncios.html')
                 
             else: 

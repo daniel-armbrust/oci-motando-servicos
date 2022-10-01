@@ -14,11 +14,7 @@ spec:
     ports:
       - containerPort: 5000
         name: anuncio-port
-    env:
-        - name: MOTANDO_BUCKET_NAME
-          value: motando_anuncio
-        - name: MOTANDO_TMP_BUCKET_NAME
-          value: motando_anuncio_tmp
+    env:     
         - name: MOTANDO_IMGTMP_BUCKET_NAME
           value: motando_anuncio_imgtmp
         - name: MOTANDO_NOSQL_TABLE_NAME

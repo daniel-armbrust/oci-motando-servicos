@@ -111,7 +111,7 @@ class Modelo(Moto):
         uma Marca.
 
         """
-        filename = f'{marca_id}/modelo/{modelo_id}/modelo.json'
+        filename = f'{marca_id}/modelo/{modelo_id}/modelo.json'       
 
         data = self._get_objstg_filename(filename)
         data = dict(data)
