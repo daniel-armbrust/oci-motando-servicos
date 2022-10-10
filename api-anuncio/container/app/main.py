@@ -38,6 +38,19 @@ async def authenticate(token: str = Depends(oauth2_schema)) -> str:
     return email
 
 
+@router.get('/usuario/particular/anuncio')
+async def list_particular_anuncio(offset: int = 0, email: str = Depends(authenticate)) -> dict:
+    """Obtém todos os anúncios do usuário particular.
+    
+    """
+    anuncio = Anuncio()
+    anuncio.email = email
+
+    resp = anuncio.list(offset=offset)
+
+    return JSONResponse(content=resp, status_code=resp.get('code')) 
+
+
 @router.post('/anuncio')
 async def anuncio(data: AnuncioModel, email: str = Depends(authenticate)) -> dict:
     """Adiciona um novo Anúncio.

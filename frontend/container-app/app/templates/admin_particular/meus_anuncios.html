@@ -4,7 +4,35 @@
 
 {% block body %}
    {{ super() }}     
-   <h1> Meus Anúncios </h1>  
+   <section>
+       <div class="container">     
+           <div class="row">               
+                 <div class="col-3 d-flex justify-content-center">
+                     <a href="{{ url_for('admin_particular_home') }}">
+                     <img src="{{ url_for('static', filename='img/motando_logo-402x150.png') }}" class="img-fluid" alt="Motando" 
+                          style="width: 220px;">
+                     </a>
+                 </div>         
+           </div>
+           {% include "__flash_messages.html" %}  
+           <div class="row">
+                 <div class="col-3">
+                     {% include "/admin_particular/__left_menu.html" %}  
+                 </div>
+                 <div class="col-9">
+                     <br>
+                     <div class="shadow rounded bg-white border p-3">
+                        <div class="row">
+                          <div class="col">
+                             <h2 class="h4 fw-bold"> Meus Anúncios </h2>                                 
+                          </div>
+                     </div>  
+
+                 </div> <!-- right panel --> 
+           </div>
+       </div>
+   </section>
+   <br><br>   
 {% endblock %}
 
 {% block footer %}
@@ -12,4 +40,6 @@
 {% endblock %}
 
 {% block body_scripts %}   
+   <script type="text/javascript"> const anuncioUrl = "{{ url_for('admin_particular_anuncio_lista') }}"; </script>
+   <script type="text/javascript" src="{{ url_for('static', filename='js/meus-anuncios.js') }}"></script>
 {% endblock %}

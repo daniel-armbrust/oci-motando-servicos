@@ -5,7 +5,7 @@
 import os
 
 from flask import Flask, flash as flask_flash, render_template
-from flask import request, make_response, url_for, redirect, session
+from flask import request, make_response, url_for, redirect, session, jsonify
 from flask_wtf.csrf import CSRFProtect, CSRFError
 
 from modules.motando_forms import LoginForm, CadastroUsuarioParticularForm, AnuncioForm
@@ -57,17 +57,17 @@ def login():
            jwt = motando_utils.auth_service(email=email, senha=senha)
            
            if jwt.get('status') == 'success':
-               jwt_token = jwt['data']['access_token']
+               token = jwt['data']['access_token']
 
                auth_cookie = MotandoAuthCookie()
 
                auth_cookie.email = email
-               auth_cookie.jwt_token = jwt_token
+               auth_cookie.jwt_token = token
                
                cookie_value = auth_cookie.create()
 
                # TODO: implementar lógica para redirecionar 'admin_lojista'
-               resp = make_response(redirect(url_for('admin_particular')))
+               resp = make_response(redirect(url_for('admin_particular_home')))
 
                resp.set_cookie(key=AUTH_COOKIE_NAME, value=cookie_value, secure=True, 
                    max_age=3600, httponly=True, samesite='Strict', domain='motando.ocibook.com.br')
@@ -86,6 +86,7 @@ def login():
 
 
 @app.route('/logout', methods=['GET', 'POST'])
+@motando_utils.ensure_logged_in
 def logout():
     resp = make_response(redirect(url_for('home')))
 
@@ -154,7 +155,13 @@ def confirm():
 
 @app.route('/admin/usuario/particular', methods=['GET'])
 @motando_utils.ensure_logged_in
-def admin_particular():
+def admin_particular_home():
+    return render_template('admin_particular/home.html')    
+
+
+@app.route('/admin/usuario/particular/conta', methods=['GET'])
+@motando_utils.ensure_logged_in
+def admin_particular_conta():
     global AUTH_COOKIE_NAME
 
     cookie_value = request.cookies.get(AUTH_COOKIE_NAME, '')
@@ -163,17 +170,52 @@ def admin_particular():
     jwt_token = auth_cookie.get_jwt(cookie_value)
 
     usuario_particular = MotandoUsuarioParticular()    
-    profile = usuario_particular.get_profile(jwt_token)
+    usuario_particular.jwt_token = jwt_token
+
+    profile = usuario_particular.get_profile()
 
     if profile.get('status') == 'success':
-        return render_template('admin_particular/home.html', profile=profile)
+        return render_template('admin_particular/minha_conta.html', profile=profile)
     else:
         return render_template('404.html')
 
 
-@app.route('/admin/usuario/particular/anuncio', methods=['GET', 'POST'])
+@app.route('/admin/usuario/particular/anuncio', methods=['GET'])
+@motando_utils.ensure_logged_in
+def admin_particular_anuncio():
+    """Painel dos Meus Anúncios.
+    
+    """
+    return render_template('admin_particular/meus_anuncios.html')
+
+
+@app.route('/admin/usuario/particular/anuncio/lista', methods=['GET'])
+@motando_utils.ensure_logged_in
+def admin_particular_anuncio_lista():
+    """Lista os anúncios do usuário particular.
+    
+    """
+    global AUTH_COOKIE_NAME
+
+    cookie_value = request.cookies.get(AUTH_COOKIE_NAME, '')
+    
+    auth_cookie = MotandoAuthCookie()    
+    jwt_token = auth_cookie.get_jwt(cookie_value)
+
+    usuario_particular = MotandoUsuarioParticular()    
+    usuario_particular.jwt_token = jwt_token
+    
+    anuncio_list = usuario_particular.list_anuncio()
+
+    return jsonify(anuncio_list), anuncio_list.get('code')
+
+
+@app.route('/admin/usuario/particular/form/anuncio', methods=['GET', 'POST'])
 @motando_utils.ensure_logged_in
 def form_anuncio():    
+    """Formulário para cadastro de um Novo Anúncio.
+    
+    """
     global AUTH_COOKIE_NAME
 
     form = AnuncioForm()
@@ -189,20 +231,17 @@ def form_anuncio():
             cookie_value = request.cookies.get(AUTH_COOKIE_NAME, '')    
                 
             auth_cookie = MotandoAuthCookie()    
-            jwt_token = auth_cookie.get_jwt(cookie_value)
+            jwt = auth_cookie.get_jwt(cookie_value)
             
             motando_anuncio = MotandoAnuncio()
-            motando_anuncio.jwt_token = jwt_token
+            motando_anuncio.jwt_token = jwt
 
             resp = motando_anuncio.add(form.data)            
 
             if resp.get('status') == 'success':
                 flask_flash(u'Novo anúncio cadastrado com sucesso.', 'success')
 
-                # TODO: redirect
-
-                return render_template('admin_particular/meus_anuncios.html')
-                
+                return redirect(url_for('admin_particular_anuncio')) 
             else: 
                 flask_flash(u'Erro ao cadastrar novo anúncio.', 'error')
             
@@ -212,7 +251,7 @@ def form_anuncio():
     return render_template('admin_particular/form_anuncio.html', form=form)
 
 
-@app.route('/admin/usuario/particular/anuncio/imagem', methods=['POST', 'DELETE'])
+@app.route('/admin/usuario/particular/form/anuncio/imagem', methods=['POST', 'DELETE'])
 @motando_utils.ensure_logged_in
 @csrf.exempt
 def anuncio_img_upload():    

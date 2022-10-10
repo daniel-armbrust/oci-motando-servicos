@@ -181,6 +181,24 @@
          }
       },
       {
+        "path": "/anuncio",
+        "methods": ["POST"],
+        "backend": {
+             "type": "HTTP_BACKEND",
+             "url": "http://api.ocibook.local/anuncio",
+             "isSslVerifyDisabled": true,
+             "connectTimeoutInSeconds": 60,            
+             "readTimeoutInSeconds": 10,
+             "sendTimeoutInSeconds": 10
+        },
+        "requestPolicies": {
+          "cors": {
+             "allowedOrigins": ["https://motando.ocibook.com.br"],
+             "allowedMethods": ["POST"]
+          }
+        }
+      },
+      {
         "path": "/usuario/particular",
         "methods": ["POST"],
         "backend": {
@@ -195,6 +213,24 @@
           "cors": {
              "allowedOrigins": ["https://motando.ocibook.com.br"],
              "allowedMethods": ["POST"]
+          }
+        }
+      },
+      {
+        "path": "/usuario/particular/anuncio",
+        "methods": ["GET"],
+        "backend": {
+             "type": "HTTP_BACKEND",
+             "url": "http://api.ocibook.local/usuario/particular/anuncio",
+             "isSslVerifyDisabled": true,
+             "connectTimeoutInSeconds": 60,            
+             "readTimeoutInSeconds": 10,
+             "sendTimeoutInSeconds": 10
+        },
+        "requestPolicies": {
+          "cors": {
+             "allowedOrigins": ["https://motando.ocibook.com.br"],
+             "allowedMethods": ["GET"]
           }
         }
       },

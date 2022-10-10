@@ -3,12 +3,10 @@
 #
 
 import os
-#import secrets
-#from datetime import datetime
 
 import oci
 
-from .motando_models import AnuncioModel, AnuncioModelDb
+from .motando_models import AnuncioModel, AnuncioModelDb, AnuncioModelList
 from .motando_nosql import NoSQL
 from . import motando_utils
 
@@ -16,6 +14,7 @@ from . import motando_utils
 # Globals
 #
 BUCKET_IMGTMP_NAME = os.environ.get('MOTANDO_IMGTMP_BUCKET_NAME')
+NOSQL_TABLE_NAME = os.environ.get('MOTANDO_NOSQL_TABLE_NAME')
 
 
 class Anuncio():
@@ -34,6 +33,58 @@ class Anuncio():
     @email.setter
     def email(self, email: str = None):
         self._email = email        
+    
+    def list(self, offset: int = 0) -> dict:
+        """Lista os anúncios de determinado usuário (particular ou lojista).
+        
+        """
+        global NOSQL_TABLE_NAME
+
+        limit = 10
+
+        if offset < 0:
+            offset = 0
+        
+        query = f'''
+            SELECT id, moto_marca, moto_modelo, km, zero_km, cor, preco, publicado, 
+                   vendido, img_lista, data_cadastro FROM {NOSQL_TABLE_NAME} 
+                WHERE email = "{self._email}" LIMIT {limit} OFFSET {offset}
+        '''
+
+        nosql = NoSQL()
+        nosql_result = nosql.query(query)
+
+        if len(nosql_result) > 0:
+            anuncio_list = []
+
+            for result in nosql_result:
+                db_preco = result.pop('preco')
+                preco = '{:.2f}'.format(db_preco)
+
+                db_data_cadastro = result.pop('data_cadastro')
+                data_cadastro = db_data_cadastro.strftime('%s')
+
+                db_img_lista = result.pop('img_lista')
+
+                if result.get('publicado') == True:
+                    img_lista = []
+
+                    for img_url in db_img_lista:
+                        img_lista.append(img_url.get('url'))
+                    
+                    result.update({'status': 'publicado', 'preco': preco, 
+                        'data_cadastro': data_cadastro, 'img_lista': img_lista})         
+                else:
+                    result.update({'status': 'aguardando publicação', 'preco': preco, 
+                        'data_cadastro': data_cadastro})
+                
+                anuncio = AnuncioModelList.parse_obj(result)
+                anuncio_list.append(anuncio.dict())
+            
+            return {'status': 'success', 'data': anuncio_list, 'code': 200}
+
+        else:
+            return {'status': 'fail', 'message': 'Nenhum anúncio encontrado.', 'code': 404}
 
     def add(self, data: AnuncioModel) -> dict:
         """Adiciona um novo anúncio.
@@ -68,13 +119,10 @@ class Anuncio():
         """Salva temporariamente uma imagem em um BUCKET de uso temporário.
         
         """
-        global BUCKET_IMGTMP_NAME
-
-        #randstr = secrets.token_hex(10) + datetime.now().strftime('%s')
+        global BUCKET_IMGTMP_NAME        
         
         img_filename = f'{self._email}/{filename}'
-        #img_filename = '%s/%s%s' % (self._email, randstr, os.path.splitext(filename)[1])
-
+        
         mimetype = motando_utils.return_img_mimetype(img_filename)
 
         try:
@@ -93,3 +141,7 @@ class Anuncio():
 
     def del_img_tmp(self):
         global BUCKET_IMGTMP_NAME    
+
+
+class AnuncioPublico():
+    pass

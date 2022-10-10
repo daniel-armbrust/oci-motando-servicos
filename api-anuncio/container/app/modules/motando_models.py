@@ -52,3 +52,17 @@ class AnuncioModelDb(AnuncioBase):
     vendido: bool = False  
     data_cadastro: str = __ts_now
     data_modificacao: str = __ts_now
+
+
+class AnuncioModelList(BaseModel):
+   id: int
+   moto_marca: str
+   moto_modelo: str
+   km: int = Field(..., ge=0)
+   zero_km: bool
+   cor: str
+   preco: float
+   data_cadastro: str
+   status: str 
+   vendido: bool
+   img_lista: Optional[List[str]]

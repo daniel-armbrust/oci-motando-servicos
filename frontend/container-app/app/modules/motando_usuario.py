@@ -20,6 +20,14 @@ class MotandoUsuarioParticular():
 
         self.__endpoint = f'http://{API_HOSTNAME}'    
     
+    @property
+    def jwt_token(self):
+        return self.__jwt_token
+    
+    @jwt_token.setter
+    def jwt_token(self, jwt_token: str = None):
+        self.__jwt_token = jwt_token
+    
     def add(self, data: dict = None) -> dict:
         """Adiciona um novo usuário particular a partir de dados do formulário.
         
@@ -47,7 +55,7 @@ class MotandoUsuarioParticular():
         
         return resp.json()
 
-    def get_profile(self, jwt_token: str = None) -> dict:
+    def get_profile(self) -> dict:
         """Obtém dados do perfil do usuário.
 
         Returns:
@@ -55,7 +63,25 @@ class MotandoUsuarioParticular():
         """
         url = f'{self.__endpoint}/usuario/particular'
 
-        headers = {'Authorization': f'Bearer {jwt_token}'}
+        headers = {'Authorization': f'Bearer {self.__jwt_token}'}
+
+        try:
+            resp = requests.get(url, headers=headers)
+        except Exception as e:
+            # TODO: Registrar em Log o insucesso.            
+            return {'status ': 'error', 'message': 'Erro interno do servidor.', 'code': 500}
+        else:
+            resp.close()
+    
+        return resp.json()
+    
+    def list_anuncio(self, offset: int = 0) -> dict:
+        """Lista os anúncios do usuário.
+        
+        """
+        url = f'{self.__endpoint}/usuario/particular/anuncio'
+
+        headers = {'Authorization': f'Bearer {self.__jwt_token}'}
 
         try:
             resp = requests.get(url, headers=headers)
