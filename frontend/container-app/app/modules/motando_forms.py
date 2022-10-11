@@ -141,10 +141,13 @@ class AnuncioForm(FlaskForm):
         validators.DataRequired(message='É necessário informa uma Cor.')
     ], choices=cor_choices, default='Não especificado')
 
-    preco = DecimalField('Preço', [
-        validators.DataRequired(),
-        validators.NumberRange(min=1, message=u'Preço inválido.'),
-    ], places=8)
+    #preco = DecimalField('Preço', [
+    #    validators.DataRequired(),
+    #    validators.NumberRange(min=1, message=u'Preço inválido.'),
+    #], places=8)
+    preco = StringField('Preço', [
+        validators.DataRequired()
+    ], default='0.00')
 
     frase_vendedora = StringField('Frase Vendedora', [  
         validators.length(max=500),

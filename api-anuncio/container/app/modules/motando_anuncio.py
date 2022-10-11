@@ -34,6 +34,42 @@ class Anuncio():
     def email(self, email: str = None):
         self._email = email        
     
+    def get_total(self) -> dict:
+        """Obtém o total de anúncios "publicados" e "não publicados".
+
+        """
+        global NOSQL_TABLE_NAME
+
+        query_publicado = f''' 
+            SELECT count(id) as publicado FROM {NOSQL_TABLE_NAME} 
+               WHERE email = "{self._email}" AND publicado = true
+        '''      
+
+        nosql = NoSQL()
+        nosql_result_publicado = nosql.query(query_publicado)
+
+        if len(nosql_result_publicado) > 0:
+            count_publicado = nosql_result_publicado[0]['publicado']
+        else:
+            count_publicado = 0
+
+        query_nao_publicado = f''' 
+            SELECT count(id) as nao_publicado FROM {NOSQL_TABLE_NAME} 
+               WHERE email = "{self._email}" AND publicado = false
+        '''
+
+        nosql = NoSQL()
+        nosql_result_nao_publicado = nosql.query(query_nao_publicado)       
+
+        if len(nosql_result_nao_publicado) > 0:
+            count_nao_publicado = nosql_result_nao_publicado[0]['nao_publicado']
+        else:
+            count_nao_publicado = 0
+        
+        data = {'total_publicado': count_publicado, 'total_nao_publicado': count_nao_publicado}
+
+        return {'status': 'success', 'data': data, 'code': 200}
+    
     def list(self, offset: int = 0) -> dict:
         """Lista os anúncios de determinado usuário (particular ou lojista).
         
@@ -46,9 +82,10 @@ class Anuncio():
             offset = 0
         
         query = f'''
-            SELECT id, moto_marca, moto_modelo, km, zero_km, cor, preco, publicado, 
-                   vendido, img_lista, data_cadastro FROM {NOSQL_TABLE_NAME} 
-                WHERE email = "{self._email}" LIMIT {limit} OFFSET {offset}
+            SELECT id, moto_marca, moto_modelo, ano_fabricacao, ano_modelo, km, 
+                   zero_km, cor, preco, publicado, vendido, img_lista, data_cadastro 
+                FROM {NOSQL_TABLE_NAME} 
+            WHERE email = "{self._email}" LIMIT {limit} OFFSET {offset}
         '''
 
         nosql = NoSQL()
@@ -62,7 +99,7 @@ class Anuncio():
                 preco = '{:.2f}'.format(db_preco)
 
                 db_data_cadastro = result.pop('data_cadastro')
-                data_cadastro = db_data_cadastro.strftime('%s')
+                data_cadastro = db_data_cadastro.strftime('%d/%m/%Y')
 
                 db_img_lista = result.pop('img_lista')
 
@@ -81,7 +118,10 @@ class Anuncio():
                 anuncio = AnuncioModelList.parse_obj(result)
                 anuncio_list.append(anuncio.dict())
             
-            return {'status': 'success', 'data': anuncio_list, 'code': 200}
+            # Obtém o total de anúncios publicados e não publicados.
+            data_total = self.get_total()
+            
+            return {'status': 'success', 'data': anuncio_list, 'meta': data_total.get('data'), 'code': 200}
 
         else:
             return {'status': 'fail', 'message': 'Nenhum anúncio encontrado.', 'code': 404}

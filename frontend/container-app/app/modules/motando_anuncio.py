@@ -46,6 +46,7 @@ class MotandoAnuncio():
         data.pop('csrf_token')
 
         # Formata PRECO
+        print(data.get('preco'))
         data.update({'preco': format(data.get('preco'), '.2f')})              
 
         try:

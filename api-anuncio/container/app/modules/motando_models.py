@@ -58,6 +58,8 @@ class AnuncioModelList(BaseModel):
    id: int
    moto_marca: str
    moto_modelo: str
+   ano_fabricacao: str
+   ano_modelo: str
    km: int = Field(..., ge=0)
    zero_km: bool
    cor: str

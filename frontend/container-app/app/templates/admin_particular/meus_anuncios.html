@@ -2,6 +2,10 @@
 
 {% block title %} Usuário Particular {% endblock %}
 
+{% block head_items %}
+   <link href="{{ url_for('static', filename='css/ajax-loading.css') }}" type="text/css" rel="stylesheet">
+{% endblock %}
+
 {% block body %}
    {{ super() }}     
    <section>
@@ -26,8 +30,11 @@
                           <div class="col">
                              <h2 class="h4 fw-bold"> Meus Anúncios </h2>                                 
                           </div>
-                     </div>  
-
+                     </div>                    
+                     {% include "__ajax_loading.html" %}
+                     {% include "__modal_message.html" %}
+                     <div id="id_meus_anuncios">                        
+                     </div> 
                  </div> <!-- right panel --> 
            </div>
        </div>

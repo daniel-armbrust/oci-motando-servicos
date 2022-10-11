@@ -4,6 +4,8 @@
 
 $(document).ready(function() {       
 
+    $('#id_preco').maskMoney({symbol:'R$ ', thousands:'.', decimal:',', symbolStay: true});
+
     $('#id_select_moto_marca').empty();
     $('#id_select_moto_marca').append('<option value="">Selecione a Marca</option>'); 
 
