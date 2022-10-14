@@ -54,6 +54,36 @@ class AnuncioModelDb(AnuncioBase):
     data_modificacao: str = __ts_now
 
 
+class AnuncioModelDbOut(BaseModel):
+    id: int = Field(..., gt=0)
+    moto_marca: str
+    moto_modelo: str
+    ano_fabricacao: int = Field(..., gt=1000)
+    ano_modelo: int = Field(..., gt=1000)
+    placa: str = Field(..., max_length=20)
+    km: int = Field(..., ge=0)
+    zero_km: bool
+    cor: str
+    preco: float
+    frase_vendedora: str
+    descricao: str
+    opcional_alarme: bool
+    opcional_bau: bool
+    opcional_computador: bool
+    opcional_gps: bool
+    aceita_contraoferta: Optional[bool]
+    aceita_troca: Optional[bool]
+    doc_ok: Optional[bool]
+    sinistro: Optional[bool]
+    trilha_pista: Optional[bool]
+    freios: str
+    tipo_partida: str
+    refrigeracao: str
+    estilo: str 
+    origem: str 
+    img_lista: List[dict]
+    
+
 class AnuncioModelList(BaseModel):
    id: int
    moto_marca: str

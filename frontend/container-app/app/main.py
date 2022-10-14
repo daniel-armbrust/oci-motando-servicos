@@ -3,6 +3,7 @@
 #
 
 import os
+import json
 
 from flask import Flask, flash as flask_flash, render_template
 from flask import request, make_response, url_for, redirect, session, jsonify
@@ -10,7 +11,7 @@ from flask_wtf.csrf import CSRFProtect, CSRFError
 
 from modules.motando_forms import LoginForm, CadastroUsuarioParticularForm, AnuncioForm
 from modules.motando_authcookie import MotandoAuthCookie
-from modules.motando_usuario import MotandoUsuarioParticular
+from modules.motando_usuario import MotandoUsuarioParticular, MotandoUsuarioParticularAnuncio
 from modules.motando_anuncio import MotandoAnuncio
 from modules import motando_utils
 
@@ -189,6 +190,35 @@ def admin_particular_anuncio():
     return render_template('admin_particular/meus_anuncios.html')
 
 
+@app.route('/admin/usuario/particular/anuncio/<int:anuncio_id>', methods=['GET'])
+@motando_utils.ensure_logged_in
+def admin_edit_particular_anuncio(anuncio_id: int):
+    """Edita um anúncio em particular.
+    
+    """
+    global AUTH_COOKIE_NAME
+
+    if anuncio_id:        
+        cookie_value = request.cookies.get(AUTH_COOKIE_NAME, '')
+    
+        auth_cookie = MotandoAuthCookie()    
+        jwt_token = auth_cookie.get_jwt(cookie_value)
+
+        anuncio = MotandoUsuarioParticularAnuncio()
+        anuncio.jwt_token = jwt_token
+
+        resp = anuncio.get(anuncio_id)
+
+        if resp.get('status') == 'success':
+            anuncio_data = resp.get('data')
+            
+            form = AnuncioForm(data=json.loads(anuncio_data))
+
+            return render_template('admin_particular/form_edit_anuncio.html', anuncio_id=anuncio_id, form=form)
+    
+    return render_template('404.html'), 404
+
+
 @app.route('/admin/usuario/particular/anuncio/lista', methods=['GET'])
 @motando_utils.ensure_logged_in
 def admin_particular_anuncio_lista():
@@ -202,10 +232,10 @@ def admin_particular_anuncio_lista():
     auth_cookie = MotandoAuthCookie()    
     jwt_token = auth_cookie.get_jwt(cookie_value)
 
-    usuario_particular = MotandoUsuarioParticular()    
-    usuario_particular.jwt_token = jwt_token
+    anuncio = MotandoUsuarioParticularAnuncio()    
+    anuncio.jwt_token = jwt_token
     
-    anuncio_list = usuario_particular.list_anuncio()
+    anuncio_list = anuncio.list()
 
     return jsonify(anuncio_list), anuncio_list.get('code')
 
@@ -231,10 +261,10 @@ def form_anuncio():
             cookie_value = request.cookies.get(AUTH_COOKIE_NAME, '')    
                 
             auth_cookie = MotandoAuthCookie()    
-            jwt = auth_cookie.get_jwt(cookie_value)
+            jwt_token = auth_cookie.get_jwt(cookie_value)
             
             motando_anuncio = MotandoAnuncio()
-            motando_anuncio.jwt_token = jwt
+            motando_anuncio.jwt_token = jwt_token
 
             resp = motando_anuncio.add(form.data)            
 
@@ -264,7 +294,7 @@ def anuncio_img_upload():
         if img.mimetype in allowed_mimetype:
             img_data = img.read()
             img_data_bytes = len(img_data)
-
+           
             if img_data_bytes > 0 and img_data_bytes <= max_img_size:
                 cookie_value = request.cookies.get(AUTH_COOKIE_NAME, '')    
                 

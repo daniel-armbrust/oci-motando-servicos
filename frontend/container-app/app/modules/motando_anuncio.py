@@ -29,7 +29,7 @@ class MotandoAnuncio():
     @jwt_token.setter
     def jwt_token(self, jwt_token: str):
         self._jwt_token = jwt_token
-    
+
     def add(self, data: dict = None) -> dict:
         """Adiciona um novo anúncio.
         
@@ -46,8 +46,10 @@ class MotandoAnuncio():
         data.pop('csrf_token')
 
         # Formata PRECO
-        print(data.get('preco'))
-        data.update({'preco': format(data.get('preco'), '.2f')})              
+        str_preco = data.get('preco')
+        float_preco = float(str_preco.replace('.', '').replace(',', '.'))
+
+        data.update({'preco': format(float_preco, '.2f')})              
 
         try:
             img_lista = ast.literal_eval(data.get('img_lista'))
@@ -86,6 +88,6 @@ class MotandoAnuncio():
             # TODO: Registrar em Log o insucesso.            
             return {'status ': 'error', 'message': 'Erro interno do servidor.', 'code': 500}
         else:
-            resp.close()
+            resp.close()              
 
         return resp.json()

@@ -51,6 +51,19 @@ async def list_particular_anuncio(offset: int = 0, email: str = Depends(authenti
     return JSONResponse(content=resp, status_code=resp.get('code')) 
 
 
+@router.get('/usuario/particular/anuncio/{anuncio_id}')
+async def edit_particular_anuncio(anuncio_id: int, email: str = Depends(authenticate)) -> dict:
+    """Obtém todos os anúncios do usuário particular.
+    
+    """
+    anuncio = Anuncio()
+    anuncio.email = email
+
+    resp = anuncio.get(anuncio_id=anuncio_id)
+
+    return JSONResponse(content=resp, status_code=resp.get('code')) 
+
+
 @router.post('/anuncio')
 async def anuncio(data: AnuncioModel, email: str = Depends(authenticate)) -> dict:
     """Adiciona um novo Anúncio.
@@ -74,7 +87,7 @@ async def anuncio_imagem(file: UploadFile, email: str = Depends(authenticate)) -
 
     if file.content_type in allowed_mimetype:
         img_data = await file.read()
-        img_data_bytes = len(img_data)
+        img_data_bytes = len(img_data)        
 
         if img_data_bytes > 0 and img_data_bytes <= max_img_size:
            anuncio = Anuncio()

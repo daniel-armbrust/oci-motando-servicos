@@ -6,7 +6,7 @@ import os
 
 import oci
 
-from .motando_models import AnuncioModel, AnuncioModelDb, AnuncioModelList
+from .motando_models import AnuncioModel, AnuncioModelDb, AnuncioModelDbOut, AnuncioModelList
 from .motando_nosql import NoSQL
 from . import motando_utils
 
@@ -33,6 +33,34 @@ class Anuncio():
     @email.setter
     def email(self, email: str = None):
         self._email = email        
+
+    def get(self, anuncio_id: int) -> dict:
+        """Retorna um anúncio em particular.
+
+        """
+        global NOSQL_TABLE_NAME
+
+        query = f'''
+            SELECT id, moto_marca, moto_modelo, ano_fabricacao, ano_modelo, placa, 
+                   km, zero_km, cor, preco, frase_vendedora, descricao, opcional_alarme,
+                   opcional_bau, opcional_computador, opcional_gps, aceita_contraoferta,
+                   aceita_troca, doc_ok, sinistro, trilha_pista, freios, tipo_partida,
+                   refrigeracao, estilo, origem, img_lista
+              FROM {NOSQL_TABLE_NAME} WHERE email = "{self._email}" AND 
+                 (publicado = true AND id = {anuncio_id})
+        '''
+
+        nosql = NoSQL()
+        nosql_result = nosql.query(query)
+
+        if len(nosql_result) > 0:
+            anuncio = AnuncioModelDbOut(**nosql_result[0])
+
+            anuncio_json = anuncio.json()
+            
+            return {'status': 'success', 'data': anuncio_json, 'code': 200}
+        else:
+            return {'status': 'fail', 'message': 'Nenhum anúncio encontrado.', 'code': 404}
     
     def get_total(self) -> dict:
         """Obtém o total de anúncios "publicados" e "não publicados".
@@ -144,6 +172,10 @@ class Anuncio():
         # Prepara novo anúncio para ser adicionado e publicado futuramente.
         anuncio_dict.update({'email': self._email})        
         anuncio_dict.update({'img_lista': new_img_lista})  
+
+        # Remove caracteres de controles (\r\n) vindos da descrição do anúncio.
+        descricao = motando_utils.remove_ctr_chars(anuncio_dict.get('descricao'))
+        anuncio_dict.update({'descricao': descricao})         
 
         anuncio = AnuncioModelDb.parse_obj(anuncio_dict)
         

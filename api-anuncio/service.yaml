@@ -20,6 +20,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: "nginx"    
     nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 6m
 spec:  
   rules:
   - http:
@@ -45,3 +46,10 @@ spec:
               name: motando-anuncio-svc
               port:
                 number: 5000
+        - path: /usuario/particular/anuncio/[0-9]{1,10}
+          pathType: Prefix
+          backend:
+            service:
+              name: motando-anuncio-svc
+              port:
+                number: 5000     

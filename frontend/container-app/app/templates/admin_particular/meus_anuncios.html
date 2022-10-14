@@ -27,14 +27,23 @@
                      <br>
                      <div class="shadow rounded bg-white border p-3">
                         <div class="row">
-                          <div class="col">
-                             <h2 class="h4 fw-bold"> Meus Anúncios </h2>                                 
-                          </div>
-                     </div>                    
-                     {% include "__ajax_loading.html" %}
-                     {% include "__modal_message.html" %}
-                     <div id="id_meus_anuncios">                        
-                     </div> 
+                            <div class="col">
+                                <h2 class="h4 fw-bold"> Meus Anúncios </h2>                                 
+                            </div>
+                        </div>               
+                        <div class="row pt-2">
+                           <div class="col">
+                              <p class="font-monospace"> 
+                                 &nbsp;&nbsp;&nbsp;&bull;&nbsp;Aúncios em publicação..:&nbsp;<span id="id_total_anuncios_publicados" class="text-success"> -- </span>
+                                 <br>                             
+                                 &nbsp;&nbsp;&nbsp;&bull;&nbsp;Aúncios em publicação..:&nbsp;<span id="id_total_anuncios_nao_publicados" class="text-info"> -- </span>
+                              </p>
+                           </div>
+                        </div>   
+                        {% include "__ajax_loading.html" %}
+                        {% include "__modal_message.html" %}
+                        <div id="id_meus_anuncios">                        
+                        </div> 
                  </div> <!-- right panel --> 
            </div>
        </div>
