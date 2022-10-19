@@ -1,8 +1,8 @@
 {% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %} 
     {% for category, message in messages %} 
-        <div class="row align-items-center text-center">                                                                      
-            <div class="col-12">
+        <div class="row align-items-center text-center w-100">                                                                      
+            <div class="col">
                {% if category == 'success' %}
                   <div class="alert alert-success h4" role="alert"> {{ message }} </div>
                {% elif category == 'warning' %}

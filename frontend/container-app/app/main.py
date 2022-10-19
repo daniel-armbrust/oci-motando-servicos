@@ -188,36 +188,7 @@ def admin_particular_anuncio():
     
     """
     return render_template('admin_particular/meus_anuncios.html')
-
-
-@app.route('/admin/usuario/particular/anuncio/<int:anuncio_id>', methods=['GET'])
-@motando_utils.ensure_logged_in
-def admin_edit_particular_anuncio(anuncio_id: int):
-    """Edita um anúncio em particular.
-    
-    """
-    global AUTH_COOKIE_NAME
-
-    if anuncio_id:        
-        cookie_value = request.cookies.get(AUTH_COOKIE_NAME, '')
-    
-        auth_cookie = MotandoAuthCookie()    
-        jwt_token = auth_cookie.get_jwt(cookie_value)
-
-        anuncio = MotandoUsuarioParticularAnuncio()
-        anuncio.jwt_token = jwt_token
-
-        resp = anuncio.get(anuncio_id)
-
-        if resp.get('status') == 'success':
-            anuncio_data = resp.get('data')
-            
-            form = AnuncioForm(data=json.loads(anuncio_data))
-
-            return render_template('admin_particular/form_edit_anuncio.html', anuncio_id=anuncio_id, form=form)
-    
-    return render_template('404.html'), 404
-
+   
 
 @app.route('/admin/usuario/particular/anuncio/lista', methods=['GET'])
 @motando_utils.ensure_logged_in
@@ -240,9 +211,9 @@ def admin_particular_anuncio_lista():
     return jsonify(anuncio_list), anuncio_list.get('code')
 
 
-@app.route('/admin/usuario/particular/form/anuncio', methods=['GET', 'POST'])
+@app.route('/admin/usuario/particular/novo/anuncio', methods=['GET', 'POST'])
 @motando_utils.ensure_logged_in
-def form_anuncio():    
+def novo_anuncio():    
     """Formulário para cadastro de um Novo Anúncio.
     
     """
@@ -257,7 +228,10 @@ def form_anuncio():
         form.moto_marca.choices = [(moto_marca_id, moto_marca_id,)]
         form.moto_modelo.choices = [(moto_modelo_id, moto_modelo_id,)]
 
-        if form.validate_on_submit():
+        img_lista = form.data.get('img_lista', '')
+
+        # valida o formulário e se há imagens junto ao anúncio.
+        if form.validate_on_submit() and img_lista:
             cookie_value = request.cookies.get(AUTH_COOKIE_NAME, '')    
                 
             auth_cookie = MotandoAuthCookie()    
@@ -281,7 +255,42 @@ def form_anuncio():
     return render_template('admin_particular/form_anuncio.html', form=form)
 
 
-@app.route('/admin/usuario/particular/form/anuncio/imagem', methods=['POST', 'DELETE'])
+@app.route('/admin/usuario/particular/anuncio/<int:anuncio_id>', methods=['GET', 'POST'])
+@motando_utils.ensure_logged_in
+def edit_anuncio(anuncio_id: int):
+    """Edita um anúncio em particular.
+    
+    """
+    global AUTH_COOKIE_NAME
+
+    cookie_value = request.cookies.get(AUTH_COOKIE_NAME, '')
+    
+    auth_cookie = MotandoAuthCookie()    
+    jwt_token = auth_cookie.get_jwt(cookie_value)
+
+    anuncio = MotandoUsuarioParticularAnuncio()
+    anuncio.jwt_token = jwt_token
+
+    resp = anuncio.get(anuncio_id)   
+
+    if resp.get('status') != 'success':
+        return render_template('404.html'), 404
+    
+    if request.method == 'POST':
+        pass
+    else:
+        anuncio_data = json.loads(resp.get('data'))
+
+        form = AnuncioForm(data=anuncio_data)
+
+        moto_marca = anuncio_data.get('moto_marca')
+        moto_modelo = anuncio_data.get('moto_modelo')
+
+        return render_template('admin_particular/form_anuncio.html', anuncio_id=anuncio_id, 
+            form=form, moto_marca=moto_marca, moto_modelo=moto_modelo)            
+
+
+@app.route('/admin/usuario/particular/novo/anuncio/imagem', methods=['POST', 'DELETE'])
 @motando_utils.ensure_logged_in
 @csrf.exempt
 def anuncio_img_upload():    
@@ -318,6 +327,9 @@ def anuncio_img_upload():
             return f'DELETED: {filename}', 200
     
     return 'Bad Request', 400
+
+
+
 
 
 @app.errorhandler(CSRFError)

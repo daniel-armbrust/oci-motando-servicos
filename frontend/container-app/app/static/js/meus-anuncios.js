@@ -9,7 +9,7 @@ $(document).ready(function() {
 function getMeusAnuncios() {
 
     return $.ajax({
-        url: anuncioUrl,
+        url: ANUNCIO_URL,
         type: 'GET', 
         dataType: 'json', 
         beforeSend: function() {
@@ -69,13 +69,16 @@ function getMeusAnuncios() {
                                     <p class="card-text"> <span class="text-success h5 fw-bold"> ${preco} </span>
                                     <div class="row pt-2">
                                         <div class="col">
-                                            <a class="btn btn-outline-success" role="button" href="/admin/usuario/particular/anuncio/${jsonData[i].id}">
+                                            <a class="btn btn-outline-success" onclick="return $.blockUI({message: null,overlayCSS:{backgroundColor:'#dee2e6'}});"
+                                               href="/admin/usuario/particular/anuncio/${jsonData[i].id}">
                                                 Destacar Anúncio
                                             </a>&nbsp;&nbsp;
-                                            <a class="btn btn-outline-info" role="button" href="/admin/usuario/particular/anuncio/${jsonData[i].id}">
+                                            <a class="btn btn-outline-info" onclick="return $.blockUI({message: null,overlayCSS:{backgroundColor:'#dee2e6'}});"
+                                               href="/admin/usuario/particular/anuncio/${jsonData[i].id}">
                                                 Editar
                                             </a>&nbsp;&nbsp;
-                                            <a class="btn btn-outline-danger" role="button" href="/admin/usuario/particular/anuncio/${jsonData[i].id}">
+                                            <a class="btn btn-outline-danger" onclick="return $.blockUI({message: null,overlayCSS:{backgroundColor:'#dee2e6'}});"
+                                               href="/admin/usuario/particular/anuncio/${jsonData[i].id}">
                                                 Excluir
                                             </a>
                                         </div>

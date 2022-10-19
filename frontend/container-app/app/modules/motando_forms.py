@@ -212,7 +212,7 @@ class AnuncioForm(FlaskForm):
     ], choices=origem_choices, default='Não especificado')
 
     img_lista = HiddenField([
-        validators.DataRequired()
+        validators.DataRequired()        
     ])
 
     # TODO: validações zero_km, km, ano_fabricacao <= ano_modelo.

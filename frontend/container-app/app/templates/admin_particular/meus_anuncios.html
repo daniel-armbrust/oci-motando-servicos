@@ -13,12 +13,14 @@
            <div class="row">               
                  <div class="col-3 d-flex justify-content-center">
                      <a href="{{ url_for('admin_particular_home') }}">
-                     <img src="{{ url_for('static', filename='img/motando_logo-402x150.png') }}" class="img-fluid" alt="Motando" 
-                          style="width: 220px;">
-                     </a>
-                 </div>         
-           </div>
-           {% include "__flash_messages.html" %}  
+                        <img src="{{ url_for('static', filename='img/motando_logo-402x150.png') }}" class="img-fluid" alt="Motando" 
+                            style="width: 220px;">
+                        </a>
+                 </div>
+                 <div class="col-9 d-flex justify-content-center">            
+                     {% include "__flash_messages.html" %}      
+                 </div>               
+           </div>           
            <div class="row">
                  <div class="col-3">
                      {% include "/admin_particular/__left_menu.html" %}  
@@ -34,9 +36,9 @@
                         <div class="row pt-2">
                            <div class="col">
                               <p class="font-monospace"> 
-                                 &nbsp;&nbsp;&nbsp;&bull;&nbsp;Aúncios em publicação..:&nbsp;<span id="id_total_anuncios_publicados" class="text-success"> -- </span>
+                                 &nbsp;&nbsp;&nbsp;&bull;&nbsp;Aúncio(s) publicado(s)...:&nbsp;<span id="id_total_anuncios_publicados" class="text-success"> -- </span>
                                  <br>                             
-                                 &nbsp;&nbsp;&nbsp;&bull;&nbsp;Aúncios em publicação..:&nbsp;<span id="id_total_anuncios_nao_publicados" class="text-info"> -- </span>
+                                 &nbsp;&nbsp;&nbsp;&bull;&nbsp;Aúncio(s) em publicação..:&nbsp;<span id="id_total_anuncios_nao_publicados" class="text-info"> -- </span>
                               </p>
                            </div>
                         </div>   
@@ -56,6 +58,8 @@
 {% endblock %}
 
 {% block body_scripts %}   
-   <script type="text/javascript"> const anuncioUrl = "{{ url_for('admin_particular_anuncio_lista') }}"; </script>
-   <script type="text/javascript" src="{{ url_for('static', filename='js/meus-anuncios.js') }}"></script>
+   <script type="text/javascript" src="{{ url_for('static', filename='vendor/jquery.blockUI.min.js') }}"></script>       
+   <script type="text/javascript"> const ANUNCIO_URL = "{{ url_for('admin_particular_anuncio_lista') }}"; </script>
+   <script type="text/javascript" src="{{ url_for('static', filename='js/commons.js') }}"></script>
+   <script type="text/javascript" src="{{ url_for('static', filename='js/meus-anuncios.js') }}"></script>   
 {% endblock %}

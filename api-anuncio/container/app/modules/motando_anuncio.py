@@ -45,8 +45,8 @@ class Anuncio():
                    km, zero_km, cor, preco, frase_vendedora, descricao, opcional_alarme,
                    opcional_bau, opcional_computador, opcional_gps, aceita_contraoferta,
                    aceita_troca, doc_ok, sinistro, trilha_pista, freios, tipo_partida,
-                   refrigeracao, estilo, origem, img_lista
-              FROM {NOSQL_TABLE_NAME} WHERE email = "{self._email}" AND 
+                   refrigeracao, estilo, origem, m.img_lista.url AS img_lista
+              FROM {NOSQL_TABLE_NAME} m WHERE email = "{self._email}" AND 
                  (publicado = true AND id = {anuncio_id})
         '''
 

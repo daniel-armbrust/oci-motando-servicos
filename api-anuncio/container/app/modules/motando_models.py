@@ -81,7 +81,7 @@ class AnuncioModelDbOut(BaseModel):
     refrigeracao: str
     estilo: str 
     origem: str 
-    img_lista: List[dict]
+    img_lista: List[str]
     
 
 class AnuncioModelList(BaseModel):

@@ -29,8 +29,10 @@ COPY --chown=frontend:frontend ./app/ /opt/frontend/
 
 # HTML Minify
 #RUN ls -1R /opt/frontend/templates/*.html | while read html_file ; do \
-RUN shopt -s globstar dotglob ; ls -1d ./**/*.html | while read html_file ; do \
+RUN shopt -s globstar dotglob ; ls -1d ./**/*.html | while read html_file ; do \       
+       sed -e "s/^[ \t]*//g" -e "/^$/d" -i "$html_file"; \
        sed ':a;N;$!ba;s/>\s*</></g' -i "$html_file"; \
+       sed '/^[[:space:]]*$/d' -i "$html_file"; \
     done
 
 USER frontend

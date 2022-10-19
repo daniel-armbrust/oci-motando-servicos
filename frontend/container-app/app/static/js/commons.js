@@ -236,3 +236,46 @@ function getBrasilCidade(estadoId) {
       }        
   });   
 }
+
+function selectMotoMarcaModelo(motoMarcaNome, motoModeloNome) {
+    getMotoMarca().then(() => {
+        const motoMarcaOption = $('#id_select_moto_marca').find('option');
+
+        for (let i = 0 ; i < motoMarcaOption.length ; i++) {
+            let motoMarcaOptionText = motoMarcaOption[i].text;       
+     
+            if (motoMarcaNome === motoMarcaOptionText) {          
+               let motoMarcaId = motoMarcaOption[i].value;          
+     
+               motoMarcaOption[i].selected = true;  
+               
+               getMotoModelo(motoMarcaId).then(() => {
+                   const motoModeloOption = $('#id_select_moto_modelo').find('option');
+
+                   for (let z = 0 ; z < motoModeloOption.length ; z++) {
+                      let motoModeloOptionText = motoModeloOption[z].text;      
+
+                      if (motoModeloNome === motoModeloOptionText) {                                 
+                        motoModeloOption[z].selected = true;
+                        break;                 
+                      }                   
+                   }
+
+               });
+
+               break;
+            }
+        }   
+    });
+}
+
+$(document).ready(function() {
+
+    $('a.screen-wait-class').on('click', function() {
+        $.blockUI({
+            message: null,
+            overlayCSS: { backgroundColor: '#dee2e6' }
+        });
+    });
+
+});

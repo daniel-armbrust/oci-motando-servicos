@@ -13,6 +13,9 @@
                            style="width: 220px;">
                       </a>
                   </div>         
+                  <div class="col-9 d-flex justify-content-center">            
+                     {% include "__flash_messages.html" %}      
+                 </div>               
             </div>
             <div class="row">
                <div class="col-3">
@@ -39,4 +42,6 @@
 {% endblock %}
 
 {% block body_scripts %}   
+   <script type="text/javascript" src="{{ url_for('static', filename='vendor/jquery.blockUI.min.js') }}"></script>  
+   <script type="text/javascript" src="{{ url_for('static', filename='js/commons.js') }}"></script>
 {% endblock %}

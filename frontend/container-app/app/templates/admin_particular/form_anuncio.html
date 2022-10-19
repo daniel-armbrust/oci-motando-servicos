@@ -28,10 +28,8 @@
                         <img src="{{ url_for('static', filename='img/motando_logo-402x150.png') }}" class="img-fluid" alt="Motando" 
                              style="width: 220px;">
                     </a>
-                </div>         
-            </div>
-            <br>
-            {% include "__flash_messages.html" %}      
+                </div>                  
+            </div>            
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-6">
@@ -41,18 +39,23 @@
                     </p>
                 </div>
             </div>
+            {% include "__flash_messages.html" %}      
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-6">                        
                       <div class="shadow rounded bg-white border p-3">                              
-                            <form name="cadastro_anuncio_form" id="id_cadastro_anuncio_form" autocomplete="off" method="post" 
-                                  action="{{ url_for('form_anuncio') }}">                            
+                            <form name="anuncio_form" id="id_anuncio_form" autocomplete="off" method="post" 
+                                  {% if anuncio_id %}
+                                     action="{{ url_for('edit_anuncio', anuncio_id=anuncio_id) }}">                                                              
+                                  {% else %}
+                                     action="{{ url_for('novo_anuncio') }}">                            
+                                  {% endif %}
                                 {{ form.csrf_token }}
-                                {{ form.img_lista(id="id_img_lista") }}                                     
+                                {{ form.img_lista(id="id_img_lista") }}      
                                 <div class="row pt-2 p-2">
                                     <div class="col">
                                         <label for="id_select_moto_marca" class="form-label my-text-purple">{{ form.moto_marca.label.text }}&nbsp;<span class="text-danger">*</span></label>
-                                        {{ form.moto_marca(id="id_select_moto_marca", style_="box-shadow: none;", class_="form-select my-btn-outline") }}                                                                        
+                                        {{ form.moto_marca(id="id_select_moto_marca", style_="box-shadow: none;", class_="form-select my-btn-outline") }}                                                                                                                   
                                         {% for moto_marca_error in form.moto_marca.errors %}                                
                                             <div class="text-danger"> &nbsp;&bull; {{ moto_marca_error }} </div>
                                         {% endfor %}
@@ -186,7 +189,14 @@
                                         <input type="file" name="files[]" id="filer_input" multiple="multiple">                                        
                                     </div>
                                 </div>
-                                <br>
+                                <br>                                
+                                {% if anuncio_id %}  
+                                   <div class="row">
+                                       <div class="col"> 
+                                           <div id="id_anuncio_imgs"></div>
+                                       </div>
+                                   </div>
+                                {% endif %}
                                 <div class="row pt-2">
                                     <div class="col">
                                         <div class="accordion accordion-flush" id="accordionFlushExample">
@@ -281,7 +291,11 @@
                                 <div class="row pt-4">
                                     <div class="col">
                                         <div class="d-grid gap-2">
-                                            {{ form.submit(id="id_submit", class_="btn btn-success fw-bold p-3 fs-5") }}                                            
+                                            {% if anuncio_id %}
+                                               {{ form.submit(id="id_submit", value_="Salvar Alterações", class_="btn btn-success fw-bold p-3 fs-5") }}                                            
+                                            {% else %}
+                                               {{ form.submit(id="id_submit", class_="btn btn-success fw-bold p-3 fs-5") }}                                            
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -305,7 +319,195 @@
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/jquery.filer/js/jquery.filer.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/jquery.blockUI.min.js') }}"></script>    
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/jquery.maskMoney.min.js') }}"></script>    
-    <script type="text/javascript" src="{{ url_for('static', filename='js/ajax-functions.js') }}"></script>
-    <script type="text/javascript"> const imgUploadUrl = "{{ url_for('anuncio_img_upload') }}"; </script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/commons.js') }}"></script>    
     <script type="text/javascript" src="{{ url_for('static', filename='js/anuncio.js') }}"></script>
+    <script type="text/javascript">     
+        $(document).ready(function() {
+            const IMG_UPLOAD_URL = "{{ url_for('anuncio_img_upload') }}"; 
+                
+            let ANUNCIO_IMG_LIST = new Array();                         
+
+            $('#filer_input').filer({
+                limit: 10,
+                maxSize: 5242880,
+                extensions: ['jpg', 'jpeg', 'png', 'webp'],       
+                changeInput: '<div class="jFiler-input-dragDrop hold-photos"><div class="jFiler-input-inner"><div class="jFiler-input-icon"><i class="icon-jfi-cloud-up-o"></i></div><div class="jFiler-input-text"><h3>Arraste at&eacute; 10 fotos da sua Moto</h3> <p>somente arquivos (jpg, png, webp)</p></div><a class="jFiler-input-choose-btn blue">Selecione as imagens</a></div></div>',
+                showThumbs: true,
+                theme: 'dragdropbox',
+                templates: {
+                    box: '<ul class="jFiler-items-list jFiler-items-grid"></ul>',
+                    item: '<li class="jFiler-item">\
+                                <div class="jFiler-item-container">\
+                                    <div class="jFiler-item-inner">\
+                                        <div class="jFiler-item-thumb">\
+                                            <div class="jFiler-item-status"></div>\
+                                            <div class="jFiler-item-thumb-overlay">\
+                                                <div class="jFiler-item-info">\
+                                                    <div style="display:table-cell;vertical-align: middle;">\
+                                                        <span class="jFiler-item-title"><b title="{{ '{{' }}fi-name{{ '}}' }}">{{ '{{' }}fi-name{{ '}}' }}</b></span>\
+                                                        <span class="jFiler-item-others">{{ '{{' }}fi-size2{{ '}}' }}</span>\
+                                                    </div>\
+                                                </div>\
+                                            </div>\
+                                            {{ '{{' }}fi-image{{ '}}' }}\
+                                        </div>\
+                                        <div class="jFiler-item-assets jFiler-row">\
+                                            <ul class="list-inline pull-left">\
+                                                <li>{{ '{{' }}fi-progressBar{{ '}}' }}</li>\
+                                            </ul>\
+                                            <ul class="list-inline pull-right">\
+                                                <li><a class="icon-jfi-trash jFiler-item-trash-action text-decoration-none"></a></li>\
+                                            </ul>\
+                                        </div>\
+                                    </div>\
+                                </div>\
+                            </li>',
+                    itemAppend: '<li class="jFiler-item">\
+                                    <div class="jFiler-item-container">\
+                                        <div class="jFiler-item-inner">\
+                                            <div class="jFiler-item-thumb">\
+                                                <div class="jFiler-item-status"></div>\
+                                                <div class="jFiler-item-thumb-overlay">\
+                                                    <div class="jFiler-item-info">\
+                                                        <div style="display:table-cell;vertical-align: middle;">\
+                                                            <span class="jFiler-item-title"><b title="{{ '{{' }}fi-name{{ '}}' }}">{{ '{{' }}fi-name{{ '}}' }}</b></span>\
+                                                            <span class="jFiler-item-others">{{ '{{' }}fi-size2{{ '}}' }}</span>\
+                                                        </div>\
+                                                    </div>\
+                                                </div>\
+                                                {{ '{{' }}fi-image{{ '}}' }}\
+                                            </div>\
+                                            <div class="jFiler-item-assets jFiler-row">\
+                                                <ul class="list-inline pull-left">\
+                                                    <li><span class="jFiler-item-others">{{ '{{' }}fi-icon{{ '}}' }}</span></li>\
+                                                </ul>\
+                                                <ul class="list-inline pull-right">\
+                                                    <li><a class="icon-jfi-trash jFiler-item-trash-action text-decoration-none"></a></li>\
+                                                </ul>\
+                                            </div>\
+                                        </div>\
+                                    </div>\
+                                </li>',
+                    progressBar: '<div class="bar"></div>',
+                itemAppendToEnd: false,
+                canvasImage: true,
+                removeConfirmation: true,
+                _selectors: {
+                        list: '.jFiler-items-list',
+                        item: '.jFiler-item',
+                        progressBar: '.bar',
+                        remove: '.jFiler-item-trash-action'
+                    }
+                },
+                dragDrop: {
+                    dragEnter: null,
+                    dragLeave: null,
+                    drop: null,
+                    dragContainer: null,
+                },
+                uploadFile: {
+                    url: IMG_UPLOAD_URL,
+                    data: null,
+                    type: 'POST',
+                    enctype: 'multipart/form-data',
+                    synchron: true,
+                    beforeSend: function(){},
+                    success: function(data, itemEl, listEl, boxEl, newInputEl, inputEl, id) {                                                
+                        addAnuncioImg(data);                                                    
+                    },
+                    error: function(el){
+                        let parent = el.find('.jFiler-jProgressBar').parent();
+                        
+                        el.find('.jFiler-jProgressBar').fadeOut('slow', function(){
+                            $('<div class="jFiler-item-others text-error"><i class="icon-jfi-minus-circle"></i> Erro</div>').hide().appendTo(parent).fadeIn('slow');
+                        });
+                    },
+                    statusCode: null,
+                    onProgress: null,
+                    onComplete: null
+                },           
+                files: null,            
+                addMore: false,
+                allowDuplicates: true,
+                clipBoardPaste: true,
+                excludeName: null,
+                beforeRender: null,
+                afterRender: null,
+                beforeShow: null,
+                beforeSelect: null,
+                onSelect: null,
+                afterShow: null,
+                onRemove: function(itemEl, file, id, listEl, boxEl, newInputEl, inputEl) {
+                    let filerKit = inputEl.prop('jFiler');                     
+                    let filename = filerKit.files_list[id].file.name;  
+                    delAnuncioImg(filename);                              
+                },
+                onEmpty: null,
+                options: null,
+                dialogs: {
+                    alert: function(text) {
+                        return alert(text);
+                    },
+                    confirm: function (text, callback) {
+                        confirm(text) ? callback() : null;
+                    }
+                },
+                captions: {
+                    button: 'Escolha o arquivo',
+                    feedback: 'Escolha arquivos para upload',
+                    feedback2: 'Arquivos escolhidos',
+                    drop: 'Arraste aqui seus arquivos (jpg, png, webp)',
+                    removeConfirmation: 'Tem certeza de que deseja remover este arquivo?',
+                    errors: {
+                        filesLimit: 'Somente {{ '{{' }}fi-limit{{ '}}' }} arquivos s&atilde;o permitidos de serem enviados.',
+                        filesType: 'Somente imagens s&atilde;o permitidos de serem enviados.',
+                        filesSize: '{{ '{{' }}fi-name{{ '}}' }} &eacute; muito grande! Fa&ccedil;a o upload de arquivos de at&eacute; {{ '{{' }}fi-maxSize{{ '}}' }} MB.',
+                        filesSizeAll: 'Arquivos muito grandes! Fa&ccedil;a o upload de arquivos de at&eacute; {{ '{{' }}fi-maxSize{{ '}}' }} MB.'
+                    }                
+                }
+            });
+
+            {% if anuncio_id %}               
+
+                selectMotoMarcaModelo('{{ moto_marca }}', '{{ moto_modelo }}');
+                                
+                const currentStrImgList = $('#id_img_lista').val();
+
+                const arrImgList = currentStrImgList.replace(/\ |\'|\[|\]/g, '').split(',');
+                
+                for (let i = 0 ; i < arrImgList.length ; i++) {            
+                    $('#id_anuncio_imgs').append(`
+                            <div class="jFiler-items" id="id_jfiler_item_${i}">
+                                <ul class="jFiler-items-list jFiler-items-grid">
+                                    <li class="jFiler-item" data-jfiler-index="0">                           
+                                        <div class="jFiler-item-container">
+                                            <div class="jFiler-item-inner"> 
+                                                <div class="jFiler-item-thumb"> 
+                                                    <div class="jFiler-item-status"></div> 
+                                                    <div class="jFiler-item-thumb-overlay"></div>                              
+                                                    <div class="jFiler-item-thumb-image">
+                                                        <img src="${arrImgList[i]}" draggable="false">
+                                                    </div>                                    
+                                                </div>                                    
+                                                <div class="jFiler-item-assets jFiler-row">                                        
+                                                    <ul class="list-inline pull-left"></ul>                                                                                      
+                                                    <ul class="list-inline pull-right">         
+                                                        <li><a class="icon-jfi-trash jFiler-item-trash-action text-decoration-none" 
+                                                               onclick="confirmDelAnuncioImg('${arrImgList[i]}', ${i});"></a></li>
+                                                    </ul>                                  
+                                                </div>                               
+                                            </div>                          
+                                        </div>                       
+                                    </li>
+                                </ul>
+                            </div>`);               
+                }         
+
+            {% else %}
+
+               getMotoMarca();
+               
+            {% endif %}       
+        });      
+    </script>    
 {% endblock %}

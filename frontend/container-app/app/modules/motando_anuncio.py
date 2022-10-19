@@ -3,7 +3,7 @@
 #
 
 import os
-import ast
+import re
 import json
 
 import requests
@@ -46,17 +46,13 @@ class MotandoAnuncio():
         data.pop('csrf_token')
 
         # Formata PRECO
-        str_preco = data.get('preco')
+        str_preco = re.sub('[^\d\.]', '', data.get('preco'))
         float_preco = float(str_preco.replace('.', '').replace(',', '.'))
 
         data.update({'preco': format(float_preco, '.2f')})              
 
-        try:
-            img_lista = ast.literal_eval(data.get('img_lista'))
-        except SyntaxError:
-            return {'status ': 'fail', 'message': 'Sintaxe inválida ao processar os dados.', 'code': 400}
-        else:            
-            data.update({'img_lista': img_lista})  
+        # Converte para uma lista de imagens.
+        data.update({'img_lista': data.get('img_lista').split(',')})              
 
         json_data = json.dumps(data)
 

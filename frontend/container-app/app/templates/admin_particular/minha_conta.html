@@ -12,7 +12,10 @@
                       <img src="{{ url_for('static', filename='img/motando_logo-402x150.png') }}" class="img-fluid" alt="Motando" 
                               style="width: 220px;">
                       </a>
-                  </div>         
+                  </div>
+                  <div class="col-9 d-flex justify-content-center">            
+                      {% include "__flash_messages.html" %}      
+                  </div>                        
             </div>
             <div class="row">
                <div class="col-3">
@@ -256,7 +259,7 @@
 {% endblock %}
 
 {% block body_scripts %}
-   <script type="text/javascript" src="{{ url_for('static', filename='vendor/jquery.mask.min.js') }}"></script>    
+   <script type="text/javascript" src="{{ url_for('static', filename='vendor/jquery.mask.min.js') }}"></script>       
    <script type="text/javascript" src="{{ url_for('static', filename='js/ajax-functions.js') }}"></script>
    <script type="text/javascript">
        $(document).ready(function() {
