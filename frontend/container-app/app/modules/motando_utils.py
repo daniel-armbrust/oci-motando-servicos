@@ -4,6 +4,7 @@
 
 import os
 import base64
+import unicodedata
 from functools import wraps
 
 from flask import request, redirect, url_for
@@ -84,6 +85,15 @@ def get_img_mimetype(img_content: str = None) -> str:
             return 'image/gif'
       
     return ''
+
+
+def remove_ctr_chars(s: str = None) -> str:
+    """Remove control characters from a string.
+
+    https://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python
+    
+    """
+    return ''.join(ch for ch in s if unicodedata.category(ch)[0]!='C')
 
 
 def ensure_logged_in(fn):  

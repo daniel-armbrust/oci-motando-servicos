@@ -36,8 +36,6 @@ function delAnuncioImg(imgFilename) {
        ANUNCIO_IMG_LIST = ANUNCIO_IMG_LIST.map(s => s.trim());
     
        const removeImgIndex = ANUNCIO_IMG_LIST.indexOf(imgFilename);
-
-       console.log(removeImgIndex);
     
        if (removeImgIndex >= 0) {
           ANUNCIO_IMG_LIST.splice(removeImgIndex, 1);                      

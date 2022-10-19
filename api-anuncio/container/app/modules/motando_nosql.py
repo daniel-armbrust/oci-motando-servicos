@@ -59,6 +59,23 @@ class NoSQL():
         else:
             # TODO: registrar falha na inserção dos dados.
             return False
+    
+    def update(self, data: dict = None) -> bool:
+        global NOSQL_TABLE_NAME
+
+        put_request = PutRequest()
+        put_request.set_table_name(NOSQL_TABLE_NAME)
+        put_request.set_option(PutOption.IF_PRESENT)
+        put_request.set_value(data)
+
+        result = self.__nosql_handle.put(put_request)
+        self.__nosql_handle.close()        
+
+        if result.get_version() is not None:
+            return True
+        else:
+            # TODO: registrar falha na inserção dos dados.
+            return False
 
     def query(self, query: str = None) -> list:
       """Execute a SQL Query.

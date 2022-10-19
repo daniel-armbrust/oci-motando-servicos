@@ -11,7 +11,7 @@ from flask_wtf.csrf import CSRFProtect, CSRFError
 
 from modules.motando_forms import LoginForm, CadastroUsuarioParticularForm, AnuncioForm
 from modules.motando_authcookie import MotandoAuthCookie
-from modules.motando_usuario import MotandoUsuarioParticular, MotandoUsuarioParticularAnuncio
+from modules.motando_usuario import MotandoUsuarioParticular
 from modules.motando_anuncio import MotandoAnuncio
 from modules import motando_utils
 
@@ -203,7 +203,7 @@ def admin_particular_anuncio_lista():
     auth_cookie = MotandoAuthCookie()    
     jwt_token = auth_cookie.get_jwt(cookie_value)
 
-    anuncio = MotandoUsuarioParticularAnuncio()    
+    anuncio = MotandoAnuncio()    
     anuncio.jwt_token = jwt_token
     
     anuncio_list = anuncio.list()
@@ -211,7 +211,7 @@ def admin_particular_anuncio_lista():
     return jsonify(anuncio_list), anuncio_list.get('code')
 
 
-@app.route('/admin/usuario/particular/novo/anuncio', methods=['GET', 'POST'])
+@app.route('/admin/usuario/particular/anuncio/novo', methods=['GET', 'POST'])
 @motando_utils.ensure_logged_in
 def novo_anuncio():    
     """Formulário para cadastro de um Novo Anúncio.
@@ -237,10 +237,10 @@ def novo_anuncio():
             auth_cookie = MotandoAuthCookie()    
             jwt_token = auth_cookie.get_jwt(cookie_value)
             
-            motando_anuncio = MotandoAnuncio()
-            motando_anuncio.jwt_token = jwt_token
+            anuncio = MotandoAnuncio()
+            anuncio.jwt_token = jwt_token
 
-            resp = motando_anuncio.add(form.data)            
+            resp = anuncio.add(data=form.data)            
 
             if resp.get('status') == 'success':
                 flask_flash(u'Novo anúncio cadastrado com sucesso.', 'success')
@@ -268,26 +268,48 @@ def edit_anuncio(anuncio_id: int):
     auth_cookie = MotandoAuthCookie()    
     jwt_token = auth_cookie.get_jwt(cookie_value)
 
-    anuncio = MotandoUsuarioParticularAnuncio()
+    anuncio = MotandoAnuncio()
     anuncio.jwt_token = jwt_token
 
+    # Obtém JSON do anúncio.
     resp = anuncio.get(anuncio_id)   
 
     if resp.get('status') != 'success':
         return render_template('404.html'), 404
+
+    # Converte o JSON para um dicionário Python.
+    anuncio_data = json.loads(resp.get('data'))
+
+    moto_marca = anuncio_data.get('moto_marca')
+    moto_modelo = anuncio_data.get('moto_modelo')
+
+    form = AnuncioForm(data=anuncio_data)
     
     if request.method == 'POST':
-        pass
-    else:
-        anuncio_data = json.loads(resp.get('data'))
+        moto_marca_id = form.data.get('moto_marca')
+        moto_modelo_id = form.data.get('moto_modelo')
 
-        form = AnuncioForm(data=anuncio_data)
+        form.moto_marca.choices = [(moto_marca_id, moto_marca_id,)]
+        form.moto_modelo.choices = [(moto_modelo_id, moto_modelo_id,)]
 
-        moto_marca = anuncio_data.get('moto_marca')
-        moto_modelo = anuncio_data.get('moto_modelo')
+        img_lista = form.data.get('img_lista', '')
 
-        return render_template('admin_particular/form_anuncio.html', anuncio_id=anuncio_id, 
-            form=form, moto_marca=moto_marca, moto_modelo=moto_modelo)            
+        # valida o formulário e se há imagens junto ao anúncio.
+        if form.validate_on_submit() and img_lista:
+            resp = anuncio.update(anuncio_id=anuncio_id, data=form.data)     
+
+            if resp.get('status') == 'success':
+                flask_flash(u'Anúncio atualizado com sucesso. Aguarde a sua republicação...', 'success')
+
+                return redirect(url_for('admin_particular_anuncio')) 
+            else: 
+                flask_flash(u'Erro ao atualizar anúncio.', 'error')
+            
+        else:            
+            flask_flash(u'Erro ao atualizar anúncio. Por favor, corrigir os dados do formuládio.', 'error')                   
+
+    return render_template('admin_particular/form_anuncio.html', anuncio_id=anuncio_id, 
+        form=form, moto_marca=moto_marca, moto_modelo=moto_modelo)            
 
 
 @app.route('/admin/usuario/particular/novo/anuncio/imagem', methods=['POST', 'DELETE'])
@@ -310,10 +332,10 @@ def anuncio_img_upload():
                 auth_cookie = MotandoAuthCookie()    
                 jwt_token = auth_cookie.get_jwt(cookie_value)
                 
-                motando_anuncio = MotandoAnuncio()
-                motando_anuncio.jwt_token = jwt_token
+                anuncio = MotandoAnuncio()
+                anuncio.jwt_token = jwt_token
 
-                resp = motando_anuncio.add_img(filename=img.filename, data=img_data)
+                resp = anuncio.add_img(filename=img.filename, data=img_data)
 
                 if resp.get('status') == 'success':
                     return img.filename, resp.get('code')

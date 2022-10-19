@@ -6,7 +6,8 @@ import os
 
 import oci
 
-from .motando_models import AnuncioModel, AnuncioModelDb, AnuncioModelDbOut, AnuncioModelList
+from .motando_models import AnuncioModel, AnuncioModelList
+from .motando_models import AnuncioModelDb, AnuncioModelDbUpdate, AnuncioModelDbOut
 from .motando_nosql import NoSQL
 from . import motando_utils
 
@@ -173,10 +174,6 @@ class Anuncio():
         anuncio_dict.update({'email': self._email})        
         anuncio_dict.update({'img_lista': new_img_lista})  
 
-        # Remove caracteres de controles (\r\n) vindos da descrição do anúncio.
-        descricao = motando_utils.remove_ctr_chars(anuncio_dict.get('descricao'))
-        anuncio_dict.update({'descricao': descricao})         
-
         anuncio = AnuncioModelDb.parse_obj(anuncio_dict)
         
         nosql = NoSQL()
@@ -213,6 +210,35 @@ class Anuncio():
 
     def del_img_tmp(self):
         global BUCKET_IMGTMP_NAME    
+    
+    def update(self, anuncio_id: int, data: AnuncioModel) -> dict:
+        """ 
+
+        """
+        anuncio_dict = data.dict()
+
+        anuncio_dict.update({'id': anuncio_id})
+
+        print('Anuncio DICT')
+        print(anuncio_dict)
+
+        img_lista = anuncio_dict.pop('img_lista')
+
+        anuncio_dict.update({'email': self._email})
+        anuncio_dict.update({'img_lista': []})
+
+        anuncio = AnuncioModelDbUpdate.parse_obj(anuncio_dict)
+
+        print('Anuncio Obj')
+        print(anuncio)
+
+        nosql = NoSQL()
+        updated = nosql.update(anuncio.dict())       
+
+        if updated:
+            return {'status': 'success', 'message': 'Atualização aceita. Aguarde a sua finalização.', 'code': 202}
+        else:
+            return {'status': 'error', 'message': 'Erro interno do servidor.', 'code': 500}               
 
 
 class AnuncioPublico():

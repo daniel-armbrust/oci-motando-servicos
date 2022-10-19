@@ -2,9 +2,6 @@
 # modules/motando_utils.py
 #
 
-import unicodedata
-
-
 def return_img_mimetype(img_filename: str = None) -> str:
     """Return image MIME TYPE.
 
@@ -17,12 +14,3 @@ def return_img_mimetype(img_filename: str = None) -> str:
         return 'image/webp'
     else:
         return None
-
-
-def remove_ctr_chars(s: str = None) -> str:
-    """Remove control characters from a string.
-
-    https://stackoverflow.com/questions/4324790/removing-control-characters-from-a-string-in-python
-    
-    """
-    return ''.join(ch for ch in s if unicodedata.category(ch)[0]!='C')

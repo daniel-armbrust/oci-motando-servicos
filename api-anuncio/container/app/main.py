@@ -38,21 +38,23 @@ async def authenticate(token: str = Depends(oauth2_schema)) -> str:
     return email
 
 
-@router.get('/usuario/particular/anuncio')
-async def list_particular_anuncio(offset: int = 0, email: str = Depends(authenticate)) -> dict:
-    """Obtém todos os anúncios do usuário particular.
+@router.get('/anuncio')
+async def list_anuncio(offset: int = 0, email: str = Depends(authenticate)) -> dict:
+    """Lista todos os anúncios.
     
     """
     anuncio = Anuncio()
     anuncio.email = email
+
+    # TODO: paginador
 
     resp = anuncio.list(offset=offset)
 
     return JSONResponse(content=resp, status_code=resp.get('code')) 
 
 
-@router.get('/usuario/particular/anuncio/{anuncio_id}')
-async def edit_particular_anuncio(anuncio_id: int, email: str = Depends(authenticate)) -> dict:
+@router.get('/anuncio/{anuncio_id}')
+async def edit_anuncio(anuncio_id: int, email: str = Depends(authenticate)) -> dict:
     """Obtém todos os anúncios do usuário particular.
     
     """
@@ -64,8 +66,21 @@ async def edit_particular_anuncio(anuncio_id: int, email: str = Depends(authenti
     return JSONResponse(content=resp, status_code=resp.get('code')) 
 
 
+@router.put('/anuncio/{anuncio_id}')
+async def update_anuncio(anuncio_id: int, data: AnuncioModel, email: str = Depends(authenticate)) -> dict:
+    """Adiciona um novo Anúncio.
+
+    """
+    anuncio = Anuncio()
+    anuncio.email = email
+
+    resp = anuncio.update(anuncio_id=anuncio_id, data=data)
+    
+    return JSONResponse(content=resp, status_code=resp.get('code')) 
+
+
 @router.post('/anuncio')
-async def anuncio(data: AnuncioModel, email: str = Depends(authenticate)) -> dict:
+async def new_anuncio(data: AnuncioModel, email: str = Depends(authenticate)) -> dict:
     """Adiciona um novo Anúncio.
 
     """

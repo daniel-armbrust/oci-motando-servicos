@@ -321,8 +321,7 @@
     <script type="text/javascript" src="{{ url_for('static', filename='vendor/jquery.maskMoney.min.js') }}"></script>    
     <script type="text/javascript" src="{{ url_for('static', filename='js/commons.js') }}"></script>    
     <script type="text/javascript" src="{{ url_for('static', filename='js/anuncio.js') }}"></script>
-    <script type="text/javascript">     
-        $(document).ready(function() {
+    <script type="text/javascript">           
             const IMG_UPLOAD_URL = "{{ url_for('anuncio_img_upload') }}"; 
                 
             let ANUNCIO_IMG_LIST = new Array();                         
@@ -507,7 +506,6 @@
 
                getMotoMarca();
                
-            {% endif %}       
-        });      
+            {% endif %}             
     </script>    
 {% endblock %}

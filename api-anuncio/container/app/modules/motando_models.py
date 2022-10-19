@@ -43,7 +43,7 @@ class AnuncioModel(AnuncioBase):
 
 class AnuncioModelDb(AnuncioBase):
     __ts_now = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
-
+    
     email: EmailStr  
     moto_marca: Union[str, int]    
     moto_modelo: Union[str, int]   
@@ -51,6 +51,19 @@ class AnuncioModelDb(AnuncioBase):
     publicado: bool = False  
     vendido: bool = False  
     data_cadastro: str = __ts_now
+    data_modificacao: str = __ts_now
+
+
+class AnuncioModelDbUpdate(AnuncioBase):
+    __ts_now = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+
+    id: int = Field(..., gt=0)
+    email: EmailStr  
+    moto_marca: Union[str, int]    
+    moto_modelo: Union[str, int]   
+    img_lista: List[dict] 
+    publicado: bool = False  
+    vendido: bool = False      
     data_modificacao: str = __ts_now
 
 
